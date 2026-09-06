@@ -664,6 +664,7 @@ test('16.17 Pyke', async (t) => {
 
 test('16.17 Aphelios', async (t) => {
 	const sourceCommon: IOverrides<'Aphelios'> = {
+		level: 18,
 		runes: {
 			shards: {
 				offensive: 'adaptive',
@@ -684,7 +685,7 @@ test('16.17 Aphelios', async (t) => {
 		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
 			attackDamage: 129,
 			lethality: 27,
-			attackSpeed: 1.26,
+			attackSpeed: 1.255,
 		}, damageSource);
 	});
 
@@ -694,7 +695,7 @@ test('16.17 Aphelios', async (t) => {
 			items: [ITEMS_BY_NAME.overlordsBloodmail, ITEMS_BY_NAME.endlessHunger],
 			dragonStacks: infernalStacks,
 			roleQuest: 'mid',
-			currentHealth: 732,
+			currentHealth: 730,
 		});
 
 		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {

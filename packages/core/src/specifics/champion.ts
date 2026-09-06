@@ -176,15 +176,26 @@ export const CHAMPION_SPECIFICS = {
 					const { q, w, e } = self.abilityLevels.value;
 					const passiveParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self };
 
-					const adPerQ = championAbilityVariableValue('ADPerRank', passiveParams);
-					if (typeof adPerQ.value === 'number') {
-						championPassiveStats.attackDamage = adPerQ.value * q;
+					const adPerRank = championAbilityVariableValue('ADPerRank', passiveParams);
+					if (typeof adPerRank.value === 'number') {
+						championPassiveStats.attackDamage = adPerRank.value * q;
 					} else {
-						console.warn('[CHAMPION_SPECIFICS aphelios] failed to calculate passive ad per q');
+						console.warn('[CHAMPION_SPECIFICS aphelios] failed to calculate passive ad per rank');
 					}
-					// "ADPerRank": [4, 4, 4, 4, 4, 4, 4],
-					// "ASPerRank": [0.09, 0.09, 0.09, 0.09, 0.09, 0.09, 0.09],
-					// "APPerRank": [4.5, 4.5, 4.5, 4.5, 4.5, 4.5, 4.5]
+
+					const asPerRank = championAbilityVariableValue('ASPerRank', passiveParams);
+					if (typeof asPerRank.value === 'number') {
+						championPassiveStats.bonusAttackSpeedPercent = asPerRank.value * w;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS aphelios] failed to calculate passive as per rank');
+					}
+
+					const lethalityPerRank = championAbilityVariableValue('APPerRank', passiveParams);
+					if (typeof lethalityPerRank.value === 'number') {
+						championPassiveStats.lethality = lethalityPerRank.value * e;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS aphelios] failed to calculate passive lethality per rank');
+					}
 				},
 			},
 		},

@@ -182,6 +182,18 @@
 							}
 						}
 					]
+				},
+				"q": {
+					"maxLevel": 6,
+					"variants": []
+				},
+				"w": {
+					"maxLevel": 6,
+					"variants": []
+				},
+				"e": {
+					"maxLevel": 6,
+					"variants": []
 				}
 			}
 		},
