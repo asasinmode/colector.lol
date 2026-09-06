@@ -118,6 +118,52 @@ export const CHAMPION_SPECIFICS = {
 		WEAPON_VARIANT_INDEX_TO_NAME: ['calibrum', 'severum', 'gravitum', 'infernum', 'crescendum'] satisfies IApheliosWeapon[],
 		/** stringtable indexes are different from the actual weapon order - `apheliosgun_name_1` is for calibrum and so */
 		WEAPON_NAME_TO_STRINGTABLE_INDEX: { calibrum: 1, severum: 2, infernum: 3, crescendum: 4, gravitum: 5 } satisfies Record<IApheliosWeapon, number>,
+		nextWeapon(
+			afterIndex: number,
+			usedIndexes: number[],
+		): number {
+			let rv = (afterIndex + 1) % CHAMPION_SPECIFICS.Aphelios.WEAPON_VARIANT_INDEX_TO_NAME.length;
+
+			while (usedIndexes.includes(rv)) {
+				rv = (rv + 1) % CHAMPION_SPECIFICS.Aphelios.WEAPON_VARIANT_INDEX_TO_NAME.length;
+			}
+
+			return rv;
+		},
+		setupData(self) {
+			const abilityVariantsIndexes = self.abilityVariantsIndexes.value;
+			const { WEAPON_NAME_TO_VARIANT_INDEX, nextWeapon: availableWeapon } = CHAMPION_SPECIFICS.Aphelios;
+
+			abilityVariantsIndexes.q ??= WEAPON_NAME_TO_VARIANT_INDEX.calibrum;
+			const usedIndexes: number[] = [abilityVariantsIndexes.q];
+
+			abilityVariantsIndexes.w ??= WEAPON_NAME_TO_VARIANT_INDEX.severum;
+			if (abilityVariantsIndexes.w === abilityVariantsIndexes.q) {
+				abilityVariantsIndexes.w = availableWeapon(abilityVariantsIndexes.q, usedIndexes);
+			}
+			usedIndexes.push(abilityVariantsIndexes.w);
+
+			abilityVariantsIndexes.e ??= WEAPON_NAME_TO_VARIANT_INDEX.gravitum;
+			if (
+				abilityVariantsIndexes.e === abilityVariantsIndexes.q
+				|| abilityVariantsIndexes.e === abilityVariantsIndexes.w
+			) {
+				abilityVariantsIndexes.e = availableWeapon(abilityVariantsIndexes.e, usedIndexes);
+			}
+			usedIndexes.push(abilityVariantsIndexes.e);
+
+			let lastRotatedVariantIndex: number = self.internalData.value.lastRotatedVariantIndex ?? WEAPON_NAME_TO_VARIANT_INDEX.crescendum;
+			if (usedIndexes.includes(lastRotatedVariantIndex)) {
+				lastRotatedVariantIndex = availableWeapon(abilityVariantsIndexes.e + 1, usedIndexes);
+			}
+
+			return {
+				lastRotatedVariantIndex,
+				_watchHandles: [watch(self.level, () => {
+					self.abilityLevels.value.r = Math.floor((self.level.value - 1) / 5);
+				}, { immediate: true })],
+			};
+		},
 		variables: defineChampionVariables<'Aphelios', typeof IAphelios>()({
 			known: {
 				/* f2-f5 variants are covered by f1, they seem to be intended for different guns but resolve to the same values */
@@ -134,39 +180,31 @@ export const CHAMPION_SPECIFICS = {
 				return {} as any;
 			},
 		}),
-		setupData(self) {
-			const abilityVariantsIndexes = self.abilityVariantsIndexes.value;
-			const { WEAPON_NAME_TO_VARIANT_INDEX, WEAPON_VARIANT_INDEX_TO_NAME } = CHAMPION_SPECIFICS.Aphelios;
-
-			abilityVariantsIndexes.q ??= WEAPON_NAME_TO_VARIANT_INDEX.calibrum;
-
-			abilityVariantsIndexes.w ??= WEAPON_NAME_TO_VARIANT_INDEX.severum;
-			if (abilityVariantsIndexes.w === abilityVariantsIndexes.q) {
-				abilityVariantsIndexes.w = (abilityVariantsIndexes.q + 1) % WEAPON_VARIANT_INDEX_TO_NAME.length;
-			}
-
-			abilityVariantsIndexes.e ??= WEAPON_NAME_TO_VARIANT_INDEX.gravitum;
-			while (
-				abilityVariantsIndexes.e === abilityVariantsIndexes.q
-				|| abilityVariantsIndexes.e === abilityVariantsIndexes.w
-			) {
-				abilityVariantsIndexes.e = (abilityVariantsIndexes.e + 1) % WEAPON_VARIANT_INDEX_TO_NAME.length;
-			}
-
-			return {
-				_watchHandles: [watch(self.level, () => {
-					self.abilityLevels.value.r = Math.floor((self.level.value - 1) / 5);
-				}, { immediate: true })],
-			};
-		},
 		passive: {
 			variables: defineChampionVariables<'Aphelios', typeof IAphelios, 'passive'>()({
 				known: {
 					AttackDamage: [],
 					AttackSpeed: [],
 					ArPenBonus: [],
+					f1: [],
+					f2: [],
+					f3: [],
+					f4: [],
+					f5: [],
 				},
 				calculate(self) {
+					const { q: qVariant, w: wVariant, e: eVariant } = self.abilityVariantsIndexes.value;
+					const { WEAPON_NAME_TO_STRINGTABLE_INDEX, WEAPON_VARIANT_INDEX_TO_NAME } = CHAMPION_SPECIFICS.Aphelios;
+
+					const f1: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[qVariant]!];
+					const f2: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[wVariant]!];
+					const f3: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[eVariant]!];
+					const f5: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[self.internalData.value.lastRotatedVariantIndex]!];
+
+					const usedIndexes = [qVariant, wVariant, eVariant, self.internalData.value.lastRotatedVariantIndex];
+					const fourthWeaponIndex = WEAPON_VARIANT_INDEX_TO_NAME.map((_, i) => i).find(i => !usedIndexes.includes(i))!;
+					const f4: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[fourthWeaponIndex]!];
+
 					return {
 						AttackDamage: {
 							value: self.stats.value.championPassive.attackDamage,
@@ -177,6 +215,11 @@ export const CHAMPION_SPECIFICS = {
 						ArPenBonus: {
 							value: self.stats.value.championPassive.lethality,
 						},
+						f1: { value: f1 },
+						f2: { value: f2 },
+						f3: { value: f3 },
+						f4: { value: f4 },
+						f5: { value: f5 },
 					};
 				},
 				meta: {
@@ -185,7 +228,7 @@ export const CHAMPION_SPECIFICS = {
 						multiplier: 100,
 					},
 				},
-				uninteresting: ['AttackDamageMax', 'AttackSpeedMax', 'ArPenBonusMax'],
+				uninteresting: ['AttackDamageMax', 'AttackSpeedMax', 'ArPenBonusMax', 'f1', 'f2', 'f3', 'f4', 'f5'],
 			}),
 		},
 		e: {
@@ -2801,7 +2844,7 @@ export interface IChampionInternalDataMap {
 	Ambessa: { hasPassiveStack: number };
 	Amumu: { applyPassive: number };
 	Anivia: { isEgg: number };
-	Aphelios: IDamageSourceInternalDataBase;
+	Aphelios: { lastRotatedVariantIndex: number } & IDamageSourceInternalDataBase;
 	AurelionSol: { passiveStacks: number };
 	Ashe: { frostShot: number };
 	Bard: { passiveStacks: number; chimeMoveSpeed: number };

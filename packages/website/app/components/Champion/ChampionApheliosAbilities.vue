@@ -45,7 +45,7 @@ const weaponNames = computed(() => {
 	};
 });
 
-function switchMainOffhand(event: MouseEvent) {
+function swapMainOffhand(event: MouseEvent) {
 	const abilityVariantsIndexes = props.value.abilityVariantsIndexes.value;
 	abilityVariantsIndexes.q += abilityVariantsIndexes.w;
 	abilityVariantsIndexes.w = abilityVariantsIndexes.q - abilityVariantsIndexes.w;
@@ -55,15 +55,12 @@ function switchMainOffhand(event: MouseEvent) {
 
 function replaceMainWithNext(event: MouseEvent) {
 	const abilityVariantsIndexes = props.value.abilityVariantsIndexes.value;
+	const usedIndexes = [abilityVariantsIndexes.q, abilityVariantsIndexes.w, abilityVariantsIndexes.e, props.value.internalData.value.lastRotatedVariantIndex];
 
+	props.value.internalData.value.lastRotatedVariantIndex = abilityVariantsIndexes.q;
 	abilityVariantsIndexes.q = abilityVariantsIndexes.e;
+	abilityVariantsIndexes.e = WEAPON_VARIANT_INDEX_TO_NAME.map((_, i) => i).find(i => !usedIndexes.includes(i))!;
 
-	let next = (abilityVariantsIndexes.q + 1) % WEAPON_VARIANT_INDEX_TO_NAME.length;
-	while (next === abilityVariantsIndexes.q || next === abilityVariantsIndexes.w) {
-		next = (next + 1) % WEAPON_VARIANT_INDEX_TO_NAME.length;
-	}
-
-	abilityVariantsIndexes.e = next;
 	emit('abilityHover', event, GameAbilityId.build('champion', 'Aphelios', 'e', abilityVariantsIndexes.e));
 }
 </script>
@@ -110,11 +107,11 @@ function replaceMainWithNext(event: MouseEvent) {
 		<h5>W</h5>
 		<h5 v-html="`offhand weapon: ${weaponNames.offhand}`" />
 		<button
-			title="switch with main"
-			@click="switchMainOffhand"
+			title="swap with main"
+			@click="swapMainOffhand"
 			@mouseenter="value.champion.value && $emit('abilityHover', $event, GameAbilityId.build('champion', 'Aphelios', 'e', value.abilityVariantsIndexes.value.w))"
 		>
-			<span>switch with main</span>
+			<span>swap with main</span>
 			<img
 				:src="!isLoading && value.champion.value ? abilityImage((value.champion.value as unknown as IAphelios).abilities.e.variants[value.abilityVariantsIndexes.value.w]!.imageAlt, 'Aphelios') : undefined"
 				:width="abilitySize"
