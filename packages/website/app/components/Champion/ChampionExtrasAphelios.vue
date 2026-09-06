@@ -40,6 +40,7 @@ function resetAbilityLevel(event: MouseEvent, ability: INonPassiveAbilityKey) {
 			:options="Array.from({ length: damageSource.maxAbilityLevels.value[abilityKey] }, (_, index) => ({ level: index + 1 }))"
 			value-key="level"
 			:data-ability-key="abilityKey"
+			:clear-value="0"
 			:style="`--btns-count: ${damageSource.maxAbilityLevels.value[abilityKey]}`"
 			@option-right-click="(event) => resetAbilityLevel(event, abilityKey)"
 		>

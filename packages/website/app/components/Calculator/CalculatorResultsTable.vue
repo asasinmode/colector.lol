@@ -89,7 +89,7 @@ const damageSectionChampionAbilityOptions = computed<IDamageSectionOption[]>(():
 		let abilityEntries = Object.entries(champion.abilities);
 
 		if (championId === 'Aphelios') {
-			abilityEntries = abilityEntries.filter(([abilityKey]) => abilityKey === 'q' || abilityKey === 'r');
+			abilityEntries = abilityEntries.filter(([abilityKey]) => abilityKey !== 'w' && abilityKey !== 'e');
 		}
 
 		return {

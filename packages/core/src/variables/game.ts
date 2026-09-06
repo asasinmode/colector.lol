@@ -316,6 +316,7 @@ export function championAbilityVariableValue(
 		if (variantVariableName === 'Hotkey') {
 			return {
 				value: variantObjectName!.at(-1),
+				isUninteresting: true,
 			};
 		}
 

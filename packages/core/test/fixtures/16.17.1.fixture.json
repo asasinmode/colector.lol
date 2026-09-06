@@ -53,6 +53,138 @@
 				"attackspeedratio": 0.638
 			}
 		},
+		"Aphelios": {
+			"partype": "Mana",
+			"stats": {
+				"hp": 600,
+				"hpperlevel": 102,
+				"mp": 348,
+				"mpperlevel": 42,
+				"movespeed": 325,
+				"armor": 26,
+				"armorperlevel": 4.2,
+				"spellblock": 33,
+				"spellblockperlevel": 1.1,
+				"attackrange": 550,
+				"hpregen": 3.25,
+				"hpregenperlevel": 0.55,
+				"mpregen": 6.5,
+				"mpregenperlevel": 0.4,
+				"crit": 0,
+				"critperlevel": 0,
+				"attackdamage": 55,
+				"attackdamageperlevel": 2.3,
+				"attackspeedperlevel": 2.1,
+				"attackspeed": 0.665,
+				"attackspeedratio": 0.658
+			},
+			"abilities": {
+				"passive": {
+					"maxLevel": 0,
+					"variants": [
+						{
+							"name": "The Hitman and the Seer",
+							"objectName": "ApheliosP",
+							"dataKey": "{267f31a5}",
+							"image": "assets/characters/aphelios/hud/icons2d/apheliosp.png",
+							"mana": [20, 20, 20, 20, 20, 20],
+							"cooldownTime": [2, 2, 2, 2, 2, 2, 2],
+							"tooltip": "Aphelios wields 5 Lunari Weapons made by his sister, Alune. He has access to two at a time: one main-hand and one off-hand. Each weapon has a unique Attack and Ability [@spell.ApheliosCalibrumQ:Hotkey@]. Attacks and Abilities consume a weapon's ammo. When out of ammo, Aphelios discards the weapon and Alune summons the next one. <br><br>Aphelios unlocks his weapon's Ability [@spell.ApheliosCalibrumQ:Hotkey@] at level 2 and his Ultimate at level 6. Instead of powering up his Abilities, Aphelios' rank-ups grant him permanent stats.<br><br><passive>Lunari Weapon Order:</passive><li>{{ Spell_ApheliosP_GunShortDesc_@f1@ }}</li><li>{{ Spell_ApheliosP_GunShortDesc_@f2@ }}</li><font color='#424242'><li>{{ Spell_ApheliosP_GunShortDesc_@f3@ }}</li><li>{{ Spell_ApheliosP_GunShortDesc_@f4@ }}</li><li>{{ Spell_ApheliosP_GunShortDesc_@f5@ }}</li></font>",
+							"tooltipExtended": "Aphelios wields 5 Lunari Weapons made by his sister Alune. He has access to two at a time: one main-hand and one off-hand. Each weapon has a unique Attack and Ability [@spell.ApheliosCalibrumQ:Hotkey@]. Attacks and Abilities consume a weapon's ammo. When out of ammo, Aphelios discards the weapon and Alune summons the next one. <br><br>Aphelios unlocks his weapon's Ability [@spell.ApheliosCalibrumQ:Hotkey@] at level 2 and his Ultimate at level 6. Instead of powering up his Abilities, Aphelios' rank-ups grant him permanent stats:<li>{{ Spell_ApheliosP_Buff_AD }} [@spell.ApheliosCalibrumQ:Hotkey@]: <physicalDamage>@spell.ApheliosP:AttackDamage@ / @AttackDamageMax@</physicalDamage></li><li>{{ Spell_ApheliosP_Buff_AS }} [@spell.ApheliosW:Hotkey@]: <attackSpeed>@spell.ApheliosP:AttackSpeed@ / @AttackSpeedMax@</attackSpeed></li><li>{{ Spell_ApheliosP_Buff_AP }} [@spell.ApheliosE:Hotkey@]: <scaleLethality>@spell.ApheliosP:ArPenBonus@ / @ArPenBonusMax@</scaleLethality></li><br><br><passive>Lunari Weapon Order:</passive><li>{{ Spell_ApheliosP_GunShortDesc_@f1@ }}</li><li>{{ Spell_ApheliosP_GunShortDesc_@f2@ }}</li><font color='#424242'><li>{{ Spell_ApheliosP_GunShortDesc_@f3@ }}</li><li>{{ Spell_ApheliosP_GunShortDesc_@f4@ }}</li><li>{{ Spell_ApheliosP_GunShortDesc_@f5@ }}</li></font>",
+							"dataValues": {
+								"MaxRanksPerStat": [6, 6, 6, 6, 6, 6, 6],
+								"ADPerRank": [4, 4, 4, 4, 4, 4, 4],
+								"ASPerRank": [0.09, 0.09, 0.09, 0.09, 0.09, 0.09, 0.09],
+								"APPerRank": [4.5, 4.5, 4.5, 4.5, 4.5, 4.5, 4.5]
+							},
+							"spellCalculations": {
+								"AttackSpeed": {
+									"mExpandedTooltipCalculationDisplay": 5,
+									"mFormulaParts": [
+										{
+											"mBuffName": "{f6907f1b}",
+											"mDataValue": "ASPerRank",
+											"__type": "BuffCounterByNamedDataValueCalculationPart"
+										}
+									],
+									"mDisplayAsPercent": true
+								},
+								"AttackSpeedMax": {
+									"mExpandedTooltipCalculationDisplay": 5,
+									"mFormulaParts": [
+										{
+											"mPart1": {
+												"mDataValue": "MaxRanksPerStat",
+												"__type": "NamedDataValueCalculationPart"
+											},
+											"mPart2": {
+												"mDataValue": "ASPerRank",
+												"__type": "NamedDataValueCalculationPart"
+											},
+											"__type": "ProductOfSubPartsCalculationPart"
+										}
+									],
+									"mDisplayAsPercent": true
+								},
+								"AttackDamage": {
+									"mExpandedTooltipCalculationDisplay": 5,
+									"mFormulaParts": [
+										{
+											"mBuffName": "{eb906dca}",
+											"mDataValue": "ADPerRank",
+											"__type": "BuffCounterByNamedDataValueCalculationPart"
+										}
+									]
+								},
+								"AttackDamageMax": {
+									"mExpandedTooltipCalculationDisplay": 5,
+									"mFormulaParts": [
+										{
+											"mPart1": {
+												"mDataValue": "MaxRanksPerStat",
+												"__type": "NamedDataValueCalculationPart"
+											},
+											"mPart2": {
+												"mDataValue": "ADPerRank",
+												"__type": "NamedDataValueCalculationPart"
+											},
+											"__type": "ProductOfSubPartsCalculationPart"
+										}
+									]
+								},
+								"ArPenBonus": {
+									"mExpandedTooltipCalculationDisplay": 5,
+									"mFormulaParts": [
+										{
+											"mBuffName": "{f79080ae}",
+											"mDataValue": "APPerRank",
+											"__type": "BuffCounterByNamedDataValueCalculationPart"
+										}
+									],
+									"mPrecision": -1
+								},
+								"ArPenBonusMax": {
+									"mExpandedTooltipCalculationDisplay": 5,
+									"mFormulaParts": [
+										{
+											"mPart1": {
+												"mDataValue": "MaxRanksPerStat",
+												"__type": "NamedDataValueCalculationPart"
+											},
+											"mPart2": {
+												"mDataValue": "APPerRank",
+												"__type": "NamedDataValueCalculationPart"
+											},
+											"__type": "ProductOfSubPartsCalculationPart"
+										}
+									]
+								}
+							}
+						}
+					]
+				}
+			}
+		},
 		"Darius": {
 			"partype": "Mana",
 			"stats": {

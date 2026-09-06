@@ -13,6 +13,8 @@ test.before(() => {
 	setupPatchFixture(fixture);
 });
 
+const infernalStacks: IDragonName[] = ['Infernal', 'Infernal', 'Infernal', 'Infernal'];
+
 test('16.17 adaptive force', async (t) => {
 	const sourceCommon: IOverrides<'Amumu'> = {
 		internalData: { applyPassive: 0 },
@@ -329,6 +331,23 @@ test('16.17 adaptive force', async (t) => {
 			abilityPower: 38,
 		}, damageSource);
 	});
+
+	await t.test('aphelios', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Aphelios', {
+			...sourceCommon,
+			items: [ITEMS_BY_NAME.ampTome],
+			level: 18,
+			abilityLevels: { q: 6 },
+		});
+
+		typedPartialDeepStrictEqual(damageSource.stats.value.meta, {
+			adaptiveForceStat: 'abilityPower',
+		}, damageSource);
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 118,
+			abilityPower: 38,
+		}, damageSource);
+	});
 });
 
 test('16.17 Jhin', async (t) => {
@@ -344,7 +363,6 @@ test('16.17 Jhin', async (t) => {
 		items: [],
 	};
 	const vanillaBuildItems: IItem[] = [ITEMS_BY_NAME.infinityEdge, ITEMS_BY_NAME.ldr, ITEMS_BY_NAME.phantomDancer, ITEMS_BY_NAME.hubris];
-	const dragonStacks: IDragonName[] = ['Infernal', 'Infernal', 'Infernal', 'Infernal'];
 
 	await t.test('base', async () => {
 		const damageSource = await setupDamageSource(fixture, 'Jhin', sourceCommon);
@@ -411,7 +429,7 @@ test('16.17 Jhin', async (t) => {
 			const damageSource = await setupDamageSource(fixture, 'Jhin', {
 				...sourceCommon,
 				items,
-				dragonStacks,
+				dragonStacks: infernalStacks,
 				currentHealth: 1050,
 			});
 
@@ -424,7 +442,7 @@ test('16.17 Jhin', async (t) => {
 			const damageSource = await setupDamageSource(fixture, 'Jhin', {
 				...sourceCommon,
 				items,
-				dragonStacks,
+				dragonStacks: infernalStacks,
 				roleQuest: 'mid',
 				currentHealth: 1060,
 			});
@@ -450,7 +468,7 @@ test('16.17 Jhin', async (t) => {
 			const damageSource = await setupDamageSource(fixture, 'Jhin', {
 				...sourceCommon,
 				items: vanillaBuildItems,
-				dragonStacks,
+				dragonStacks: infernalStacks,
 			});
 
 			typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
@@ -462,7 +480,7 @@ test('16.17 Jhin', async (t) => {
 			const damageSource = await setupDamageSource(fixture, 'Jhin', {
 				...sourceCommon,
 				items: vanillaBuildItems,
-				dragonStacks,
+				dragonStacks: infernalStacks,
 				roleQuest: 'mid',
 			});
 
@@ -476,7 +494,7 @@ test('16.17 Jhin', async (t) => {
 				...sourceCommon,
 				internalData: { isPassiveMSActive: 1 },
 				items: vanillaBuildItems.concat([ITEMS_BY_NAME.swiftmarch]),
-				dragonStacks,
+				dragonStacks: infernalStacks,
 				roleQuest: 'mid',
 			});
 
@@ -533,7 +551,7 @@ test('16.17 Senna', async (t) => {
 		const damageSource = await setupDamageSource(fixture, 'Senna', {
 			...sourceCommon,
 			items,
-			dragonStacks: ['Infernal', 'Infernal', 'Infernal', 'Infernal'],
+			dragonStacks: infernalStacks,
 		});
 
 		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
@@ -545,7 +563,7 @@ test('16.17 Senna', async (t) => {
 		const damageSource = await setupDamageSource(fixture, 'Senna', {
 			...sourceCommon,
 			items,
-			dragonStacks: ['Infernal', 'Infernal', 'Infernal', 'Infernal'],
+			dragonStacks: infernalStacks,
 			roleQuest: 'mid',
 		});
 
@@ -558,7 +576,7 @@ test('16.17 Senna', async (t) => {
 		const damageSource = await setupDamageSource(fixture, 'Senna', {
 			...sourceCommon,
 			items: items.concat([ITEMS_BY_NAME.overlordsBloodmail]),
-			dragonStacks: ['Infernal', 'Infernal', 'Infernal', 'Infernal'],
+			dragonStacks: infernalStacks,
 			roleQuest: 'mid',
 			currentHealth: 502,
 		});
@@ -615,7 +633,7 @@ test('16.17 Pyke', async (t) => {
 	await t.test('" | 4 infernals', async () => {
 		const damageSource = await setupDamageSource(fixture, 'Pyke', {
 			...sourceCommon,
-			dragonStacks: ['Infernal', 'Infernal', 'Infernal', 'Infernal'],
+			dragonStacks: infernalStacks,
 			currentHealth: 200,
 		});
 
@@ -630,7 +648,7 @@ test('16.17 Pyke', async (t) => {
 	await t.test('" | 4 infernals | mid quest', async () => {
 		const damageSource = await setupDamageSource(fixture, 'Pyke', {
 			...sourceCommon,
-			dragonStacks: ['Infernal', 'Infernal', 'Infernal', 'Infernal'],
+			dragonStacks: infernalStacks,
 			roleQuest: 'mid',
 			currentHealth: 175,
 		});
@@ -644,7 +662,48 @@ test('16.17 Pyke', async (t) => {
 	});
 });
 
-// aphelios
+test('16.17 Aphelios', async (t) => {
+	const sourceCommon: IOverrides<'Aphelios'> = {
+		runes: {
+			shards: {
+				offensive: 'adaptive',
+				flex: 'adaptive',
+				defensive: 'health',
+			},
+		},
+		abilityLevels: {
+			q: 6,
+			w: 6,
+			e: 6,
+		},
+	};
+
+	await t.test('base', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Aphelios', sourceCommon);
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 129,
+			lethality: 27,
+			attackSpeed: 1.26,
+		}, damageSource);
+	});
+
+	await t.test('bloodmail+, endless hunger | 4 infernals | mid quest', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Aphelios', {
+			...sourceCommon,
+			items: [ITEMS_BY_NAME.overlordsBloodmail, ITEMS_BY_NAME.endlessHunger],
+			dragonStacks: infernalStacks,
+			roleQuest: 'mid',
+			currentHealth: 732,
+		});
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 311,
+			abilityHaste: 27,
+		}, damageSource);
+	});
+});
+
 // rengar
 // varus
 // yasuo, yone
