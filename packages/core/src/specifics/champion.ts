@@ -221,7 +221,7 @@ export const CHAMPION_SPECIFICS = {
 					f1: [1, 2, 3, 4, 5],
 					f3: [1, 2, 3],
 					f5: [0, 1, 2, 3, 5],
-					/* array of 12, 13, ..., 21, 23, ..., 53, 53 - no 2 repeated numbers like 11, 22 */
+					/* array of 12, 13, ..., 21, 23, ..., 53, 54 - no 2 repeated numbers like 11, 22 */
 					f7: Array.from({ length: 5 }, (_, i) => i + 1).flatMap(i => Array.from({ length: 5 }, (_, j) => i === (j + 1) ? undefined : `${i}${j + 1}`).filter(Boolean)) as string[],
 				},
 				calculate(self) {
@@ -253,13 +253,30 @@ export const CHAMPION_SPECIFICS = {
 					const { q: qVariant } = self.abilityVariantsIndexes.value;
 					const { WEAPON_NAME_TO_STRINGTABLE_INDEX, WEAPON_VARIANT_INDEX_TO_NAME } = CHAMPION_SPECIFICS.Aphelios;
 
-					const f3: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[qVariant]!];
+					const qVariantIndex: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[qVariant]!];
 
 					return {
-						f1: { value: f3 },
+						f1: { value: qVariantIndex },
 						/* as of 26.17 doesn't seem like it's supposed to come from anywhere, is expected to be `spell_apheliose_1` which itself points to something using @f3@ */
 						f2: { value: 1 },
-						f3: { value: f3 },
+						f3: { value: qVariantIndex },
+					};
+				},
+			}),
+		},
+		r: {
+			variables: defineChampionVariables<'Aphelios', typeof IAphelios, 'r'>()({
+				known: {
+					f1: [1, 2, 3, 4, 5],
+				},
+				calculate(self) {
+					const { q: qVariant } = self.abilityVariantsIndexes.value;
+					const { WEAPON_NAME_TO_STRINGTABLE_INDEX, WEAPON_VARIANT_INDEX_TO_NAME } = CHAMPION_SPECIFICS.Aphelios;
+
+					const qVariantIndex: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[qVariant]!];
+
+					return {
+						f1: { value: qVariantIndex },
 					};
 				},
 			}),
