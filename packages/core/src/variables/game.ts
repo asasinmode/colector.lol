@@ -1306,9 +1306,13 @@ export const VARIABLE_CALCULATION_FNS = {
 	},
 	/** calculates the value between `mStartValue` and `mEndValue` based on damage source's level. Formula taken from [Protoplasm Harness' wiki](https://wiki.leagueoflegends.com/en-us/Protoplasm_Harness) */
 	ByCharLevelInterpolationCalculationPart(variable: IGameVariablesByType['ByCharLevelInterpolationCalculationPart'], _whole, meta) {
-		const { mStartValue = 0, mEndValue } = variable;
+		const { mStartValue = 0, mEndValue, mScalePastDefaultMaxLevel = true } = variable;
+		let level = meta.variableValueParams.damageSource?.level.value ?? 1;
+		if (!mScalePastDefaultMaxLevel) {
+			level = Math.min(CHAMPION_LEVEL.max, level);
+		}
 		return {
-			value: mStartValue + (mEndValue - mStartValue) / (CHAMPION_LEVEL.max - 1) * ((meta.variableValueParams.damageSource?.level.value ?? 1) - 1),
+			value: mStartValue + (mEndValue - mStartValue) / (CHAMPION_LEVEL.max - 1) * (level - 1),
 			calculatesFrom: [{
 				stat: 'level',
 				value: {
@@ -1655,6 +1659,7 @@ interface IGameVariablesByType {
 	'ByCharLevelInterpolationCalculationPart': {
 		mStartValue: number;
 		mEndValue: number;
+		mScalePastDefaultMaxLevel?: boolean;
 		__type: string;
 	};
 	/** hashed `ByCharLevelInterpolationCalculationPart` */
