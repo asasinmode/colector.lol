@@ -159,6 +159,35 @@ export const CHAMPION_SPECIFICS = {
 				}, { immediate: true })],
 			};
 		},
+		passive: {
+			variables: defineChampionVariables<'Aphelios', typeof IAphelios, 'passive'>()({
+				known: {
+					AttackDamage: [],
+					AttackSpeed: [],
+					ArPenBonus: [],
+				},
+				calculate(self) {
+					return {
+						AttackDamage: {
+							value: self.stats.value.championPassive.attackDamage,
+						},
+						AttackSpeed: {
+							value: self.stats.value.championPassive.bonusAttackSpeedPercent,
+						},
+						ArPenBonus: {
+							value: self.stats.value.championPassive.lethality,
+						},
+					};
+				},
+				meta: {
+					AttackSpeed: {
+						isPercentage: true,
+						multiplier: 100,
+					},
+				},
+				uninteresting: ['AttackDamageMax', 'AttackSpeedMax', 'ArPenBonusMax'],
+			}),
+		},
 		e: {
 			variables: defineChampionVariables<'Aphelios', typeof IAphelios, 'e'>()({
 				known: {
