@@ -26,37 +26,30 @@ const discrepancyBloodmailRetribution = useSimpleDescription(`<scalead>%i:${STAT
 
 		<h2>what is it?</h2>
 		<p>
-			<strong>lolcalc</strong> is intended to be a fully fledged, all-included <a href="https://www.leagueoflegends.com/" target="_blank">League of Legends</a> damage calculator (WIP at the moment). You should be able to choose any champion/item/rune combination and see the same* numbers you will find in game. See the "<a href="#does-it-work">does it work?</a>" section for examples.
+			<strong>lolcalc</strong> is intended to be a fully fledged, all-included <a href="https://www.leagueoflegends.com/" target="_blank">League of Legends</a> damage calculator (WIP). The goal is to show the same numbers the game does for any champion/item/rune/buff/debuff combination.
 		</p>
-		<p>*with known discrepancies being</p>
-		<ul>
-			<li class="game-description" v-html="discrepancyMaxHealthMana" />
-			<!-- 	max <img v-bind="gameIconImgAttrs(STAT_ICON.hp)">health and <img v-bind="gameIconImgAttrs(STAT_ICON.mana)">mana/ability resource have a margin of error of <strong>1</strong>. Most of the differences should be coming from floating point arithmetic and the in game ui rounding the displayed value up. This means that the game displays something like <span class="code-like">2773.0000001</span> as <span class="code-like">2774</span>, even though it's effectively <span class="code-like">2773</span> (<a href="#TODO">example config</a>) -->
-			<!-- </li> -->
-			<li class="game-description" v-html="discrepancyAttackRangeRfc" />
-			<!-- 	<img v-bind="gameIconImgAttrs(STAT_ICON.attackRange)">attack range with <a href="https://wiki.leagueoflegends.com/en-us/Rapid_Firecannon" target="_blank"><img v-bind="rfcImg" alt="Rapid Firecannon icon">Rapid Firecannon's</a> passive active has a margin of error of <strong>1</strong>. I don't know why (<a href="#TODO">config with chogath with R 6 stacks/rakan from test</a>) -->
-			<!-- </li> -->
-			<li class="game-description" v-html="discrepancyBloodmailRetribution" />
-		</ul>
 
 		<h2 id="does-it-work">
 			does it work?
 		</h2>
 		<p>
-			while it's impossible for me to check all 172+ champions with every item/rune/dragon/quest/buff/debuff combination, I tried my best to make it work and <NuxtLink to="/guide#guide-examples">
-				here are some examples
-			</NuxtLink> of it working. If you encounter a configuration that's not correctly calculated, please <button class="link-like" @click="reportAnIssue">
-				report it
-			</button>
+			while it's impossible for me to check all 172+ champions with every item/rune/dragon/quest/buff/debuff combination, I tried my best to make it work and <NuxtLink to="/guide#guide-examples"> here are some examples of it </NuxtLink>. If you encounter a configuration that's not calculated correctly (<a href="#known-discrepancies">known discrepancies</a>), please <button class="link-like" @click="reportAnIssue">report it</button>
 		</p>
 		<p class="alert info">
-			for now only champions <strong>passive</strong> abilities (not QWER), items, and rune shards (not paths) calculate properly
+			for now only champion <u>passives</u> (not QWER), items, and rune <u>shards</u> (not paths) calculate properly
 			<Icon class="i-ph:info" />
 		</p>
 		<p>
-			non-passive abilities (like <a href="https://wiki.leagueoflegends.com/en-us/Ambessa#Public_Execution" target="_blank"><img v-bind="ambessaRImg" alt="Ambessa R icon">Ambessa R passive</a> or <a href="https://wiki.leagueoflegends.com/en-us/Nocturne#Shroud_of_Darkness" target="_blank"><img v-bind="nocturneWImg" alt="Nocturne W icon">Nocturne W passive</a>) and <a href="https://wiki.leagueoflegends.com/en-us/Rune#Rune_paths" target="_blank">rune paths</a> <strong>are not implemented</strong> <i>(yet)</i> in the calculations. See the <NuxtLink to="/guide#test-setup">champion/item/rune setup</NuxtLink> recommended for verifying the calculations yourself
+			non-passive abilities (like <a href="https://wiki.leagueoflegends.com/en-us/Ambessa#Public_Execution" target="_blank"><img v-bind="ambessaRImg" alt="Ambessa R icon">Ambessa R passive</a> or <a href="https://wiki.leagueoflegends.com/en-us/Nocturne#Shroud_of_Darkness" target="_blank"><img v-bind="nocturneWImg" alt="Nocturne W icon">Nocturne W passive</a>) and <a href="https://wiki.leagueoflegends.com/en-us/Rune#Rune_paths" target="_blank">rune paths</a> <span class="error-margin">are not implemented</span> <i>(yet)</i>. See the <NuxtLink to="/guide#test-setup">champion/item/rune setup</NuxtLink> recommended for verifying the calculations yourself
 		</p>
-		<p>for when these and other features will be implemented, see the <a href="#TODO">roadmap</a></p>
+		<p>for when these and other features will be implemented, check <a href="#TODO">the roadmap</a></p>
+
+		<h2 id="known-discrepancies">currently known calculation discrepancies</h2>
+		<ul>
+			<li class="game-description" v-html="discrepancyMaxHealthMana" />
+			<li class="game-description" v-html="discrepancyAttackRangeRfc" />
+			<li class="game-description" v-html="discrepancyBloodmailRetribution" />
+		</ul>
 
 		<h2 id="support">support</h2>
 		<p>TODO</p>
@@ -67,12 +60,16 @@ const discrepancyBloodmailRetribution = useSimpleDescription(`<scalead>%i:${STAT
 		<p>Thanks to all of my friends who helped me test both the website and the various champion configurations in game.</p>
 		<p>Thanks to Riot Games for not chronobreaking this project 🤞</p>
 
-		<h2>
-			q&a
-		</h2>
+		<h2>misc</h2>
 		<dl>
+			<dt>alpha/beta/release versions</dt>
+			<dd>
+				The current <strong>alpha</strong> version will end when the <strong>stats</strong> of all champions and their <u>passives</u> (not QWER) are calculated properly with any items/rune shards/dragons/role quests and their effects combination. For more details, check <a href="#TODO">the roadmap</a>
+			</dd>
 			<dt>ads and paywalling</dt>
-			<dd>I will try my best to keep the calculator and all of its features free (+ it's <a href="https://github.com/asasinmode/lolcalc" target="_blank">open source</a>). That said, hosting costs money and maintaining it takes a lot of my time and effort. Please consider <a href="#support">supporting the project</a></dd>
+			<dd>
+				I will try my best to keep the calculator and all of its features free (+ it's <a href="https://github.com/asasinmode/lolcalc" target="_blank">open source</a>). That said, hosting costs money and maintaining it takes a lot of my time and effort. Please consider <a href="#support">supporting the project</a>
+			</dd>
 		</dl>
 	</main>
 </template>

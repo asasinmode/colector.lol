@@ -234,6 +234,7 @@ lightningcss getting mad at unocss @property inside of a layer should be resolve
 
 ### future features
 
+- [ ] formatting wiki style? `{{sti|ad}}` and such
 - [ ] kind of data driven champion/item components? Parse specifics in util, based on that create components, overrides with dynamic `import()` to stay compatible with node
 - [ ] graph results in style of post game ones, table data but graph?
 - [ ] detect invalid ability levels
