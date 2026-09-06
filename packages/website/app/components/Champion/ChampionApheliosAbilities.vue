@@ -55,11 +55,12 @@ function swapMainOffhand(event: MouseEvent) {
 
 function replaceMainWithNext(event: MouseEvent) {
 	const abilityVariantsIndexes = props.value.abilityVariantsIndexes.value;
-	const usedIndexes = [abilityVariantsIndexes.q, abilityVariantsIndexes.w, abilityVariantsIndexes.e, props.value.internalData.value.lastRotatedVariantIndex];
+
+	const newE = 4 ^ abilityVariantsIndexes.q ^ abilityVariantsIndexes.w ^ abilityVariantsIndexes.e ^ props.value.internalData.value.lastRotatedVariantIndex;
 
 	props.value.internalData.value.lastRotatedVariantIndex = abilityVariantsIndexes.q;
 	abilityVariantsIndexes.q = abilityVariantsIndexes.e;
-	abilityVariantsIndexes.e = WEAPON_VARIANT_INDEX_TO_NAME.map((_, i) => i).find(i => !usedIndexes.includes(i))!;
+	abilityVariantsIndexes.e = newE;
 
 	emit('abilityHover', event, GameAbilityId.build('champion', 'Aphelios', 'e', abilityVariantsIndexes.e));
 }

@@ -201,8 +201,7 @@ export const CHAMPION_SPECIFICS = {
 					const f3: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[eVariant]!];
 					const f5: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[self.internalData.value.lastRotatedVariantIndex]!];
 
-					const usedIndexes = [qVariant, wVariant, eVariant, self.internalData.value.lastRotatedVariantIndex];
-					const fourthWeaponIndex = WEAPON_VARIANT_INDEX_TO_NAME.map((_, i) => i).find(i => !usedIndexes.includes(i))!;
+					const fourthWeaponIndex = 4 ^ qVariant ^ wVariant ^ eVariant ^ self.internalData.value.lastRotatedVariantIndex;
 					const f4: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[fourthWeaponIndex]!];
 
 					return {
