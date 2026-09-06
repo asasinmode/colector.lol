@@ -219,14 +219,26 @@ export const CHAMPION_SPECIFICS = {
 			variables: defineChampionVariables<'Aphelios', typeof IAphelios, 'q'>()({
 				known: {
 					f1: [1, 2, 3, 4, 5],
-					f3: [],
-					f5: [],
+					f3: [1, 2, 3],
+					f5: [0, 1, 2, 3, 5],
 					/* array of 12, 13, ..., 21, 23, ..., 53, 53 - no 2 repeated numbers like 11, 22 */
 					f7: Array.from({ length: 5 }, (_, i) => i + 1).flatMap(i => Array.from({ length: 5 }, (_, j) => i === (j + 1) ? undefined : `${i}${j + 1}`).filter(Boolean)) as string[],
 				},
-				calculate() {
-				/* these are used only for stringtable values and specific ability variables override them appropriately */
-					return {} as any;
+				calculate(self) {
+					const { q: qVariant, w: wVariant } = self.abilityVariantsIndexes.value;
+					const { WEAPON_NAME_TO_STRINGTABLE_INDEX, WEAPON_VARIANT_INDEX_TO_NAME } = CHAMPION_SPECIFICS.Aphelios;
+
+					const offhandWeaponIndex: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[wVariant]!];
+					const mainWeaponIndex: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[qVariant]!];
+
+					return {
+						f1: { value: mainWeaponIndex },
+						f3: { value: mainWeaponIndex },
+						f5: { value: offhandWeaponIndex },
+						f7: {
+							value: `${mainWeaponIndex}${offhandWeaponIndex}`,
+						},
+					};
 				},
 			}),
 		},
