@@ -9,9 +9,9 @@ const { reportAnIssue } = useReportIssueDialog();
 const ambessaRImg = await gameAbilityImgAttrs(GameAbilityId.build(AbilityType.champion, 'Ambessa', 'r', 0));
 const nocturneWImg = await gameAbilityImgAttrs(GameAbilityId.build(AbilityType.champion, 'Nocturne', 'w', 0));
 
-const discrepancyMaxHealthMana = useSimpleDescription(`max <scalehealth>%i:${STAT_ICON.hp}%health</scalehealth> and <scalemana>%i:${STAT_ICON.mana}%mana</scalemana>/<scaleenergy>ability resource</scaleenergy> have a margin of error of <strong>1</strong>. Most of the differences should be coming from floating point arithmetic and the in game ui rounding the displayed value up. This means that the game displays something like <span class="code-like">2773.0000001</span> as <span class="code-like">2774</span>, even though it's effectively <span class="code-like">2773</span> ([example config](#TODO))`);
-const discrepancyAttackRangeRfc = useSimpleDescription(`%i:${STAT_ICON.attackRange}%attack range with [${simpleFormattingGameAbilityImage('item', ITEM_NAME_TO_ID.rfc)} Rapid Firecannon's](https://wiki.leagueoflegends.com/en-us/Rapid_Firecannon) passive active has a margin of error of <strong>1</strong>. I don't know why ([config with chogath with R 6 stacks/rakan from test](#TODO))`);
-const discrepancyBloodmailRetribution = useSimpleDescription(`<scalead>%i:${STAT_ICON.attackDamage}%attack damage</scalead> with [${simpleFormattingGameAbilityImage('item', ITEM_NAME_TO_ID.overlordsBloodmail)} Overlord's Bloodmail's](https://wiki.leagueoflegends.com/en-us/Overlord's_Bloodmail) [Retribution](https://wiki.leagueoflegends.com/en-us/Named_item_effect#Retribution) passive might be difficult to exactly verify with the game, as the game calculates it &quot;on top&quot; of other stat calculations (as if it was an external effect). For example, if in game you see a champion with <scalehealth>300 %i:${STAT_ICON.hp}%hp</scalehealth>, in that exact moment you are looking at their stats, their displayed <scalead>AD</scalead> might be lagging behind and showing the value for <scalehealth>299 %i:${STAT_ICON.hp}%hp</scalehealth> that was just there, before it regenerated. Because of this, when [Retribution](https://wiki.leagueoflegends.com/en-us/Named_item_effect#Retribution) is being calculated, <scalead>%i:${STAT_ICON.attackDamage}%attack damage's</scalead> margin of error is <strong>1</strong> within <strong>+/-5</strong> <scalehealth>%i:${STAT_ICON.hp}%current health</scalehealth> (try changing the current health in <strong>lolcalc</strong> by +/-5 and see if AD is correct)`);
+const discrepancyMaxHealthMana = useSimpleDescription(`max <scalehealth>%i:${STAT_ICON.hp}%health</scalehealth> and <scalemana>%i:${STAT_ICON.mana}%mana</scalemana>/<scaleenergy>ability resource</scaleenergy> have a <span class="error-margin">margin of error of <strong>1</strong></span>. Most of the differences should be coming from floating point arithmetic and the in game ui rounding the displayed <scalehealth>hp</scalehealth> up and <scalemana>mana</scalemana> down. This means that the game displays something like <span class="code-like">2773.0000001</span> as <span class="code-like">2774</span>, even though it's effectively <span class="code-like">2773</span> ([example config](#TODO))`);
+const discrepancyAttackRangeRfc = useSimpleDescription(`%i:${STAT_ICON.attackRange}%attack range with [${simpleFormattingGameAbilityImage('item', ITEM_NAME_TO_ID.rfc)}Rapid Firecannon's](https://wiki.leagueoflegends.com/en-us/Rapid_Firecannon) passive active has a <span class="error-margin">margin of error of <strong>1</strong></span>. I don't know why ([config with chogath with R 6 stacks/rakan from test](#TODO))`);
+const discrepancyBloodmailRetribution = useSimpleDescription(`<scalead>%i:${STAT_ICON.attackDamage}%attack damage</scalead> with [${simpleFormattingGameAbilityImage('item', ITEM_NAME_TO_ID.overlordsBloodmail)}Overlord's Bloodmail's](https://wiki.leagueoflegends.com/en-us/Overlord's_Bloodmail) [Retribution](https://wiki.leagueoflegends.com/en-us/Named_item_effect#Retribution) passive might be difficult to exactly verify with the game, as the game calculates it &quot;on top&quot; of other stat calculations (as if it was an external effect). For example, if in game you see a champion with <scalehealth>300 %i:${STAT_ICON.hp}%hp</scalehealth>, in that exact moment you are looking at their stats, their displayed <scalead>ad</scalead> might be lagging behind and showing the value for <scalehealth>299 %i:${STAT_ICON.hp}%hp</scalehealth> that was just there, before it regenerated. Because of this, when [Retribution](https://wiki.leagueoflegends.com/en-us/Named_item_effect#Retribution) is being calculated, <scalead>%i:${STAT_ICON.attackDamage}%attack damage's</scalead> <span class="error-margin">margin of error is <strong>1</strong> within <strong>+/-5</strong></span> <scalehealth>%i:${STAT_ICON.hp}%current health</scalehealth> (check if <scalead>ad</scalead> is correct within +/-5 <scalehealth>hp</scalehealth>)`);
 </script>
 
 <template>
@@ -19,7 +19,7 @@ const discrepancyBloodmailRetribution = useSimpleDescription(`<scalead>%i:${STAT
 		<h1>about</h1>
 
 		<p>
-			For instructions on how to use it, visit the <NuxtLink to="/guide">
+			For instructions on how to use it, check the <NuxtLink to="/guide">
 				guide page
 			</NuxtLink>
 		</p>
@@ -43,7 +43,7 @@ const discrepancyBloodmailRetribution = useSimpleDescription(`<scalead>%i:${STAT
 			does it work?
 		</h2>
 		<p>
-			while it's impossible for me to check all 172+ champions with every item combination, I tried my best to make it work and <NuxtLink to="/guide#guide-examples">
+			while it's impossible for me to check all 172+ champions with every item/rune/dragon/quest/buff/debuff combination, I tried my best to make it work and <NuxtLink to="/guide#guide-examples">
 				here are some examples
 			</NuxtLink> of it working. If you encounter a configuration that's not correctly calculated, please <button class="link-like" @click="reportAnIssue">
 				report it
@@ -94,6 +94,10 @@ const discrepancyBloodmailRetribution = useSimpleDescription(`<scalead>%i:${STAT
 			&:hover {
 				--at-apply: 'underline';
 			}
+		}
+
+		.error-margin {
+			--at-apply: 'underline decoration-2 decoration-red-600';
 		}
 
 		img {
