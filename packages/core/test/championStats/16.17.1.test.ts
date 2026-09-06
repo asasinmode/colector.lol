@@ -611,6 +611,37 @@ test('16.17 Pyke', async (t) => {
 		}, damageSource);
 		assert.strictEqual(damageSource.maxHealth.value, 670);
 	});
+
+	await t.test('" | 4 infernals', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Pyke', {
+			...sourceCommon,
+			dragonStacks: ['Infernal', 'Infernal', 'Infernal', 'Infernal'],
+			currentHealth: 200,
+		});
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 384,
+			abilityPower: 78,
+			abilityHaste: 92,
+		}, damageSource);
+		assert.strictEqual(damageSource.maxHealth.value, 670);
+	});
+
+	await t.test('" | 4 infernals | mid quest', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Pyke', {
+			...sourceCommon,
+			dragonStacks: ['Infernal', 'Infernal', 'Infernal', 'Infernal'],
+			roleQuest: 'mid',
+			currentHealth: 175,
+		});
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 409,
+			abilityPower: 84,
+			abilityHaste: 95,
+		}, damageSource);
+		assert.strictEqual(damageSource.maxHealth.value, 670);
+	});
 });
 
 // aphelios
