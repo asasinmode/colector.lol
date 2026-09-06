@@ -339,6 +339,7 @@
 		}
 	},
 	"stringtable": {
+		"spell_tahmkenchpassive_name": "An Acquired Taste",
 		"spell_tahmkenchq_name": "Tongue Lash",
 		"spell_listtype_basedamage": "Base Damage",
 		"spell_listtype_healing": "Healing",
@@ -347,8 +348,8 @@
 		"spell_tahmkenchw_levelupcooldownrefund": "Cooldown Refund",
 		"spell_tahmkenche_levelupthickskinratio": "% Damage to Thick Skin",
 		"spell_tahmkenche_levelupthickskinratioenhanced": "% Damage to Thick Skin Enhanced",
+		"spell_tahmkenchw_name": "Abyssal Dive",
 		"spell_listtype_shield": "Shield Amount",
-		"spell_listtype_cooldown": "Cooldown",
-		"spell_tahmkenchpassive_name": "An Acquired Taste"
+		"spell_listtype_cooldown": "Cooldown"
 	}
 }

@@ -445,10 +445,10 @@
 	"stringtable": {
 		"reminder_invisibility": "<keywordStealth>Invisible</keywordStealth> units cannot be revealed except by turrets or <font color='#ee91d7'>True Sight</font color>.",
 		"spell_listtype_damage": "Damage",
+		"spell_qiyanaqv2_name": "Elemental Wrath / Edge of Ixtal",
 		"spell_listtype_onhitdamage": "On-Hit Damage",
 		"spell_listtype_movementspeed": "Move Speed",
 		"spell_listtype_statbonusattackspeed": "Bonus Attack Speed",
-		"spell_qiyanaqv2_name": "Elemental Wrath / Edge of Ixtal",
 		"spell_listtype_basedamage": "Base Damage",
 		"spell_listtype_manacost": "Mana Cost",
 		"spell_listtype_initialdamage": "Initial Damage",

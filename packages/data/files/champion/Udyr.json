@@ -862,6 +862,7 @@
 		}
 	},
 	"stringtable": {
+		"item_keyword_onhit": "%i:OnHit% <OnHit>On-Hit</OnHit>",
 		"spell_listtype_attackspeed": "Attack Speed",
 		"spell_listtype_percentmaxhealthdamage": "% Max Health Damage",
 		"spell_listtype_onhitdamage": "On-Hit Damage",

@@ -243,7 +243,6 @@
 					"dataValues": {
 						"BonusHealth": [150, 300, 450, 600, 750, 900, 1050],
 						"AttackRangeIncrease": [50, 50, 50, 50, 50, 50, 50],
-						"AOEDamagePercent": [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08],
 						"TickRate": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
 						"InitialResistGain": [25, 40, 55, 70, 85, 100, 115],
 						"MaxDamageCap": [240, 240, 240, 240, 240, 240, 240],
@@ -251,7 +250,11 @@
 						"QCDR": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
 						"SizeIncreasePercent": [0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55],
 						"BaseAoERadius": [376, 376, 376, 376, 376, 376, 376],
-						"MinAoERadius": [400, 400, 400, 400, 400, 400, 400]
+						"MinAoERadius": [400, 400, 400, 400, 400, 400, 400],
+						"AoeDamagePercent": [0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08],
+						"__renamedVariables": {
+							"AOEDamagePercent": "AoeDamagePercent"
+						}
 					},
 					"spellCalculations": {
 						"DamageCalc": {

@@ -290,6 +290,8 @@
 		"spell_listtype_movementspeed": "Move Speed",
 		"spell_listtype_attackspeed": "Attack Speed",
 		"spell_listtype_slow": "Slow",
+		"spell_dravenrcast_name": "Whirling Death",
+		"spell_dravenpassive_name": "League of Draven",
 		"spell_listtype_bonusadratio": "Bonus AD Ratio"
 	}
 }

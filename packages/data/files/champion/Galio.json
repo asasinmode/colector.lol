@@ -147,10 +147,14 @@
 						"MaxChargeDuration": [2, 2, 2, 2, 2, 2, 2],
 						"SelfSlowPercent": [15, 15, 15, 15, 15, 15, 15],
 						"CCDurationMin": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
-						"HpRatio": [0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001],
 						"CCDurationMax": [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
 						"DRLingerDuration": [2, 2, 2, 2, 2, 2, 2],
-						"ApRatio": [0.0004, 0.0004, 0.0004, 0.0004, 0.0004, 0.0004, 0.0004]
+						"HPRatio": [0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001],
+						"__renamedVariables": {
+							"HpRatio": "HPRatio",
+							"ApRatio": "APRatio"
+						},
+						"APRatio": [0.0004, 0.0004, 0.0004, 0.0004, 0.0004, 0.0004, 0.0004]
 					},
 					"spellCalculations": {
 						"TotalPassiveShield": {

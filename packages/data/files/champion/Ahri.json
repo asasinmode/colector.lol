@@ -201,9 +201,12 @@
 						"RRecastWindow": [15, 15, 15, 15, 15, 15, 15],
 						"RAcquisitionRange": [600, 600, 600, 600, 600, 600, 600],
 						"RDashCooldown": [1, 1, 1, 1, 1, 1, 1],
-						"RAPCoefficient": [0.35, 0.35, 0.35, 0.35, 0.35, 0.35, 0.35],
 						"RResetCasts": [1, 1, 1, 1, 1, 1, 1],
-						"PDurationExtension": [10, 10, 10, 10, 10, 10, 10]
+						"PDurationExtension": [10, 10, 10, 10, 10, 10, 10],
+						"rAPCoefficient": [0.35, 0.35, 0.35, 0.35, 0.35, 0.35, 0.35],
+						"__renamedVariables": {
+							"RAPCoefficient": "rAPCoefficient"
+						}
 					},
 					"spellCalculations": {
 						"RCalculatedDamage": {

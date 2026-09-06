@@ -304,6 +304,7 @@
 		"spell_listtype_activedamage": "Active Damage",
 		"spell_listtype_kassadinbasemanarestore": "Base Mana Restore",
 		"spell_listtype_kassadinchampionmanarestore": "Champion Mana Restore",
+		"spell_forcepulse_name": "Force Pulse",
 		"spell_listtype_slow": "Slow",
 		"spell_listtype_kassadindamageperstack": "Damage Per Stack",
 		"spell_voidstone_tooltip": "Kassadin takes @DamageReductionPercent*100@% reduced magic damage and is Ghosted.",

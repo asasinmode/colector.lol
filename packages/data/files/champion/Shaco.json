@@ -432,6 +432,8 @@
 		}
 	},
 	"stringtable": {
+		"spell_jackinthebox_name": "Jack In The Box",
+		"spell_hallucinatefull_name": "Hallucinate",
 		"reminder_invisibility": "<keywordStealth>Invisible</keywordStealth> units cannot be revealed except by turrets or <font color='#ee91d7'>True Sight</font color>.",
 		"spell_listtype_damage": "Damage",
 		"spell_listtype_stealthduration": "Stealth Duration",

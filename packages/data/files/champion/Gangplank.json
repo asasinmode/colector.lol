@@ -392,11 +392,11 @@
 		"spell_listtype_gangplankqplundergold": "Plunder Gold",
 		"spell_listtype_gangplankqplundersilverserpents": "Plunder Silver Serpents",
 		"spell_listtype_healing": "Healing",
+		"spell_gangplankqwrapper_name": "Parrrley",
 		"spell_listtype_bonusdamageagainstchampions": "Bonus Damage Against Champions",
 		"spell_listtype_taricmaxcharges": "Max Charges",
 		"spell_listtype_slow": "Slow",
 		"spell_listtype_gangplankrdamageperwave": "Damage Per Wave",
-		"spell_gangplankpassive_tooltip": "Gangplank's melee Attacks ignite the target, dealing an additional <trueDamage>@TotalDamage@ true damage</trueDamage> over @DoTDuration@ seconds and granting Gangplank <speed>@MoveSpeed@ Move Speed</speed> for @MoveSpeedDuration@ seconds.<br><br>Destroying a <keywordMajor>Powder Keg</keywordMajor> refreshes this Cooldown and grants Gangplank the same <speed>Move Speed</speed>.",
-		"spell_gangplankqwrapper_name": "Parrrley"
+		"spell_gangplankpassive_tooltip": "Gangplank's melee Attacks ignite the target, dealing an additional <trueDamage>@TotalDamage@ true damage</trueDamage> over @DoTDuration@ seconds and granting Gangplank <speed>@MoveSpeed@ Move Speed</speed> for @MoveSpeedDuration@ seconds.<br><br>Destroying a <keywordMajor>Powder Keg</keywordMajor> refreshes this Cooldown and grants Gangplank the same <speed>Move Speed</speed>."
 	}
 }

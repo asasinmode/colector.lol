@@ -326,9 +326,18 @@
 		}
 	},
 	"stringtable": {
+		"spell_karmaq_tooltip_0": "Karma fires a blast of energy, dealing <magicDamage>@TotalDamage@ magic damage</magicDamage> to the first target hit and surrounding enemies, and <status>Slowing</status> them by @SlowAmount*-100@% for @SlowDuration@ seconds.",
+		"spell_karmaq_tooltip_1": "<spellName>Mantra:</spellName> Karma unleashes a devastating blast, dealing an additional <magicDamage>@spell.KarmaMantra:RQImpactDamage@ magic damage</magicDamage> to the first target hit and surrounding enemies. The blast leaves a field for @spell.KarmaMantra:RQSlowDuration@s, <status>Slowing</status> by @spell.KarmaMantra:RQSlow*-100@%, after which it explodes, dealing <magicDamage>@spell.KarmaMantra:RQFieldDamage@ magic damage</magicDamage>.",
 		"spell_listtype_damage": "Damage",
+		"spell_karmaw_tooltip_0": "Karma tethers herself to a champion or jungle monster, dealing <magicDamage>@InitialDamage@ magic damage</magicDamage> and revealing them for @TetherDuration@s. If the tether remains unbroken, the target takes <magicDamage>@InitialDamage@ magic damage</magicDamage> again and is <status>Rooted</status> for @RootDuration@s.",
+		"spell_karmaw_tooltip_1": "<spellName>Mantra:</spellName> Karma creates an empowered tether, restoring <healing>@spell.KarmaMantra:RWHealAmount@ missing Health</healing>, dealing <magicDamage>@InitialDamage@ magic damage</magicDamage>, and revealing them for @TetherDuration@s. If the tether remains unbroken, Karma restores <healing>@spell.KarmaMantra:RWHealAmount@ missing Health</healing> again, <status>Roots</status> for an additional @spell.KarmaMantra:RWBonusRoot@s, and deals another <magicDamage>@InitialDamage@ magic damage</magicDamage>.",
 		"spell_listtype_rootduration": "Root Duration",
+		"spell_karmae_tooltip_0": "Karma grants an allied champion <shield>@TotalShield@ Shield</shield> for @ShieldDuration@s and <speed>@MoveSpeed*100@% Move Speed</speed> for @MoveSpeedDuration@s.",
+		"spell_karmae_tooltip_1": "<spellName>Mantra:</spellName> Karma focuses her power, granting an allied champion an additional <shield>@spell.KarmaMantra:REBonusShield@ Shield</shield>. The shield's power spills over, granting <shield>@spell.KarmaMantra:REBonusShieldArea@ Shield</shield> and <speed>@spell.KarmaMantra:REMoveSpeed*100@% Move Speed</speed> to nearby champions.",
 		"spell_listtype_shieldamount": "Shield Amount",
+		"spell_karmaq_name": "Inner Flame",
+		"spell_karmaspiritbind_name": "Focused Resolve",
+		"spell_karmasolkimshield_name": "Inspire",
 		"spell_listtype_karmasoulflareimpact": "Soulflare Impact",
 		"spell_listtype_karmasoulflarecircledamage": "Soulflare Circle Damage",
 		"spell_listtype_karmarenewalrootextension": "Renewal Root Extension",

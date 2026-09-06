@@ -86,6 +86,7 @@
 					"mana": [60, 60, 60, 60, 60, 60],
 					"cooldownTime": [12, 12, 12, 12, 12, 12, 12],
 					"tooltip": "Nautilus gains a <shield>@ShieldCalc@ Shield</shield> for @ShieldDuration@ seconds. While the <shield>Shield</shield> persists, Nautilus' Attacks deal an additional <magicDamage>@DotDamageCalc@ magic damage</magicDamage> over 2 seconds to his target and all surrounding enemies.",
+					"tooltipExtendedBelowLine": "",
 					"extendedVariables": [
 						{
 							"name": "ShieldBase",

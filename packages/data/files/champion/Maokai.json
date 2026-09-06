@@ -180,8 +180,11 @@
 						"SaplingDetectionRadius": [550, 550, 550, 550, 550, 550, 550],
 						"BaseEmpoweredSlowAmount": [0.45, 0.45, 0.45, 0.45, 0.45, 0.45, 0.45],
 						"MaxTraps": [25000, 25000, 25000, 25000, 25000, 25000, 25000],
-						"BaseAPRatio": [0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25],
-						"EmpoweredAPRatio": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
+						"EmpoweredAPRatio": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+						"BaseApRatio": [0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25],
+						"__renamedVariables": {
+							"BaseAPRatio": "BaseApRatio"
+						}
 					},
 					"spellCalculations": {
 						"EmpoweredSaplingDuration": {

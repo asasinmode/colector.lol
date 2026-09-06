@@ -294,6 +294,7 @@
 		"spell_listtype_returndamage": "Return Damage",
 		"spell_listtype_slow": "Slow",
 		"spell_talone_wallcooldown": "Terrain Cooldown",
+		"spell_talonq_name": "Noxian Diplomacy",
 		"reminder_invisibility": "<keywordStealth>Invisible</keywordStealth> units cannot be revealed except by turrets or <font color='#ee91d7'>True Sight</font color>.",
 		"spell_listtype_movementspeed": "Move Speed",
 		"game_buff_tooltip_talonpassive": "Talon's Abilities apply a stack to champions and large jungle monsters they damage for @StackDuration@ seconds (max 3 stacks).<br><br>When Talon Attacks a target with 3 stacks, he deals an additional <physicalDamage>@BleedDamage@ physical damage</physicalDamage> over @BleedDuration@ seconds."

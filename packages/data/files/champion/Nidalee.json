@@ -37,7 +37,7 @@
 					"image": "assets/characters/nidalee/hud/icons2d/nidalee_q1.png",
 					"mana": [50, 55, 60, 65, 70, 75],
 					"cooldownTime": [6, 6, 6, 6, 6, 6, 6],
-					"tooltip": "<keywordMajor>Human Form:</keywordMajor> Nidalee throws her javelin, dealing <magicDamage>@HumanMinimumDamage@ magic damage</magicDamage>, increased up to <magicDamage>@HumanMaximumDamage@ magic damage</magicDamage> based on distance flown.",
+					"tooltip": "{{Spell_JavelinToss_Tooltip}}",
 					"tooltipExtended": "{{Spell_JavelinToss_Tooltip}}<br><br>{{Spell_Takedown_Tooltip}}",
 					"extendedVariables": [
 						{
@@ -106,7 +106,7 @@
 					"dataKey": "Characters/Nidalee/Spells/Takedown",
 					"image": "assets/characters/nidalee/hud/icons2d/nidalee_q2.png",
 					"cooldownTime": [6, 6, 6, 6, 6, 6, 6],
-					"tooltip": "<keywordMajor>Cougar Form:</keywordMajor> Nidalee's next Attack deals <magicDamage>@spell.AspectOfTheCougar:TotalTakedownDamage@ plus @spell.AspectOfTheCougar:TakedownDamageAmp@% per 1% missing Health magic damage</magicDamage>.<br><br>If the enemy was <keywordMajor>Hunted</keywordMajor>, deals 30% increased damage.",
+					"tooltip": "{{Spell_Takedown_Tooltip}}",
 					"tooltipExtended": "{{Spell_Takedown_Tooltip}}<br><br>{{Spell_JavelinToss_Tooltip}}",
 					"dataValues": {
 						"TotalADRatio": [0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75],
@@ -135,7 +135,7 @@
 					"image": "assets/characters/nidalee/hud/icons2d/nidalee_w1.png",
 					"mana": [30, 35, 40, 45, 50, 55],
 					"cooldownTime": [14, 13, 12, 11, 10, 9, 9],
-					"tooltip": "<keywordMajor>Human Form:</keywordMajor> Nidalee places an invisible trap for 2 minutes. When an enemy walks over it, they are dealt <magicDamage>@DamagePerSecond@ magic damage</magicDamage> per second for @DotDuration@ seconds.<br><br>@MaxTraps@ traps may be active at once.",
+					"tooltip": "{{Spell_Bushwhack_Tooltip}}",
 					"tooltipExtended": "{{Spell_Bushwhack_Tooltip}}<br><br>{{Spell_Pounce_Tooltip}}",
 					"extendedVariables": [
 						{
@@ -209,7 +209,7 @@
 					"dataKey": "Characters/Nidalee/Spells/Pounce",
 					"image": "assets/characters/nidalee/hud/icons2d/nidalee_w2.png",
 					"cooldownTime": [6, 6, 6, 6, 6, 6, 6],
-					"tooltip": "<keywordMajor>Cougar Form:</keywordMajor> Nidalee pounces, dealing <magicDamage>@spell.AspectOfTheCougar:TotalPounceDamage@ magic damage</magicDamage> to enemies surrounding where she lands. Killing a unit in <keywordMajor>Cougar Form</keywordMajor> reduces this Ability's Cooldown to @spell.AspectOfTheCougar:PounceCooldown@ seconds.<br><br>Pouncing at a <keywordMajor>Hunted</keywordMajor> enemy can be done from a greater distance and reduces this Ability's Cooldown to @spell.AspectOfTheCougar:PounceCooldown@ seconds.",
+					"tooltip": "{{Spell_Pounce_Tooltip}}",
 					"tooltipExtended": "{{Spell_Pounce_Tooltip}}<br><br>{{Spell_Bushwhack_Tooltip}}",
 					"dataValues": {
 						"EnhancedPounceRange": [750, 750, 750, 750, 750, 750, 750]
@@ -235,7 +235,7 @@
 					"image": "assets/characters/nidalee/hud/icons2d/nidalee_e1.png",
 					"mana": [50, 55, 60, 65, 70, 75],
 					"cooldownTime": [12, 12, 12, 12, 12, 12, 12],
-					"tooltip": "<keywordMajor>Human Form:</keywordMajor> Nidalee restores <healing>@TotalHealing@ Health</healing> increased up to <healing>@MaxHealing@</healing> based on missing Health and grants them <attackSpeed>@BonusAS*100@% Attack Speed</attackSpeed> for @ASDuration@ seconds.",
+					"tooltip": "{{Spell_PrimalSurge_Tooltip}}",
 					"tooltipExtended": "{{Spell_PrimalSurge_Tooltip}}<br><br>{{Spell_Swipe_Tooltip}}",
 					"extendedVariables": [
 						{
@@ -296,7 +296,7 @@
 					"dataKey": "Characters/Nidalee/Spells/Swipe",
 					"image": "assets/characters/nidalee/hud/icons2d/nidalee_e2.png",
 					"cooldownTime": [6, 6, 6, 6, 6, 6, 6],
-					"tooltip": "<keywordMajor>Cougar Form:</keywordMajor> Nidalee claws at enemies in front of her, dealing <magicDamage>@spell.AspectOfTheCougar:TotalSwipeDamage@ magic damage</magicDamage>.",
+					"tooltip": "{{Spell_Swipe_Tooltip}}",
 					"tooltipExtended": "{{Spell_Swipe_Tooltip}}<br><br>{{Spell_PrimalSurge_Tooltip}}",
 					"effectAmount": {
 						"0": [80, 80, 140, 200, 260, 260, 260],
@@ -427,11 +427,17 @@
 		}
 	},
 	"stringtable": {
+		"spell_javelintoss_tooltip": "<keywordMajor>Human Form:</keywordMajor> Nidalee throws her javelin, dealing <magicDamage>@HumanMinimumDamage@ magic damage</magicDamage>, increased up to <magicDamage>@HumanMaximumDamage@ magic damage</magicDamage> based on distance flown.",
+		"spell_takedown_tooltip": "<keywordMajor>Cougar Form:</keywordMajor> Nidalee's next Attack deals <magicDamage>@spell.AspectOfTheCougar:TotalTakedownDamage@ plus @spell.AspectOfTheCougar:TakedownDamageAmp@% per 1% missing Health magic damage</magicDamage>.<br><br>If the enemy was <keywordMajor>Hunted</keywordMajor>, deals 30% increased damage.",
 		"spell_listtype_nidaleejavelinminimumdamage": "Javelin Minimum Damage",
 		"spell_listtype_nidaleejavelinmaximumdamage": "Javelin Maximum Damage",
 		"spell_javelintoss_javelincost": "Javelin Mana Cost",
+		"spell_bushwhack_tooltip": "<keywordMajor>Human Form:</keywordMajor> Nidalee places an invisible trap for 2 minutes. When an enemy walks over it, they are dealt <magicDamage>@DamagePerSecond@ magic damage</magicDamage> per second for @DotDuration@ seconds.<br><br>@MaxTraps@ traps may be active at once.",
+		"spell_pounce_tooltip": "<keywordMajor>Cougar Form:</keywordMajor> Nidalee pounces, dealing <magicDamage>@spell.AspectOfTheCougar:TotalPounceDamage@ magic damage</magicDamage> to enemies surrounding where she lands. Killing a unit in <keywordMajor>Cougar Form</keywordMajor> reduces this Ability's Cooldown to @spell.AspectOfTheCougar:PounceCooldown@ seconds.<br><br>Pouncing at a <keywordMajor>Hunted</keywordMajor> enemy can be done from a greater distance and reduces this Ability's Cooldown to @spell.AspectOfTheCougar:PounceCooldown@ seconds.",
 		"spell_listtype_nidaleetrapdamage": "Trap Damage",
 		"spell_bushwhack_trapcost": "Trap Mana Cost",
+		"spell_primalsurge_tooltip": "<keywordMajor>Human Form:</keywordMajor> Nidalee restores <healing>@TotalHealing@ Health</healing> increased up to <healing>@MaxHealing@</healing> based on missing Health and grants them <attackSpeed>@BonusAS*100@% Attack Speed</attackSpeed> for @ASDuration@ seconds.",
+		"spell_swipe_tooltip": "<keywordMajor>Cougar Form:</keywordMajor> Nidalee claws at enemies in front of her, dealing <magicDamage>@spell.AspectOfTheCougar:TotalSwipeDamage@ magic damage</magicDamage>.",
 		"spell_listtype_nidaleeprimalsurgeheal": "Primal Surge Heal",
 		"spell_listtype_nidaleeprimalsurgeattackspeed": "Primal Surge Attack Speed",
 		"spell_primalsurge_manacost": "Primal Surge Mana Cost",

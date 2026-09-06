@@ -36,7 +36,7 @@
 					"dataKey": "Characters/Kled/Spells/KledQAbility/KledQ",
 					"image": "assets/characters/kled/hud/icons2d/kled_q1.png",
 					"cooldownTime": [12, 11, 10, 9, 8, 7, 6],
-					"tooltip": "<keywordMajor>Mounted:</keywordMajor> Kled throws a bear trap that deals <physicalDamage>@TotalDamage@ physical damage</physicalDamage> and hooks onto the first enemy champion or large jungle monster hit.<br><br>If Kled stays near a hooked enemy for @TetherPopTime@ seconds, he yanks out the trap, dealing <physicalDamage>@TotalYankDamage@ physical damage</physicalDamage>, <status>Pulling</status> them, and <status>Slowing</status> by @SlowAmount*-100@% for @SlowDuration@ seconds.",
+					"tooltip": "{{Spell_KledQ_Tooltip}}",
 					"tooltipExtended": "{{spell_KledQ_Tooltip}}<br><br><keywordMajor>Dismounted:</keywordMajor> Kled fires a shotgun, dealing <physicalDamage>@DismountedQDamage@ physical damage</physicalDamage> and blasting Kled backward. Pellets beyond the first deal reduced damage.<br><br>Each pellet that hits an enemy champion or epic monster restores <keywordMajor>Courage</keywordMajor>.",
 					"tooltipExtendedBelowLine": "<rules>While hooked, Kled has <keywordStealth>True Sight</keywordStealth> to the enemy.<br>Deals @MinionDamageMultiplier*100@% damage to minions.</rules>",
 					"extendedVariables": [
@@ -463,6 +463,7 @@
 		}
 	},
 	"stringtable": {
+		"spell_kledq_tooltip": "<keywordMajor>Mounted:</keywordMajor> Kled throws a bear trap that deals <physicalDamage>@TotalDamage@ physical damage</physicalDamage> and hooks onto the first enemy champion or large jungle monster hit.<br><br>If Kled stays near a hooked enemy for @TetherPopTime@ seconds, he yanks out the trap, dealing <physicalDamage>@TotalYankDamage@ physical damage</physicalDamage>, <status>Pulling</status> them, and <status>Slowing</status> by @SlowAmount*-100@% for @SlowDuration@ seconds.",
 		"spell_listtype_kledqthrowdamage": "Throw Damage",
 		"spell_listtype_kledqripdamage": "Rip Damage",
 		"spell_listtype_slow": "Slow",

@@ -571,12 +571,12 @@
 		"spell_aurelionsolq_maxchannelduration": "Maximum Channel Duration",
 		"spell_aurelionsolq_name": "Breath of Light",
 		"spell_aurelionsolw_truedamagebonus": "Percent Bonus Magic Damage",
+		"spell_aurelionsolr1_name": "Falling Star",
 		"spell_aurelionsolr2_name": "The Skies Descend",
 		"spell_listtype_damage": "Damage",
 		"spell_listtype_empowereddamage": "Empowered Damage",
 		"spell_aurelionsolr_shockwavedamage": "Shockwave Damage",
 		"spell_aurelionsolw_name": "Astral Flight",
-		"spell_aurelionsole_name": "Singularity",
-		"spell_aurelionsolr1_name": "Falling Star"
+		"spell_aurelionsole_name": "Singularity"
 	}
 }

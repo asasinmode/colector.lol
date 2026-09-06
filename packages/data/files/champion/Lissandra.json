@@ -52,11 +52,14 @@
 						}
 					],
 					"dataValues": {
-						"damage": [45, 80, 115, 150, 185, 220, 255],
 						"slowDuration": [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
 						"slowPercentage": [-0.16, -0.2, -0.24, -0.28, -0.32, -0.36, -0.4],
 						"SlowDuration": [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
-						"SlowPercentage": [-0.16, -0.2, -0.24, -0.28, -0.32, -0.36, -0.4]
+						"SlowPercentage": [-0.16, -0.2, -0.24, -0.28, -0.32, -0.36, -0.4],
+						"Damage": [45, 80, 115, 150, 185, 220, 255],
+						"__renamedVariables": {
+							"damage": "Damage"
+						}
 					},
 					"spellCalculations": {
 						"TotalDamage": {

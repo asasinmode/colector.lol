@@ -5,6 +5,7 @@ import type IBriar from '@lolcalc/data/files/champion/Briar.json';
 import type ICassiopeia from '@lolcalc/data/files/champion/Cassiopeia.json';
 import type IChogath from '@lolcalc/data/files/champion/Chogath.json';
 import type IDarius from '@lolcalc/data/files/champion/Darius.json';
+import type IDraven from '@lolcalc/data/files/champion/Draven.json';
 import type IDrMundo from '@lolcalc/data/files/champion/DrMundo.json';
 import type IEvelynn from '@lolcalc/data/files/champion/Evelynn.json';
 import type IEzreal from '@lolcalc/data/files/champion/Ezreal.json';
@@ -647,6 +648,20 @@ export const CHAMPION_SPECIFICS = {
 			return {
 				passiveStacks: Math.max(0, Math.round(self.internalData.value.passiveStacks ?? 0)),
 			};
+		},
+		passive: {
+			variables: defineChampionVariables<'Draven', typeof IDraven, 'passive'>()({
+				known: {
+					DravenPassiveGoldEarned: [],
+					DravenPassiveHighestBounty: [],
+				},
+				calculate() {
+					return {
+						DravenPassiveGoldEarned: { value: 0 },
+						DravenPassiveHighestBounty: { value: 0 },
+					};
+				},
+			}),
 		},
 	},
 	Ekko: {

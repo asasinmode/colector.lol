@@ -319,10 +319,10 @@
 	},
 	"stringtable": {
 		"spell_listtype_attackspeed": "Attack Speed",
+		"spell_tristanae_name": "Explosive Charge",
 		"spell_listtype_damage": "Damage",
 		"spell_listtype_tristanapassiveexplosiondamage": "Passive Explosion Damage",
 		"spell_listtype_tristanabasechargedamage": "Base Charge Damage",
-		"spell_tristanae_name": "Explosive Charge",
 		"spell_listtype_tristanaknockbackdistance": "Knockback Distance",
 		"spell_listtype_stunduration": "Stun Duration:",
 		"spell_tristanar_name": "Buster Shot"

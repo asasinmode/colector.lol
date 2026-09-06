@@ -86,7 +86,7 @@
 					"image": "assets/characters/veigar/hud/icons2d/veigardarkmatter.png",
 					"mana": [60, 65, 70, 75, 80, 85],
 					"cooldownTime": [0, 0, 0, 0, 0, 0, 0],
-					"tooltip": "Veigar summons dark matter from the sky, dealing <magicDamage>@TotalDamage@ magic damage</magicDamage>.<br><br>Every @Spell.VeigarPassive:PStacksPerDarkMatterCDR@ stacks of <keywordMajor>Phenomenal Evil</keywordMajor> reduce this Ability's Cooldown by @Spell.VeigarPassive:DarkMatterCDRIncrement*100@%.",
+					"tooltip": "{{Spell_VeigarDarkMatter_Tooltip}}",
 					"tooltipExtended": "{{Spell_VeigarDarkMatter_Tooltip}}<br><br>Cooldown currently reduced by <statTracking>@f2.0*100@%</statTracking>.",
 					"extendedVariables": [
 						{
@@ -247,6 +247,7 @@
 	"stringtable": {
 		"spell_listtype_damage": "Damage",
 		"spell_listtype_apratio": "Total AP Ratio",
+		"spell_veigardarkmatter_tooltip": "Veigar summons dark matter from the sky, dealing <magicDamage>@TotalDamage@ magic damage</magicDamage>.<br><br>Every @Spell.VeigarPassive:PStacksPerDarkMatterCDR@ stacks of <keywordMajor>Phenomenal Evil</keywordMajor> reduce this Ability's Cooldown by @Spell.VeigarPassive:DarkMatterCDRIncrement*100@%.",
 		"spell_listtype_stunduration": "Stun Duration:",
 		"spell_veigarpassive_tooltip": "Veigar's Abilities grant him @dAbilityStacks@ stack of <keywordMajor>Phenomenal Evil</keywordMajor> when they strike enemy champions. Takedowns on champions grant an additional @dTakedownStacks@ stacks.<br><br>Each stack of <keywordMajor>Phenomenal Evil</keywordMajor> grants Veigar <scaleAP>@APPerStack@ Ability Power</scaleAP>."
 	}

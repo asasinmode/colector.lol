@@ -461,6 +461,7 @@
 	"stringtable": {
 		"spell_listtype_maximumdamage": "Maximum Damage",
 		"spell_listtype_manacost": "Mana Cost",
+		"spell_varusq_name": "Piercing Arrow",
 		"spell_listtype_varuswdamageonattack": "Damage on Attack",
 		"spell_listtype_maxhealthdamage": "Maximum Health Damage",
 		"spell_listtype_missinghealthdamage": "Missing Health Damage",

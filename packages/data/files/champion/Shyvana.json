@@ -54,10 +54,13 @@
 						"Cooldown_Reduction": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
 						"Max_Health_Damage": [0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
 						"Max_Health_AD_Ratio": [0.00011, 0.00011, 0.00011, 0.00011, 0.00011, 0.00011, 0.00011],
-						"Base_Damage": [5, 10, 15, 20, 25, 30, 35],
 						"Damage_AD_Ratio": [1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1],
 						"Bonus_Attack_Range": [50, 50, 50, 50, 50, 50, 50],
-						"Damage_Monster_Bonus": [10, 10, 10, 10, 10, 10, 10]
+						"Damage_Monster_Bonus": [10, 10, 10, 10, 10, 10, 10],
+						"BASE_DAMAGE": [5, 10, 15, 20, 25, 30, 35],
+						"__renamedVariables": {
+							"Base_Damage": "BASE_DAMAGE"
+						}
 					},
 					"spellCalculations": {
 						"Calc_Max_Health_Damage": {

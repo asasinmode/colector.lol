@@ -394,6 +394,7 @@
 		}
 	},
 	"stringtable": {
+		"spell_ivernq_name": "Rootcaller",
 		"spell_listtype_rootduration": "Root Duration",
 		"spell_listtype_damage": "Damage",
 		"spell_listtype_bonusmagicdamage": "Magic Damage",

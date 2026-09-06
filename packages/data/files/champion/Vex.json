@@ -152,7 +152,7 @@
 					"image": "assets/characters/vex/hud/icons2d/icons_vex_e01.png",
 					"mana": [70, 80, 90, 100, 110, 110],
 					"cooldownTime": [13, 13, 13, 13, 13, 13, 13],
-					"tooltip": "Vex commands Shadow to fly to a location, increasing in size as it travels. Upon arriving, it deals <magicDamage>@EDamageCalc@ magic damage</magicDamage> and <status>Slows</status> by @SlowAmount*100@% for @SlowDuration@ seconds.<br><br>Killing an enemy with this ability reduces <keywordMajor>Doom'n Gloom's</keywordMajor> Cooldown by @GloomCDNonChampTooltip*100@%.<br><br>Applies <keywordMajor>Gloom</keywordMajor> to enemies hit.",
+					"tooltip": "{{Spell_VexE_Tooltip}}",
 					"tooltipExtended": "{{Spell_VexE_Tooltip}}<br><br><rules>Killing a champion refunds @GloomCDChampTooltip*100@% of <keywordMajor>Doom'n Gloom's</keywordMajor> Cooldown instead.<br>Enemies <status>Feared</status> by this Ability move away from the center rather than from Vex.</rules>",
 					"extendedVariables": [
 						{
@@ -385,6 +385,7 @@
 	"stringtable": {
 		"spell_listtype_damage": "Damage",
 		"spell_listtype_shield": "Shield Amount",
+		"spell_vexe_tooltip": "Vex commands Shadow to fly to a location, increasing in size as it travels. Upon arriving, it deals <magicDamage>@EDamageCalc@ magic damage</magicDamage> and <status>Slows</status> by @SlowAmount*100@% for @SlowDuration@ seconds.<br><br>Killing an enemy with this ability reduces <keywordMajor>Doom'n Gloom's</keywordMajor> Cooldown by @GloomCDNonChampTooltip*100@%.<br><br>Applies <keywordMajor>Gloom</keywordMajor> to enemies hit.",
 		"spell_listtype_slow": "Slow",
 		"spell_listtype_apratio": "Total AP Ratio",
 		"spell_listtype_recastdamage": "Recast Damage",

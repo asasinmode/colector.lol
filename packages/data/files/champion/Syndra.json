@@ -347,6 +347,7 @@
 		}
 	},
 	"stringtable": {
+		"spell_syndraq_damage_0": "<magicDamage>@TotalDamage@ magic damage</magicDamage>",
 		"spell_listtype_damage": "Damage",
 		"spell_syndrar_qhaste": "Dark Sphere Ability Haste"
 	}

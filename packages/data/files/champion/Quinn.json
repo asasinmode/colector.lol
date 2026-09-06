@@ -294,6 +294,8 @@
 		"spell_listtype_bonusadratio": "Bonus AD Ratio",
 		"spell_listtype_attackspeed": "Attack Speed",
 		"spell_listtype_movementspeed": "Move Speed",
+		"spell_quinnq_name": "Blinding Assault",
+		"spell_quinne_name": "Vault",
 		"spell_listtype_manacost": "Mana Cost",
 		"spell_quinnpassive_tooltip": "Every @f1@ seconds, Valor marks a nearby enemy with <keywordMajor>Harrier</keywordMajor>, revealing it for @RevealDuration@ seconds and causing Quinn's next Attack %i:OnHit% <OnHit>On-Hit</OnHit> against them to deal <physicalDamage>@BonusDamage@ bonus physical damage</physicalDamage>."
 	}

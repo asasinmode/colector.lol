@@ -148,6 +148,7 @@
 					"mana": [60, 60, 60, 60, 60, 60],
 					"cooldownTime": [22, 22, 21, 20, 19, 18, 18],
 					"tooltip": "Gwen summons the Hallowed Mist, making her Untargetable to all enemies (except towers) outside the zone for @ZoneDuration@ seconds or until she leaves it. While in the Mist, Gwen gains @TotalResists@ <scaleArmor>Armor</scaleArmor> and <scaleMR>Magic Resist</scaleMR>.<br><br>Gwen can <recast>Recast</recast> this Ability once to call the Mist to her. This will automatically <recast>Recast</recast> the first time Gwen attempts to leave the zone.",
+					"tooltipExtendedBelowLine": "",
 					"extendedVariables": [
 						{
 							"name": "BaseResists",
@@ -194,6 +195,7 @@
 					"mana": [35, 35, 35, 35, 35, 35],
 					"cooldownTime": [13, 13, 12.5, 12, 11.5, 11, 11],
 					"tooltip": "Gwen dashes and empowers her Attacks for @BuffDuration@ seconds.<br><br>Empowered Attacks gain <attackSpeed>@BonusAttackSpeed@ Attack Speed</attackSpeed>, <magicDamage>@OnHitDamage@ magic damage</magicDamage> %i:OnHit% <OnHit>On-Hit</OnHit>, @BonusAttackRange@ range, and the first one to hit an enemy refunds @CDRefund*100@% of this Ability's Cooldown.",
+					"tooltipExtendedBelowLine": "",
 					"extendedVariables": [
 						{
 							"name": "BaseAttackSpeed",

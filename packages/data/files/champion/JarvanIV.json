@@ -279,6 +279,7 @@
 		}
 	},
 	"stringtable": {
+		"spell_jarvanivdemacianstandard_name": "Demacian Standard",
 		"spell_listtype_damage": "Damage",
 		"spell_listtype_armorreduction": "Armor Reduction",
 		"spell_listtype_shieldamount": "Shield Amount",

@@ -313,6 +313,7 @@
 					"cooldownTime": [100, 100, 90, 80, 70, 60, 50],
 					"tooltip": "Yunara enters a <keywordMajor>Transcendent State</keywordMajor> for @Buff_Duration@ seconds upgrading her basic Abilities for the duration.",
 					"tooltipExtended": "Yunara enters a <keywordMajor>Transcendent State</keywordMajor> for @Buff_Duration@ seconds; <spellName>{{Spell_YunaraQ_Name}}</spellName> is instantly activated for the duration, <spellName>{{Spell_YunaraW1_Name}}</spellName> is upgraded to <keywordMajor>{{Spell_YunaraW2_Name}}</keywordMajor> and has its Cooldown reduced by @Calc_RW_Cooldown_Reduction@, and <spellName>{{Spell_YunaraE1_Name}}</spellName> is upgraded to <keywordMajor>{{Spell_YunaraE2_Name}}</keywordMajor> and has its Cooldown refreshed.",
+					"tooltipExtendedBelowLine": "",
 					"extendedVariables": [
 						{
 							"name": "RW_Damage_Base",
@@ -421,14 +422,15 @@
 		"spell_listtype_yunara_q_passive_damage": "Passive On-Hit Damage",
 		"spell_listtype_attackspeed": "Attack Speed",
 		"spell_listtype_yunara_q_active_damage": "Active On-Hit Damage",
-		"spell_yunaraw1_name": "Arc of Judgment",
 		"spell_yunaraw2_name": "Arc of Ruin",
+		"spell_yunaraw1_name": "Arc of Judgment",
 		"spell_listtype_damage": "Damage",
 		"spell_listtype_damagepersecond": "Damage Per Second",
-		"spell_yunarae1_name": "Kanmei's Steps",
 		"spell_yunarae2_name": "Untouchable Shadow",
+		"spell_yunarae1_name": "Kanmei's Steps",
 		"spell_listtype_movementspeed": "Move Speed",
 		"spell_listtype_movementspeedmax": "Max Move Speed",
+		"spell_yunaraq_name": "Cultivation of Spirit",
 		"spell_listtype_yunara_w2_damage": "{{Spell_YunaraW2_Name}} | Damage",
 		"spell_listtype_yunara_e2_dash_speed": "{{Spell_YunaraE2_Name}} | Dash Speed",
 		"spell_yunarap_tooltip": "Yunara's Critical Strikes deal an additional <magicDamage>@Calc_Damage_Amp@ magic damage</magicDamage>."

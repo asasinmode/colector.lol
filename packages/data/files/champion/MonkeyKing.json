@@ -334,6 +334,7 @@
 		}
 	},
 	"stringtable": {
+		"buff_desc_spelleffects": "This Ability triggers spell effects upon dealing damage.",
 		"spell_listtype_damage": "Damage",
 		"spell_listtype_armorreductionpercent": "Armor Reduction %",
 		"spell_listtype_range": "Range",

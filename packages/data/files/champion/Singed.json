@@ -220,6 +220,7 @@
 	"stringtable": {
 		"spell_listtype_damage": "Damage",
 		"spell_listtype_slow": "Slow",
+		"spell_megaadhesive_name": "Mega Adhesive",
 		"spell_listtype_maxhealthdamage": "Maximum Health Damage",
 		"spell_listtype_rootduration": "Root Duration",
 		"spell_listtype_singedbonusstats": "Bonus Stats"

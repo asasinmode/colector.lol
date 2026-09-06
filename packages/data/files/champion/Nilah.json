@@ -350,6 +350,7 @@
 		"spell_listtype_damage": "Damage",
 		"reminder_ghosted": "Ghosted units can pass through other units.",
 		"spell_listtype_movementspeed": "Move Speed",
+		"spell_nilahq_name": "Formless Blade",
 		"spell_listtype_damageovertime": "Damage Over Time"
 	}
 }

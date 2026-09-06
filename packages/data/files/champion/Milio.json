@@ -307,9 +307,11 @@
 		}
 	},
 	"stringtable": {
+		"spell_miliokickballq_name": "Ultra Mega Fire Kick",
 		"spell_listtype_damage": "Damage",
 		"spell_listtype_slow": "Slow",
 		"spell_listtype_manacost": "Mana Cost",
+		"spell_miliopassive_name": "Fired Up!",
 		"spell_listtype_range": "Range",
 		"spell_listtype_healing": "Healing",
 		"spell_listtype_shieldamount": "Shield Amount",

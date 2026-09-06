@@ -36,7 +36,7 @@
 					"dataKey": "Characters/Gnar/Spells/GnarQAbility/GnarQ",
 					"image": "assets/characters/gnar/hud/icons2d/gnar_q.png",
 					"cooldownTime": [17.5, 16, 14.5, 13, 11.5, 10, 10],
-					"tooltip": "<keywordMajor>Mini Gnar:</keywordMajor> Gnar throws a boomerang that deals <physicalDamage>@spell.GnarQ:MiniTotalDamage@ physical damage</physicalDamage> and <status>Slows</status> by @spell.GnarQ:SlowAmount*100@% for @spell.GnarQ:SlowDuration@ seconds. The boomerang returns after hitting an enemy, dealing reduced damage to subsequent targets. Each enemy can only be hit once. Catching the boomerang reduces its Cooldown by @spell.GnarQ:MiniCDRefund*100@%.",
+					"tooltip": "{{Spell_GnarQ_Tooltip}}",
 					"tooltipExtended": "{{spell_GnarQ_Tooltip}}<br><br>{{spell_GnarBigQ_Tooltip}}",
 					"tooltipExtendedBelowLine": "<rules>Deals @MiniSubsequentMult*100@% damage to enemies beyond the first.</rules>",
 					"extendedVariables": [
@@ -120,7 +120,7 @@
 					"dataKey": "Characters/Gnar/Spells/GnarWAbility/GnarW",
 					"image": "assets/characters/gnar/hud/icons2d/gnar_w.png",
 					"cooldownTime": [7, 7, 7, 7, 7, 7, 7],
-					"tooltip": "<keywordMajor>Mini Gnar Passive:</keywordMajor> Every third Attack or Ability on the same enemy deals an additional <magicDamage>@spell.GnarW:MiniTotalDamage@ plus @spell.GnarW:MiniPercentHPDamage*100@% max Health magic damage</magicDamage> and grants <speed>@spell.GnarR:RHyperMovementSpeedPercent@% Move Speed</speed> decaying over @spell.GnarW:MiniHasteDuration@ seconds.",
+					"tooltip": "{{Spell_GnarW_Tooltip}}",
 					"tooltipExtended": "{{spell_GnarW_Tooltip}}<br><br>{{spell_GnarBigW_Tooltip}}",
 					"tooltipExtendedBelowLine": "<rules>Gnar also gains the <speed>Move Speed</speed> when he leaves <keywordMajor>Mega Gnar</keywordMajor> form.<br>Deals a max of <magicDamage>@MiniMonsterCap@ magic damage</magicDamage> against jungle monsters.</rules>",
 					"extendedVariables": [
@@ -188,7 +188,7 @@
 					"dataKey": "Characters/Gnar/Spells/GnarEAbility/GnarE",
 					"image": "assets/characters/gnar/hud/icons2d/gnar_e.png",
 					"cooldownTime": [24.5, 22, 19.5, 17, 14.5, 12, 12],
-					"tooltip": "<keywordMajor>Mini Gnar:</keywordMajor> Gnar leaps, gaining <attackSpeed>@spell.GnarE:MinibAS*100@% Attack Speed</attackSpeed> for @spell.GnarE:MiniASDuration@ seconds. If Gnar lands on a unit he will bounce off it, traveling further. Bouncing off an enemy deals <physicalDamage>@spell.GnarE:MiniTotalDamage@ physical damage</physicalDamage> and briefly <status>Slows</status> by @spell.GnarE:MoveSpeedMod*-100@%.",
+					"tooltip": "{{Spell_GnarE_Tooltip}}",
 					"tooltipExtended": "{{spell_GnarE_Tooltip}}<br><br>{{spell_GnarBigE_Tooltip}}",
 					"extendedVariables": [
 						{
@@ -427,13 +427,19 @@
 		}
 	},
 	"stringtable": {
+		"spell_gnarq_tooltip": "<keywordMajor>Mini Gnar:</keywordMajor> Gnar throws a boomerang that deals <physicalDamage>@spell.GnarQ:MiniTotalDamage@ physical damage</physicalDamage> and <status>Slows</status> by @spell.GnarQ:SlowAmount*100@% for @spell.GnarQ:SlowDuration@ seconds. The boomerang returns after hitting an enemy, dealing reduced damage to subsequent targets. Each enemy can only be hit once. Catching the boomerang reduces its Cooldown by @spell.GnarQ:MiniCDRefund*100@%.",
+		"spell_gnarbigq_tooltip": "<keywordMajor>Mega Gnar:</keywordMajor> Gnar hurls a boulder, dealing <physicalDamage>@spell.GnarQ:MegaTotalDamage@ physical damage</physicalDamage> and <status>Slowing</status> by @spell.GnarQ:MegaSlowAmount*100@% for @spell.GnarQ:MegaSlowDuration@ seconds to the first enemy hit and surrounding enemies. Picking up the boulder reduces this Ability's Cooldown by @spell.GnarQ:MegaCDRefund*100@%.",
 		"spell_listtype_gnarqboomerangdamage": "Boomerang Damage",
 		"spell_listtype_gnarqboulderdamage": "Boulder Damage",
 		"spell_listtype_slow": "Slow",
 		"spell_gnarq_megaq_slowlevelup": "Boulder Slow Amount",
+		"spell_gnarw_tooltip": "<keywordMajor>Mini Gnar Passive:</keywordMajor> Every third Attack or Ability on the same enemy deals an additional <magicDamage>@spell.GnarW:MiniTotalDamage@ plus @spell.GnarW:MiniPercentHPDamage*100@% max Health magic damage</magicDamage> and grants <speed>@spell.GnarR:RHyperMovementSpeedPercent@% Move Speed</speed> decaying over @spell.GnarW:MiniHasteDuration@ seconds.",
+		"spell_gnarbigw_tooltip": "<keywordMajor>Mega Gnar:</keywordMajor> Gnar smashes an area, dealing <physicalDamage>@spell.GnarW:MegaTotalDamage@ physical damage</physicalDamage> and <status>Stunning</status> for @spell.GnarW:MegaStunDuration@ seconds.",
 		"spell_listtype_gnarwhyperdamage": "Hyper Damage",
 		"spell_listtype_gnarwhyperpercentdamage": "Hyper % Health Damage",
 		"spell_listtype_gnarwallopdamage": "Wallop Damage",
+		"spell_gnare_tooltip": "<keywordMajor>Mini Gnar:</keywordMajor> Gnar leaps, gaining <attackSpeed>@spell.GnarE:MinibAS*100@% Attack Speed</attackSpeed> for @spell.GnarE:MiniASDuration@ seconds. If Gnar lands on a unit he will bounce off it, traveling further. Bouncing off an enemy deals <physicalDamage>@spell.GnarE:MiniTotalDamage@ physical damage</physicalDamage> and briefly <status>Slows</status> by @spell.GnarE:MoveSpeedMod*-100@%.",
+		"spell_gnarbige_tooltip": "<keywordMajor>Mega Gnar:</keywordMajor> Gnar leaps, dealing <physicalDamage>@spell.GnarE:MegaTotalDamage@ physical damage</physicalDamage> to nearby enemies on landing. Enemies directly underneath are also briefly <status>Slowed</status> by @spell.GnarE:MoveSpeedMod*-100@%.",
 		"spell_gnare_minidamage": "Hop Damage",
 		"spell_gnare_megadamage": "Crunch Damage",
 		"spell_listtype_statbonusattackspeed": "Bonus Attack Speed",

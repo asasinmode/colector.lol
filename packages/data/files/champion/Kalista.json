@@ -344,6 +344,8 @@
 		}
 	},
 	"stringtable": {
+		"spell_kalistaexpungewrapper_name": "Rend",
+		"spell_kalistapassivebuff_name": "Martial Poise",
 		"spell_listtype_damage": "Damage",
 		"spell_listtype_maxhealthdamage": "Maximum Health Damage",
 		"spell_listtype_ammorecharge": "Ammo Recharge",

@@ -284,9 +284,12 @@
 		}
 	},
 	"stringtable": {
+		"spell_ryzew_name": "Rune Prison",
+		"spell_ryzee_name": "Spell Flux",
 		"spell_listtype_damage": "Damage",
 		"spell_listtype_movementspeed": "Move Speed",
 		"spell_listtype_manacost": "Mana Cost",
+		"spell_ryzeqwrapper_name": "Overload",
 		"spell_listtype_ryzeoverloaddamageincrease": "Overload Damage Increase"
 	}
 }

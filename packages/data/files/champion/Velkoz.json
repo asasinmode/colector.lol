@@ -277,6 +277,7 @@
 		"spell_listtype_slowduration": "Slow Duration",
 		"spell_listtype_initialdamage": "Initial Damage",
 		"spell_listtype_velkozwsecondarydamage": "Secondary Damage",
-		"spell_listtype_damage": "Damage"
+		"spell_listtype_damage": "Damage",
+		"spell_velkozpassive_name": "Organic Deconstruction"
 	}
 }

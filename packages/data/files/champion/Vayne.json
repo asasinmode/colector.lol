@@ -222,6 +222,7 @@
 		}
 	},
 	"stringtable": {
+		"buff_desc_spelleffects": "This Ability triggers spell effects upon dealing damage.",
 		"spell_vayneq_ratio": "AD Ratio %",
 		"spell_vaynew_percentdamage": "True Damage %",
 		"spell_vaynew_damagefloor": "Minimum Damage",

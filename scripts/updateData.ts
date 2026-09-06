@@ -1564,8 +1564,8 @@ interface IBaseStringtableVariableDebug<T extends IGameVariableType> {
 }
 
 function getStringtableValue(path: string, variableDebug: string | IStringtableVariableDebug, optional?: boolean): string | undefined {
-	const value = stringtable[path.toLowerCase()] || stringtable[hashXxh3(path, 38)];
-	if (!optional && !value) {
+	const value = stringtable[path.toLowerCase()] ?? stringtable[hashXxh3(path, 38)];
+	if (!optional && value === undefined) {
 		console.warn(`[${typeof variableDebug === 'string' ? variableDebug : variableDebug.key}] string "${path.toLowerCase()}" not found in the stringtable`);
 	}
 	if (value && typeof variableDebug === 'object') {
@@ -2155,12 +2155,11 @@ function setChampionAbilityVariantsText(champion: IChampion) {
 			variant.name = transformAbilityText(variant.name);
 			variant.tooltip = variant.tooltip && getStringtableValue(
 				variant.tooltip,
-				abilityKey === 'passive'
-					? {
-							...variableDebug,
-							key: `${debugPrefix} ${variant.objectName} tooltip`,
-						}
-					: `${variant.dataKey} tooltip`,
+				{
+					...variableDebug,
+					key: `${debugPrefix} ${variant.objectName} tooltip`,
+				},
+				false,
 			);
 			if (variant.tooltip) {
 				const preplace = (CHAMPION_SPECIFICS as IHypotheticalChampionSpecifics)[champion.id]?.[abilityKey]?.preplaceTooltipText;
@@ -2171,7 +2170,7 @@ function setChampionAbilityVariantsText(champion: IChampion) {
 			}
 			variant.tooltipExtended = variant.tooltipExtended && getStringtableValue(
 				variant.tooltipExtended,
-				abilityKey === 'passive' ? { ...variableDebug, key: `${debugPrefix} ${variant.objectName} tooltip extended` } : `${variant.dataKey} tooltip extended`,
+				{ ...variableDebug, key: `${debugPrefix} ${variant.objectName} tooltip extended` },
 			);
 			variant.tooltipExtended &&= transformAbilityText(variant.tooltipExtended);
 			variant.tooltipExtendedBelowLine = variant.tooltipExtendedBelowLine && getStringtableValue(
@@ -2182,7 +2181,7 @@ function setChampionAbilityVariantsText(champion: IChampion) {
 
 			for (const extendedVariable of variant.extendedVariables || []) {
 				if (extendedVariable.nameOverride) {
-					(champion.stringtable as any)[extendedVariable.nameOverride] = getStringtableValue(extendedVariable.nameOverride, abilityKey === 'passive' ? { ...variableDebug, key: `${debugPrefix} extendedVariables` } : `${debugPrefix} extendedVariables`);
+					(champion.stringtable as any)[extendedVariable.nameOverride] = getStringtableValue(extendedVariable.nameOverride, { ...variableDebug, key: `${debugPrefix} extendedVariables` });
 				}
 			}
 

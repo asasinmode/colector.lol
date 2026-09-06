@@ -38,6 +38,7 @@
 					"mana": [70, 75, 80, 85, 90, 90],
 					"cooldownTime": [10, 10, 9, 8, 7, 6, 6],
 					"tooltip": "Mel unleashes a barrage of @ExplosionCount@ projectiles that explode in the area around a target location.<br><br>The first explosion hit deals <magicDamage>@InitialExplosionDamage@ magic damage</magicDamage> and each subsequent explosion deals <magicDamage>@TotalExplosionDamage@ magic damage</magicDamage>, adding up to <magicDamage>@AllDamageHit@ magic damage</magicDamage> total.",
+					"tooltipExtendedBelowLine": "",
 					"extendedVariables": [
 						{
 							"name": "InitialDamage",

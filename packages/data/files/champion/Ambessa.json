@@ -217,6 +217,7 @@
 					"mana": [70, 70, 70, 70, 70, 70],
 					"cooldownTime": [18, 18, 17, 16, 15, 14, 14],
 					"tooltip": "Ambessa gains <shield>@Calc_Shield@ Shield</shield> for @Shield_Duration@ seconds and braces herself for @Buff_Duration@ seconds. She then slams the ground, dealing <physicalDamage>@Calc_Damage_Low@ physical damage</physicalDamage> to nearby enemies, which increases to <physicalDamage>@Calc_Damage_High@ physical damage</physicalDamage> if she braced herself from damage from an enemy champion, large monster, or structure.",
+					"tooltipExtendedBelowLine": "",
 					"extendedVariables": [
 						{
 							"name": "BaseDamage",
@@ -284,6 +285,7 @@
 					"mana": [70, 70, 70, 70, 70, 70],
 					"cooldownTime": [13, 13, 12, 11, 10, 9, 9],
 					"tooltip": "Ambessa whips her chains around, dealing <physicalDamage>@Calc_Damage_Flat@ physical damage</physicalDamage> and <status>Slowing</status> enemies by <status>@Slow_Amount*100@%</status>, which decays over @Slow_Duration@ second. Initiating <spellName>{{Spell_AmbessaP_Name}}</spellName> from this Ability will trigger an additional strike.",
+					"tooltipExtendedBelowLine": "",
 					"extendedVariables": [
 						{
 							"name": "Damage_Flat_Base",
@@ -502,6 +504,7 @@
 		"spell_ambessaq_rankup_sunderingslam_damage": "Sundering Slam | Damage",
 		"spell_ambessaq_rankup_sunderingslam_maxhealthdamage": "Sundering Slam | Max Health Damage",
 		"spell_listtype_damage": "Damage",
+		"spell_ambessap_name": "Drakehound's Step",
 		"spell_listtype_armorpenetration": "Armor Penetration",
 		"spell_listtype_healing": "Healing",
 		"spell_ambessap_tooltip": "When Ambessa is casting an Ability, issuing a Move or Attack order will cause her to dash in that direction after the Ability finishes.<br><br>Each cast initiation grants her a charge for @Attack_Buff_Duration@ seconds (max: @Attack_Buff_Max_Stacks@). While Ambessa has a charge, she gains <attention>@Attack_Range_Amount@ %i:scaleRange% Attack Range</attention> and <attackSpeed>@Calc_Attack_Speed@ %i:scaleAS% Attack Speed</attackSpeed>. Attacks consume a charge to deal <physicalDamage>@Calc_OnHit_Damage_Flat@ physical damage</physicalDamage> and restore <keywordMajor>@Calc_OnHit_Energy_Refund@ Energy</keywordMajor>."

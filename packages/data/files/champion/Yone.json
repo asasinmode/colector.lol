@@ -133,7 +133,10 @@
 						"FirstChampShieldMultiplier": [1, 1, 1, 1, 1, 1, 1],
 						"SecondChampShieldMultiplier": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
 						"ShieldDuration": [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
-						"ShieldbADRatio": [0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65]
+						"ShieldBADRatio": [0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65],
+						"__renamedVariables": {
+							"ShieldbADRatio": "ShieldBADRatio"
+						}
 					},
 					"spellCalculations": {
 						"WDamage": {
