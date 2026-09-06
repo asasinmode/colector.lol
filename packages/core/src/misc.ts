@@ -1,12 +1,12 @@
 import type { TAbilityType } from '@lolcalc/shared';
 import type { ITexture } from '@lolcalc/shared/types.d.ts';
 import type { IGameAbilityId } from './GameAbilityId';
-import { CHAMPION_IMAGES, EFFECTS, imgUrl, textureBgImageAttrs, UI, useChampion } from '@lolcalc/data';
+import { CHAMPION_IMAGES, EFFECTS, imgUrl, ITEMS, textureBgImageAttrs, UI, useChampion } from '@lolcalc/data';
 import { AbilityType } from '@lolcalc/shared';
 import { CUSTOM_EFFECT_IMAGES, EFFECT_SPECIFICS } from './specifics/effect.ts';
 import { replaceGameIcons } from './variables/game.ts';
 
-export type IGameImageData = [src: string, width: number, height?: number] | ITexture;
+export type IGameImageData = [src: string, width: number, height?: number, abilityName?: string] | (ITexture & { abilityName?: string });
 
 export async function gameAbilityImage(abilityId: IGameAbilityId): Promise<IGameImageData> {
 	const imageAbilityId = abilityId.type === AbilityType.effect
@@ -22,6 +22,8 @@ export async function gameAbilityImage(abilityId: IGameAbilityId): Promise<IGame
 		return [
 			imgUrl(`img/item/${imageAbilityId.id}.png`, true),
 			64,
+			undefined,
+			ITEMS[imageAbilityId.id]?.name,
 		];
 	} else if (imageAbilityId.type === AbilityType.effect) {
 		const effectData = EFFECTS[imageAbilityId.id];
@@ -29,6 +31,8 @@ export async function gameAbilityImage(abilityId: IGameAbilityId): Promise<IGame
 			return [
 				imgUrl(`game/${effectData.image}`),
 				64,
+				undefined,
+				EFFECT_SPECIFICS[imageAbilityId.id].label,
 			];
 		}
 		if (!CUSTOM_EFFECT_IMAGES[imageAbilityId.id]) {
@@ -38,9 +42,11 @@ export async function gameAbilityImage(abilityId: IGameAbilityId): Promise<IGame
 		return [
 			imgUrl(CUSTOM_EFFECT_IMAGES[imageAbilityId.id]![0]),
 			CUSTOM_EFFECT_IMAGES[imageAbilityId.id]![1],
+			undefined,
+			EFFECT_SPECIFICS[imageAbilityId.id].label,
 		];
 	} else if (imageAbilityId.type === AbilityType.dragon) {
-		return UI.dragons[imageAbilityId.id][imageAbilityId.subtype === 'stack' ? 'stack' : 'soulActive'];
+		return { ...UI.dragons[imageAbilityId.id][imageAbilityId.subtype === 'stack' ? 'stack' : 'soulActive'], abilityName: `${imageAbilityId.id} ${imageAbilityId.subtype}` };
 	}
 
 	const { abilityImage, abilityImageSize } = CHAMPION_IMAGES;
@@ -50,6 +56,8 @@ export async function gameAbilityImage(abilityId: IGameAbilityId): Promise<IGame
 	return [
 		abilityImage(champion.abilities[imageAbilityId.abilityKey].variants[imageAbilityId.abilityVariantIndex]!.image, imageAbilityId.id),
 		abilityImageSize(imageAbilityId.id),
+		undefined,
+		champion.abilities[imageAbilityId.abilityKey].variants[imageAbilityId.abilityVariantIndex]!.name,
 	];
 }
 
@@ -72,7 +80,7 @@ export function simpleFormattingGameAbilityImage(type: TAbilityType, id: string)
 	return `%a:${type}-${id}%`;
 }
 
-export async function simpleDescriptionFormatting(text: string) {
+export async function simpleDescriptionFormatting(text: string, addAlt?: boolean) {
 	const parts = replaceGameIcons(
 		text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>'),
 	)
@@ -85,9 +93,12 @@ export async function simpleDescriptionFormatting(text: string) {
 				type: match[1],
 				id: match[2],
 			} as IGameAbilityId);
-			parts[i] = Array.isArray(abilityImage)
-				? `<img src="${abilityImage[0]}" width="${abilityImage[1]}" height="${abilityImage[2] ?? abilityImage[1]}">`
-				: `<img ${Object.entries(textureBgImageAttrs(abilityImage, 16)).map(([attr, value]) => `${attr}="${typeof value === 'string' ? value : Object.entries(value).map(([vAttr, vValue]) => `${vAttr}: ${vValue}`).join('; ')}"`).join(' ')}>`;
+
+			if (Array.isArray(abilityImage)) {
+				parts[i] = `<img src="${abilityImage[0]}" width="${abilityImage[1]}" height="${abilityImage[2] ?? abilityImage[1]}"${addAlt ? ` alt="${abilityImage[3] ?? 'unknown'} icon"` : ''}>`;
+			} else {
+				parts[i] = `<img ${Object.entries(textureBgImageAttrs(abilityImage, 16)).map(([attr, value]) => `${attr}="${typeof value === 'string' ? value : Object.entries(value).map(([vAttr, vValue]) => `${vAttr}: ${vValue}`).join('; ')}"`).join(' ')}${addAlt ? ` alt="${abilityImage.abilityName ?? 'unknown'} icon"` : ''}>`;
+			}
 		}
 	}
 	return parts.join('');

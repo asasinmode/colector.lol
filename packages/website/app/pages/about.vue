@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { GameAbilityId } from '@lolcalc/core/GameAbilityId';
-import { gameAbilityImgAttrs } from '@lolcalc/core/misc';
-import { gameIconImgAttrs } from '@lolcalc/core/variables/game';
+import { gameAbilityImgAttrs, simpleFormattingGameAbilityImage } from '@lolcalc/core/misc';
 import { STAT_ICON } from '@lolcalc/data/index';
 import { AbilityType, ITEM_NAME_TO_ID } from '@lolcalc/shared/index';
 
@@ -9,7 +8,10 @@ const { reportAnIssue } = useReportIssueDialog();
 
 const ambessaRImg = await gameAbilityImgAttrs(GameAbilityId.build(AbilityType.champion, 'Ambessa', 'r', 0));
 const nocturneWImg = await gameAbilityImgAttrs(GameAbilityId.build(AbilityType.champion, 'Nocturne', 'w', 0));
-const rfcImg = await gameAbilityImgAttrs(GameAbilityId.build(AbilityType.item, ITEM_NAME_TO_ID.rfc));
+
+const discrepancyMaxHealthMana = useSimpleDescription(`max <scalehealth>%i:${STAT_ICON.hp}%health</scalehealth> and <scalemana>%i:${STAT_ICON.mana}%mana</scalemana>/<scaleenergy>ability resource</scaleenergy> have a margin of error of <strong>1</strong>. Most of the differences should be coming from floating point arithmetic and the in game ui rounding the displayed value up. This means that the game displays something like <span class="code-like">2773.0000001</span> as <span class="code-like">2774</span>, even though it's effectively <span class="code-like">2773</span> ([example config](#TODO))`);
+const discrepancyAttackRangeRfc = useSimpleDescription(`%i:${STAT_ICON.attackRange}%attack range with [${simpleFormattingGameAbilityImage('item', ITEM_NAME_TO_ID.rfc)} Rapid Firecannon's](https://wiki.leagueoflegends.com/en-us/Rapid_Firecannon) passive active has a margin of error of <strong>1</strong>. I don't know why ([config with chogath with R 6 stacks/rakan from test](#TODO))`);
+const discrepancyBloodmailRetribution = useSimpleDescription(`<scalead>%i:${STAT_ICON.attackDamage}%attack damage</scalead> with [${simpleFormattingGameAbilityImage('item', ITEM_NAME_TO_ID.overlordsBloodmail)} Overlord's Bloodmail's](https://wiki.leagueoflegends.com/en-us/Overlord's_Bloodmail) [Retribution](https://wiki.leagueoflegends.com/en-us/Named_item_effect#Retribution) passive might be difficult to exactly verify with the game, as the game calculates it &quot;on top&quot; of other stat calculations (as if it was an external effect). For example, if in game you see a champion with <scalehealth>300 %i:${STAT_ICON.hp}%hp</scalehealth>, in that exact moment you are looking at their stats, their displayed <scalead>AD</scalead> might be lagging behind and showing the value for <scalehealth>299 %i:${STAT_ICON.hp}%hp</scalehealth> that was just there, before it regenerated. Because of this, when [Retribution](https://wiki.leagueoflegends.com/en-us/Named_item_effect#Retribution) is being calculated, <scalead>%i:${STAT_ICON.attackDamage}%attack damage's</scalead> margin of error is <strong>1</strong> within <strong>+/-5</strong> <scalehealth>%i:${STAT_ICON.hp}%current health</scalehealth> (try changing the current health in <strong>lolcalc</strong> by +/-5 and see if AD is correct)`);
 </script>
 
 <template>
@@ -28,12 +30,13 @@ const rfcImg = await gameAbilityImgAttrs(GameAbilityId.build(AbilityType.item, I
 		</p>
 		<p>*with known discrepancies being</p>
 		<ul>
-			<li>
-				max <img v-bind="gameIconImgAttrs(STAT_ICON.hp)">health and <img v-bind="gameIconImgAttrs(STAT_ICON.mana)">mana/ability resource have a margin of error of <strong>1</strong>. Most of the differences should be coming from floating point arithmetic and the in game ui rounding the displayed value up. This means that the game displays something like <span class="code-like">2773.0000001</span> as <span class="code-like">2774</span>, even though it's effectively <span class="code-like">2773</span> (<a href="#TODO">example config</a>)
-			</li>
-			<li>
-				<img v-bind="gameIconImgAttrs(STAT_ICON.attackRange)">attack range with <a href="https://wiki.leagueoflegends.com/en-us/Rapid_Firecannon" target="_blank"><img v-bind="rfcImg" alt="Rapid Firecannon icon">Rapid Firecannon</a>'s passive active has a margin of error of <strong>1</strong>. I don't know why (<a href="#TODO">config with chogath with R 6 stacks/rakan from test</a>)
-			</li>
+			<li class="game-description" v-html="discrepancyMaxHealthMana" />
+			<!-- 	max <img v-bind="gameIconImgAttrs(STAT_ICON.hp)">health and <img v-bind="gameIconImgAttrs(STAT_ICON.mana)">mana/ability resource have a margin of error of <strong>1</strong>. Most of the differences should be coming from floating point arithmetic and the in game ui rounding the displayed value up. This means that the game displays something like <span class="code-like">2773.0000001</span> as <span class="code-like">2774</span>, even though it's effectively <span class="code-like">2773</span> (<a href="#TODO">example config</a>) -->
+			<!-- </li> -->
+			<li class="game-description" v-html="discrepancyAttackRangeRfc" />
+			<!-- 	<img v-bind="gameIconImgAttrs(STAT_ICON.attackRange)">attack range with <a href="https://wiki.leagueoflegends.com/en-us/Rapid_Firecannon" target="_blank"><img v-bind="rfcImg" alt="Rapid Firecannon icon">Rapid Firecannon's</a> passive active has a margin of error of <strong>1</strong>. I don't know why (<a href="#TODO">config with chogath with R 6 stacks/rakan from test</a>) -->
+			<!-- </li> -->
+			<li class="game-description" v-html="discrepancyBloodmailRetribution" />
 		</ul>
 
 		<h2 id="does-it-work">
