@@ -1513,6 +1513,29 @@ export const CHAMPION_SPECIFICS = {
 				},
 			}),
 		},
+		r: {
+			variables: defineChampionVariables<'Pyke', typeof IPyke, 'r'>()({
+				known: {
+					f9: [],
+					f10: [],
+				},
+				calculate() {
+					return {
+						f9: { value: 0 },
+						f10: { value: 0 },
+					};
+				},
+				meta: {
+					f1: {
+						displayedName: 'BonusAD',
+					},
+					ReducedDamageFinal: {
+						type: VariableType.physical,
+					},
+				},
+				uninteresting: ['f9', 'f10', 'RRecastDuration', 'ReducedDamage'],
+			}),
+		},
 		calculateHooks: {
 			preItemTotal: {
 				handler(self, { championPassiveStats, itemPassivesStats, itemBaseStats }, { miscDebug }) {
