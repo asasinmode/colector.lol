@@ -2266,6 +2266,7 @@ export interface ICalculateChampionStatsHookSource<Id extends IChampionId | unde
 	/** anything added to `itemPassivesStats` will be added to `itemTotalStats` */
 	preItemTotal?: ICalculateChampionStatsHook<(self: DamageSource<Id>, args: {
 		isRanged: IStatsCalculationResult['isRanged'];
+		championPassiveStats: IStatsCalculationResult['championPassive'];
 		itemBaseStats: IStatsCalculationResult['itemBase'];
 		itemPassivesStats: IStatsCalculationResult['itemPassive'];
 		baseStats: IStatsCalculationResult['base'];
@@ -2297,6 +2298,7 @@ export interface ICalculateChampionStatsHookSource<Id extends IChampionId | unde
 	preBonus?: ICalculateChampionStatsHook<(self: DamageSource<Id>, args: {
 		isRanged: IStatsCalculationResult['isRanged'];
 		runeShardStats: IStatsCalculationResult['runeShards'];
+		championPassiveStats: IStatsCalculationResult['championPassive'];
 		itemBaseStats: IStatsCalculationResult['itemBase'];
 		itemPassivesStats: IStatsCalculationResult['itemPassive'];
 		itemTotalStats: IStatsCalculationResult['itemTotal'];

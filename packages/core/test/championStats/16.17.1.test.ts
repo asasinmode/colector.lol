@@ -1,6 +1,7 @@
 import type { IOverrides } from '@lolcalc/core/DamageSource.ts';
 import type { IInternalItemDataOf } from '@lolcalc/core/specifics/index.ts';
 import type { IDragonName, IItem } from '@lolcalc/data/types.js';
+import assert from 'node:assert';
 import test from 'node:test';
 import { GameAbilityId } from '@lolcalc/core/GameAbilityId.ts';
 import { ITEMS_BY_NAME } from '@lolcalc/data';
@@ -14,7 +15,6 @@ test.before(() => {
 
 test('16.17 adaptive force', async (t) => {
 	const sourceCommon: IOverrides<'Amumu'> = {
-		level: 1,
 		internalData: { applyPassive: 0 },
 		runes: {
 			shards: {
@@ -302,7 +302,6 @@ test('16.17 adaptive force', async (t) => {
 	await t.test('senna', async () => {
 		const damageSource = await setupDamageSource(fixture, 'Senna', {
 			...sourceCommon,
-			level: 1,
 			items: [ITEMS_BY_NAME.ampTome],
 			internalData: { passiveStacks: 40, passiveStealTargetMS: 0 },
 		});
@@ -312,6 +311,21 @@ test('16.17 adaptive force', async (t) => {
 		}, damageSource);
 		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
 			attackDamage: 80,
+			abilityPower: 38,
+		}, damageSource);
+	});
+
+	await t.test('pyke', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Pyke', {
+			...sourceCommon,
+			items: [ITEMS_BY_NAME.giantsBelt, ITEMS_BY_NAME.ampTome],
+		});
+
+		typedPartialDeepStrictEqual(damageSource.stats.value.meta, {
+			adaptiveForceStat: 'abilityPower',
+		}, damageSource);
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 92,
 			abilityPower: 38,
 		}, damageSource);
 	});
@@ -560,8 +574,32 @@ test('16.17 Senna', async (t) => {
 	});
 });
 
+test('16.17 Pyke', async (t) => {
+	const sourceCommon: IOverrides<'Pyke'> = {
+		runes: {
+			shards: {
+				offensive: 'adaptive',
+				flex: 'adaptive',
+				defensive: 'health',
+			},
+		},
+		items: [ITEMS_BY_NAME.fimbulwinter, ITEMS_BY_NAME.endlessHunger, ITEMS_BY_NAME.overlordsBloodmail, ITEMS_BY_NAME.endlessHunger, ITEMS_BY_NAME.riftmaker],
+	};
+
+	await t.test('base', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Pyke', {
+			...sourceCommon,
+			items: [],
+		});
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 77,
+		}, damageSource);
+		assert.strictEqual(damageSource.maxHealth.value, 670);
+	});
+});
+
 // aphelios
-// pyke
 // rengar
 // varus
 // yasuo, yone

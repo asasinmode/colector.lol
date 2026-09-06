@@ -14,16 +14,22 @@ import { ITEM_NAME_TO_ID, VariableType } from '@lolcalc/shared';
 
 export const HOOK_PRIORITIES = {
 	preItemTotal: {
+		/** before riftmaker & bloodmail */
+		Pyke: 5,
 		[ITEM_NAME_TO_ID.guinsoo]: 10,
 		[ITEM_NAME_TO_ID.overlordsBloodmail]: 10,
 		[ITEM_NAME_TO_ID.riftmaker]: 20,
 	},
 	preBonus: {
-		[ITEM_NAME_TO_ID.overlordsBloodmail]: 10,
+		/** before riftmaker & bloodmail */
+		Pyke: 5,
+		[ITEM_NAME_TO_ID.overlordsBloodmail]: 20,
 		/** must be after riftmaker and archangel/seraph, which will be the default `0` */
-		[ITEM_NAME_TO_ID.rabadon]: 1,
+		[ITEM_NAME_TO_ID.rabadon]: 10,
 		/** must be after riftmaker and archangel/seraph, which will be the default `0` */
-		[ITEM_NAME_TO_ID.blackfireTorch]: 1,
+		[ITEM_NAME_TO_ID.blackfireTorch]: 10,
+		/** before rabadon & blackfire torch */
+		[ITEM_NAME_TO_ID.riftmaker]: 5,
 	},
 	onTotalPreMultipliers: {
 		cleanse: -1,

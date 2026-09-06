@@ -177,7 +177,7 @@ export function calculateChampionStats(source: DamageSource): IStatsCalculationR
 
 	if (source.calculateStatsHooks.all.value.preItemTotal) {
 		for (const hook of source.calculateStatsHooks.all.value.preItemTotal) {
-			hook(source, { isRanged, itemBaseStats, itemPassivesStats, baseStats, baseOnLevelStats, itemStatIncreases, effectStats, dragonStatMultipliers, dragonStats }, { calculatedVariables, debuffs, effectVars, miscDebug });
+			hook(source, { isRanged, itemBaseStats, itemPassivesStats, baseStats, baseOnLevelStats, itemStatIncreases, effectStats, dragonStatMultipliers, dragonStats, championPassiveStats }, { calculatedVariables, debuffs, effectVars, miscDebug });
 		}
 	}
 	itemPassivesStats.attackSpeed = itemPassivesStats.bonusAttackSpeedPercent * baseStats.attackSpeedRatio;
@@ -238,7 +238,7 @@ export function calculateChampionStats(source: DamageSource): IStatsCalculationR
 
 	if (source.calculateStatsHooks.all.value.preBonus) {
 		for (const hook of source.calculateStatsHooks.all.value.preBonus) {
-			hook(source, { isRanged, runeShardStats, itemBaseStats, itemPassivesStats, itemTotalStats, baseOnLevelStats, bonusStats }, { calculatedVariables, debuffs, effectVars, miscDebug });
+			hook(source, { isRanged, runeShardStats, itemBaseStats, itemPassivesStats, itemTotalStats, baseOnLevelStats, bonusStats, championPassiveStats }, { calculatedVariables, debuffs, effectVars, miscDebug });
 		}
 	}
 

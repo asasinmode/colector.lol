@@ -314,6 +314,8 @@ export interface IStatsCalculationMiscDebug {
 	vladimirPassiveHPAPBase?: number;
 	/** Math.floor(stacks / stacksForBonus) */
 	sennaPassiveStacksStep?: number;
+	/** pyke's passive variable ratio */
+	pykePassiveHpToAd?: number;
 }
 
 /** variables of effects applied onto the damage target */

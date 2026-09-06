@@ -25,6 +25,7 @@ import type INasus from '@lolcalc/data/files/champion/Nasus.json';
 import type INunu from '@lolcalc/data/files/champion/Nunu.json';
 import type IOrianna from '@lolcalc/data/files/champion/Orianna.json';
 import type IOrnn from '@lolcalc/data/files/champion/Ornn.json';
+import type IPyke from '@lolcalc/data/files/champion/Pyke.json';
 import type IRammus from '@lolcalc/data/files/champion/Rammus.json';
 import type IRell from '@lolcalc/data/files/champion/Rell.json';
 import type IRyze from '@lolcalc/data/files/champion/Ryze.json';
@@ -1491,6 +1492,56 @@ export const CHAMPION_SPECIFICS = {
 			},
 		},
 		// TODO calculate masterwork items
+	},
+	Pyke: {
+		passive: {
+			variables: defineChampionVariables<'Pyke', typeof IPyke, 'passive'>()({
+				known: {
+					f1: [],
+				},
+				calculate(self) {
+					return {
+						f1: {
+							value: self.stats.value.championPassive.attackDamage,
+						},
+					};
+				},
+				meta: {
+					f1: {
+						displayedName: 'BonusAD',
+					},
+				},
+			}),
+		},
+		calculateHooks: {
+			preItemTotal: {
+				handler(self, { championPassiveStats, itemPassivesStats, itemBaseStats }, { miscDebug }) {
+					const hpToAd = championAbilityVariableValue('HPPerBAD', { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self });
+
+					if (typeof hpToAd.value === 'number') {
+						miscDebug.pykePassiveHpToAd = hpToAd.value;
+						const bonusHp = (itemBaseStats.hp + itemPassivesStats.hp);
+						championPassiveStats.attackDamage = bonusHp / miscDebug.pykePassiveHpToAd;
+
+						itemBaseStats.hp = 0;
+						itemPassivesStats.hp = 0;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS pyke] failed to calculate passive hp to ad', hpToAd);
+						miscDebug.pykePassiveHpToAd = 0;
+					}
+				},
+				priority: HOOK_PRIORITIES.preItemTotal.Pyke,
+			},
+			preBonus: {
+				handler(_self, { runeShardStats, championPassiveStats }, { miscDebug }) {
+					if (runeShardStats.hp) {
+						championPassiveStats.attackDamage! += runeShardStats.hp / miscDebug.pykePassiveHpToAd!;
+						runeShardStats.hp = 0;
+					}
+				},
+				priority: HOOK_PRIORITIES.preBonus.Pyke,
+			},
+		},
 	},
 	Rammus: {
 		// TODO get w cancel variant spell_defensiveballcurlcancel_tooltip

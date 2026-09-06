@@ -601,6 +601,7 @@ export const ITEM_SPECIFICS = {
 						miscDebug.riftmakerBonusHp! += runeShardStats.hp;
 					}
 				},
+				priority: HOOK_PRIORITIES.preBonus[ITEM_NAME_TO_ID.riftmaker],
 			},
 		},
 	},
