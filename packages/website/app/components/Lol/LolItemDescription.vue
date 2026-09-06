@@ -356,12 +356,12 @@ defineExpose({ header });
 			--at-apply: 'inline-block align-middle size-4 z-1 relative';
 		}
 
-		> li {
+		li {
 			--at-apply: 'ms-5 list-item list-disc';
+		}
 
-			&:first-of-type {
-				--at-apply: 'mbs-3';
-			}
+		> li:first-of-type {
+			--at-apply: 'mbs-3';
 		}
 
 		/* trouble makers to check when changing this: kayle/kassadin/jhin/nidalee/irelia/viktor passive */
