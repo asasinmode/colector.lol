@@ -583,7 +583,7 @@ test('16.17 Pyke', async (t) => {
 				defensive: 'health',
 			},
 		},
-		items: [ITEMS_BY_NAME.fimbulwinter, ITEMS_BY_NAME.endlessHunger, ITEMS_BY_NAME.overlordsBloodmail, ITEMS_BY_NAME.endlessHunger, ITEMS_BY_NAME.riftmaker],
+		items: [ITEMS_BY_NAME.wintersApproach, ITEMS_BY_NAME.unendingDespair, ITEMS_BY_NAME.overlordsBloodmail, ITEMS_BY_NAME.endlessHunger, ITEMS_BY_NAME.riftmaker],
 	};
 
 	await t.test('base', async () => {
@@ -594,6 +594,20 @@ test('16.17 Pyke', async (t) => {
 
 		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
 			attackDamage: 77,
+		}, damageSource);
+		assert.strictEqual(damageSource.maxHealth.value, 670);
+	});
+
+	await t.test('winters\'s approach, unending despair, bloodmail+, endless hunger, riftmaker', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Pyke', {
+			...sourceCommon,
+			currentHealth: 115,
+		});
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 347,
+			abilityPower: 70,
+			abilityHaste: 87,
 		}, damageSource);
 		assert.strictEqual(damageSource.maxHealth.value, 670);
 	});

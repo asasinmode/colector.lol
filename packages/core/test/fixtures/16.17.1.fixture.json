@@ -831,6 +831,44 @@
 				}
 			}
 		},
+		"2502": {
+			"searchString": "unendingdespair;health;armor;cooldownreduction;abilityhaste",
+			"stats": {
+				"FlatHPPoolMod": 400,
+				"FlatArmorMod": 50,
+				"AbilityHasteMod": 15
+			},
+			"dataValues": {
+				"DrainRange": 650,
+				"Cooldown": 4,
+				"BonusHealthDrainPercentage": 0.03,
+				"HealMultiplier": 2.5
+			},
+			"itemCalculations": {
+				"DrainCalc": {
+					"mFormulaParts": [
+						{
+							"mStat": 12,
+							"mStatFormula": 2,
+							"mDataValue": "BonusHealthDrainPercentage",
+							"__type": "StatByNamedDataValueCalculationPart"
+						}
+					]
+				},
+				"HealCalc": {
+					"mMultiplier": {
+						"mDataValue": "HealMultiplier",
+						"__type": "NamedDataValueCalculationPart"
+					},
+					"mFormulaParts": [
+						{
+							"mSpellCalculationKey": "DrainCalc",
+							"__type": "{f3cbe7b2}"
+						}
+					]
+				}
+			}
+		},
 		"2517": {
 			"searchString": "endlesshunger;bloodsphere;damage;lifesteal;spellvamp;tenacity;abilityhaste;attackdamage",
 			"stats": {
@@ -1266,6 +1304,32 @@
 			"stats": {
 				"FlatMagicDamageMod": 30,
 				"PercentMovementSpeedMod": 0.04
+			}
+		},
+		"3119": {
+			"searchString": "wintersapproach;fimbulwinter;tear;health;mana;abilityhaste",
+			"stats": {
+				"FlatMPPoolMod": 500,
+				"FlatHPPoolMod": 550,
+				"AbilityHasteMod": 15
+			},
+			"dataValues": {
+				"ManaPerCharge": 3,
+				"ManaChargeAmmoCD": 8,
+				"ManaChargeMaxAmmo": 4,
+				"MaxMana": 360,
+				"InternalCDPerCastID": 6.5
+			},
+			"itemCalculations": {
+				"BonusHPFromMana": {
+					"mFormulaParts": [
+						{
+							"mCoefficient": 0.15,
+							"mStatFormula": 2,
+							"__type": "AbilityResourceByCoefficientCalculationPart"
+						}
+					]
+				}
 			}
 		},
 		"3123": {

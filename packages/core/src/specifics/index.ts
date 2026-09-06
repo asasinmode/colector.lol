@@ -17,7 +17,9 @@ export const HOOK_PRIORITIES = {
 		/** before riftmaker & bloodmail */
 		Pyke: 5,
 		[ITEM_NAME_TO_ID.guinsoo]: 10,
+		/** after pyke */
 		[ITEM_NAME_TO_ID.overlordsBloodmail]: 10,
+		/** after pyke */
 		[ITEM_NAME_TO_ID.riftmaker]: 20,
 	},
 	preBonus: {
@@ -28,8 +30,8 @@ export const HOOK_PRIORITIES = {
 		[ITEM_NAME_TO_ID.rabadon]: 10,
 		/** must be after riftmaker and archangel/seraph, which will be the default `0` */
 		[ITEM_NAME_TO_ID.blackfireTorch]: 10,
-		/** before rabadon & blackfire torch */
-		[ITEM_NAME_TO_ID.riftmaker]: 5,
+		/** before rabadon & blackfire torch, after pyke */
+		[ITEM_NAME_TO_ID.riftmaker]: 8,
 	},
 	onTotalPreMultipliers: {
 		cleanse: -1,
