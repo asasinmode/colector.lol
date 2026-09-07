@@ -357,7 +357,7 @@ defineExpose({ header });
 		}
 
 		li {
-			--at-apply: 'ms-5 list-item list-disc';
+			--at-apply: 'list-item list-disc';
 		}
 
 		> li:first-of-type {
@@ -554,6 +554,10 @@ defineExpose({ header });
 	}
 
 	.game-description {
+		li {
+			--at-apply: 'ms-5';
+		}
+
 		> ul {
 			--at-apply: 'list-disc';
 
