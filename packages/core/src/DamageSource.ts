@@ -2318,6 +2318,7 @@ export interface ICalculateChampionStatsHookSource<Id extends IChampionId | unde
 		totalPreMultipliersStats: IStatsCalculationResult['totalPreMultipliers'];
 		totalMultipliersStats: IStatsCalculationResult['totalMultipliers'];
 		bonusStats: IStatsCalculationResult['bonus'];
+		baseOnLevelStats: IStatsCalculationResult['baseOnLevel'];
 		baseStats: IStatsCalculationResult['base'];
 		effectStats: IStatsCalculationResult['effect'];
 		itemPassivesStats: IStatsCalculationResult['itemPassive'];

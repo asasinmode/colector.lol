@@ -2586,12 +2586,16 @@ export const CHAMPION_SPECIFICS = {
 			}),
 		},
 		calculateHooks: {
-			preBonus: {
-				handler(self, { championPassiveStats, bonusStats }, { calculatedVariables }) {
+			onChampionPassive: {
+				handler(self, { championPassiveStats }, { calculatedVariables }) {
 					const { passiveVariantActive } = self.internalData.value;
 					const passiveParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self };
 
+					let bonusAS: IVariableValueResult | undefined;
+
 					if (passiveVariantActive === CHAMPION_SPECIFICS.Varus.PASSIVE_OPTIONS.champion) {
+						bonusAS = championAbilityVariableValue('PassiveAS', passiveParams);
+
 						const asCap = championAbilityVariableValue('NewASCap', passiveParams);
 						if (typeof asCap.value === 'number') {
 							calculatedVariables.attackSpeedCap = asCap.value;
@@ -2599,7 +2603,71 @@ export const CHAMPION_SPECIFICS = {
 							console.warn('[CHAMPION_SPECIFICS varus] failed to calculate passive as cap', asCap);
 						}
 					} else if (passiveVariantActive) {
+						bonusAS = championAbilityVariableValue('PassiveASMinion', passiveParams);
+					}
 
+					if (bonusAS) {
+						if (typeof bonusAS.value === 'number') {
+							championPassiveStats.bonusAttackSpeedPercent = bonusAS.value;
+						} else {
+							console.warn('[CHAMPION_SPECIFICS varus] failed to calculate passive bonus as', bonusAS);
+						}
+					}
+				},
+			},
+			onTotalPreMultipliers: {
+				handler(self, { bonusStats, totalPreMultipliersStats, championPassiveStats, itemPassivesStats, itemTotalStats }, { calculatedVariables }) {
+					const { passiveVariantActive } = self.internalData.value;
+					const passiveParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self };
+
+					let asToAD: IVariableValueResult | undefined;
+					let asToAP: IVariableValueResult | undefined;
+
+					if (passiveVariantActive === CHAMPION_SPECIFICS.Varus.PASSIVE_OPTIONS.champion) {
+						asToAD = championAbilityVariableValue('AStoADChampion', passiveParams);
+						asToAP = championAbilityVariableValue('AStoAPChampion', passiveParams);
+					} else if (passiveVariantActive) {
+						asToAD = championAbilityVariableValue('AStoADMinion', passiveParams);
+						asToAP = championAbilityVariableValue('AStoAPMinion', passiveParams);
+					}
+
+					const bonusASPercent = (bonusStats.bonusAttackSpeedPercent - (championPassiveStats.bonusAttackSpeedPercent ?? 0));
+					if (asToAD) {
+						if (typeof asToAD.value === 'number') {
+							const value = asToAD.value * bonusASPercent;
+							championPassiveStats.attackDamage = value;
+							bonusStats.attackDamage += value;
+							totalPreMultipliersStats.attackDamage += value;
+						} else {
+							console.warn('[CHAMPION_SPECIFICS varus] failed to calculate passive bonus ad', asToAD);
+						}
+					}
+					if (asToAP) {
+						if (typeof asToAP.value === 'number') {
+							const value = asToAP.value * bonusASPercent;
+							calculatedVariables.apMultipliersBase += value;
+							championPassiveStats.abilityPower = value;
+							bonusStats.abilityPower += value;
+							totalPreMultipliersStats.abilityPower += value;
+
+							if (calculatedVariables.rabadonApMultiplier) {
+								const rabadonAP = calculatedVariables.rabadonApMultiplier * value;
+								itemPassivesStats.abilityPower += rabadonAP;
+								itemTotalStats.abilityPower += rabadonAP;
+								totalPreMultipliersStats.abilityPower += rabadonAP;
+								calculatedVariables.rabadonMagicalOpus! += rabadonAP;
+							}
+
+							if (calculatedVariables.blackfireTorchBBlazeMultiplier) {
+								const rabadonAP = calculatedVariables.blackfireTorchBBlazeMultiplier * value;
+								itemPassivesStats.abilityPower += rabadonAP;
+								itemTotalStats.abilityPower += rabadonAP;
+								totalPreMultipliersStats.abilityPower += rabadonAP;
+								calculatedVariables.blackfireTorchBBlazeAP! += rabadonAP;
+							}
+						} else {
+							console.warn('[CHAMPION_SPECIFICS varus] failed to calculate passive bonus ap', asToAP);
+						}
 					}
 				},
 			},

@@ -4,6 +4,7 @@ import type { IDragonName, IItem } from '@lolcalc/data/types.js';
 import assert from 'node:assert';
 import test from 'node:test';
 import { GameAbilityId } from '@lolcalc/core/GameAbilityId.ts';
+import { CHAMPION_SPECIFICS } from '@lolcalc/core/specifics/champion.ts';
 import { ITEMS_BY_NAME } from '@lolcalc/data';
 import { AbilityType, EFFECT_OBJECT_NAME } from '@lolcalc/shared';
 import fixture from '../fixtures/16.17.1.fixture.json' with { type: 'json' };
@@ -364,6 +365,22 @@ test('16.17 adaptive force', async (t) => {
 		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
 			attackDamage: 120,
 			abilityPower: 63,
+		}, damageSource);
+	});
+
+	await t.test('varus', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Varus', {
+			...sourceCommon,
+			items: [ITEMS_BY_NAME.ampTome, ITEMS_BY_NAME.phantomDancer, ITEMS_BY_NAME.fiendhunterBolts, ITEMS_BY_NAME.navoriFlickerblade],
+			internalData: { passiveVariantActive: CHAMPION_SPECIFICS.Varus.PASSIVE_OPTIONS.generic },
+		});
+
+		typedPartialDeepStrictEqual(damageSource.stats.value.meta, {
+			adaptiveForceStat: 'abilityPower',
+		}, damageSource);
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 76,
+			abilityPower: 55,
 		}, damageSource);
 	});
 });
@@ -804,7 +821,6 @@ test.only('16.17 Rengar', async (t) => {
 	});
 });
 
-// varus
 // yasuo, yone
 // zaahen
 // zeri

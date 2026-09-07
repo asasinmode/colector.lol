@@ -326,7 +326,7 @@ export function calculateChampionStats(source: DamageSource): IStatsCalculationR
 
 	if (source.calculateStatsHooks.all.value.onTotalPreMultipliers) {
 		for (const hook of source.calculateStatsHooks.all.value.onTotalPreMultipliers) {
-			hook(source, { isRanged, totalPreMultipliersStats, totalMultipliersStats, bonusStats, effectStats, itemPassivesStats, itemTotalStats, championPassiveStats, baseStats, adaptiveForceMeta }, { calculatedVariables, debuffs, effectVars, miscDebug });
+			hook(source, { isRanged, totalPreMultipliersStats, totalMultipliersStats, bonusStats, effectStats, itemPassivesStats, itemTotalStats, championPassiveStats, baseStats, baseOnLevelStats, adaptiveForceMeta }, { calculatedVariables, debuffs, effectVars, miscDebug });
 		}
 	}
 
