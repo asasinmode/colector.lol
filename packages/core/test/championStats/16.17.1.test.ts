@@ -338,6 +338,7 @@ test('16.17 adaptive force', async (t) => {
 			items: [ITEMS_BY_NAME.ampTome],
 			level: 18,
 			abilityLevels: { q: 6 },
+			internalData: { lastRotatedVariantIndex: 0 },
 		});
 
 		typedPartialDeepStrictEqual(damageSource.stats.value.meta, {
@@ -346,6 +347,23 @@ test('16.17 adaptive force', async (t) => {
 		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
 			attackDamage: 118,
 			abilityPower: 38,
+		}, damageSource);
+	});
+
+	await t.test('rengar', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Rengar', {
+			...sourceCommon,
+			level: 2,
+			items: [ITEMS_BY_NAME.hextechAlternator, ITEMS_BY_NAME.bfSword],
+			internalData: { passiveStacks: 5, isPassiveMSActive: 0 },
+		});
+
+		typedPartialDeepStrictEqual(damageSource.stats.value.meta, {
+			adaptiveForceStat: 'abilityPower',
+		}, damageSource);
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 120,
+			abilityPower: 63,
 		}, damageSource);
 	});
 });
@@ -705,7 +723,41 @@ test('16.17 Aphelios', async (t) => {
 	});
 });
 
-// rengar
+test('16.17 Rengar', async (t) => {
+	const sourceCommon: IOverrides<'Rengar'> = {
+		level: 1,
+		runes: {
+			shards: {
+				offensive: 'adaptive',
+				flex: 'adaptive',
+				defensive: 'health',
+			},
+		},
+		items: [ITEMS_BY_NAME.overlordsBloodmail, ITEMS_BY_NAME.endlessHunger, ITEMS_BY_NAME.steraksGage],
+	};
+
+	await t.test('base', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Rengar', sourceCommon);
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 233,
+			abilityHaste: 26,
+		}, damageSource);
+	});
+
+	await t.test('5 passive stacks', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Rengar', {
+			...sourceCommon,
+			internalData: { passiveStacks: 5, isPassiveMSActive: 0 },
+		});
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 274,
+			abilityHaste: 32,
+		}, damageSource);
+	});
+});
+
 // varus
 // yasuo, yone
 // zaahen

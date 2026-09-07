@@ -29,6 +29,7 @@ import type IOrnn from '@lolcalc/data/files/champion/Ornn.json';
 import type IPyke from '@lolcalc/data/files/champion/Pyke.json';
 import type IRammus from '@lolcalc/data/files/champion/Rammus.json';
 import type IRell from '@lolcalc/data/files/champion/Rell.json';
+import type IRengar from '@lolcalc/data/files/champion/Rengar.json';
 import type IRyze from '@lolcalc/data/files/champion/Ryze.json';
 import type ISenna from '@lolcalc/data/files/champion/Senna.json';
 import type ISeraphine from '@lolcalc/data/files/champion/Seraphine.json';
@@ -52,7 +53,7 @@ import type { IDefineVariablesConfig, IDeriveProgressFn, IEffectControlsProps, I
 import { STAT_ICON } from '@lolcalc/data';
 import { ALL_CHAMPION_STATS_ENTRIES, EFFECT_OBJECT_NAME, VariableType } from '@lolcalc/shared';
 import { clamp, roundNumber } from '@lolcalc/shared/utils.ts';
-import { computed, watch } from 'vue';
+import { computed, initCustomFormatter, watch } from 'vue';
 import { combineCompounding } from '../calculate/util.ts';
 import { championAbilityVariableValue, VARIABLE_CALCULATION_FNS } from '../variables/game.ts';
 import { defineVariables, HOOK_PRIORITIES } from './index.ts';
@@ -1927,13 +1928,82 @@ export const CHAMPION_SPECIFICS = {
 		},
 	},
 	Rengar: {
-		MAX_PASSIVE_STACKS: 5,
+		MAX_PASSIVE_STACKS: 6,
 		setupData(self) {
 			const maxStacks: number = CHAMPION_SPECIFICS.Rengar.MAX_PASSIVE_STACKS;
 			return {
 				passiveStacks: clamp(0, Math.round(self.internalData.value.passiveStacks ?? 0), maxStacks),
 				isPassiveMSActive: clamp(0, Math.round(self.internalData.value.isPassiveMSActive ?? 0), 1),
 			};
+		},
+		passive: {
+			variables: defineChampionVariables<'Rengar', typeof IRengar, 'passive'>()({
+				known: {
+					BonusADPercent: [],
+					BonusAD: [],
+				},
+				calculate(self) {
+					return {
+						BonusADPercent: {
+							value: self.internalData.value.passiveStacks ** 2,
+						},
+						BonusAD: {
+							value: self.stats.value.championPassive.attackDamage ?? 0,
+						},
+					};
+				},
+				meta: {
+					BonusADPercent: {
+						isCustom: true,
+					},
+					BonusAD: {
+						isCustom: true,
+					},
+				},
+				uninteresting: ['MaxFerocity', 'EmpoweredMSDuration', 'InCombatTimer'],
+			}),
+		},
+		calculateHooks: {
+			onChampionPassive: {
+				handler(self, _stats, { calculatedVariables }) {
+					const passiveParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self };
+
+					if (self.internalData.value.isPassiveMSActive) {
+						const bonusMS = championAbilityVariableValue('EmpoweredMS', passiveParams);
+						if (typeof bonusMS.value === 'number') {
+							calculatedVariables.totalBonusPercentMoveSpeed += bonusMS.value;
+						} else {
+							console.warn('[CHAMPION_SPECIFICS rengar] failed to calculate passive empowered ms', bonusMS);
+						}
+					}
+				},
+			},
+			postTotal: {
+				handler(self, { adaptiveForceMeta, championPassiveStats, dragonStats, baseOnLevelStats, totalPreMultipliersStats, totalStats, bonusStats, totalMultipliersStats }, { calculatedVariables }) {
+					const bonusADPercent = self.internalData.value.passiveStacks ** 2 / 100;
+
+					/* need to add swiftmarch adaptive since it's not in `totalPreMultipliersStats` - it's added to `totalMultipliersStats` */
+					const passiveAd = (totalPreMultipliersStats.attackDamage - baseOnLevelStats.attackDamage) * bonusADPercent;
+
+					if (calculatedVariables.midQuestMultiplier) {
+						const preMultiplierBonusAd = bonusStats.attackDamage - (dragonStats.attackDamage ?? 0) - (calculatedVariables.midQuestAd ?? 0);
+						const midQuestAd = preMultiplierBonusAd * calculatedVariables.midQuestMultiplier * bonusADPercent;
+
+						calculatedVariables.midQuestAd = (calculatedVariables.midQuestAd ?? 0) + midQuestAd;
+						totalMultipliersStats.attackDamage += midQuestAd;
+						totalStats.attackDamage += midQuestAd;
+						bonusStats.attackDamage += midQuestAd;
+						calculatedVariables.bloodmailRetributionExcludedAd += midQuestAd;
+					}
+
+					championPassiveStats.attackDamage = passiveAd;
+					totalMultipliersStats.attackDamage += passiveAd;
+					totalStats.attackDamage += passiveAd;
+					bonusStats.attackDamage += passiveAd;
+
+					calculatedVariables.bloodmailRetributionExcludedAd += passiveAd;
+				},
+			},
 		},
 	},
 	Riven: {

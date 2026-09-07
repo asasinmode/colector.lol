@@ -672,6 +672,85 @@
 				}
 			}
 		},
+		"Rengar": {
+			"partype": "Ferocity",
+			"stats": {
+				"hp": 590,
+				"hpperlevel": 104,
+				"mp": 4,
+				"mpperlevel": 0,
+				"movespeed": 345,
+				"armor": 34,
+				"armorperlevel": 4.2,
+				"spellblock": 32,
+				"spellblockperlevel": 2.05,
+				"attackrange": 125,
+				"hpregen": 6,
+				"hpregenperlevel": 0.5,
+				"mpregen": 0,
+				"mpregenperlevel": 0,
+				"crit": 0,
+				"critperlevel": 0,
+				"attackdamage": 68,
+				"attackdamageperlevel": 3,
+				"attackspeedperlevel": 3,
+				"attackspeed": 0.667,
+				"attackspeedratio": 0.667
+			},
+			"abilities": {
+				"passive": {
+					"maxLevel": 0,
+					"variants": [
+						{
+							"name": "Unseen Predator",
+							"objectName": "RengarPassive",
+							"dataKey": "Characters/Rengar/Spells/RengarPassiveAbility/RengarPassive",
+							"image": "assets/characters/rengar/hud/icons2d/rengar_p.png",
+							"tooltip": "{{Spell_RengarPassive_Tooltip}}",
+							"tooltipExtended": "{{Spell_RengarPassive_Tooltip}}<br><rules>Rengar loses all <keywordMajor>Ferocity</keywordMajor> after being out of combat for @InCombatTimer@ seconds.<br>Rengar gains extra <physicalDamage>Attack Damage</physicalDamage> for killing Kha'Zix.</rules>",
+							"dataValues": {
+								"MaxFerocity": [4, 4, 4, 4, 4, 4, 4],
+								"InCombatTimer": [10, 10, 10, 10, 10, 10, 10],
+								"InCombatTimerVisual": [10, 10, 10, 10, 10, 10, 10],
+								"EmpoweredMSDuration": [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
+								"RengarPassiveRangeIncrease": [620, 620, 620, 620, 620, 620, 620],
+								"LeapFerocityGeneration": [1, 1, 1, 1, 1, 1, 1],
+								"BonusLeapRange": [620, 620, 620, 620, 620, 620, 620]
+							},
+							"spellCalculations": {
+								"EmpoweredMS": {
+									"mFormulaParts": [
+										{
+											"mLevel1Value": 0.3,
+											"mBreakpoints": [
+												{
+													"mLevel": 7,
+													"mAdditionalBonusAtThisLevel": 0.1
+												},
+												{
+													"mLevel": 13,
+													"mAdditionalBonusAtThisLevel": 0.1
+												},
+												{
+													"mLevel": 19,
+													"mAdditionalBonusAtThisLevel": 0.1
+												},
+												{
+													"mLevel": 25,
+													"mAdditionalBonusAtThisLevel": 0.1
+												}
+											],
+											"__type": "ByCharLevelBreakpointsCalculationPart"
+										}
+									],
+									"mDisplayAsPercent": true
+								}
+							}
+						}
+					]
+				}
+			}
+		},
 		"Senna": {
 			"partype": "Mana",
 			"stats": {
