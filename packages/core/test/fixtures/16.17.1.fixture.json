@@ -1464,6 +1464,51 @@
 				}
 			}
 		},
+		"3074": {
+			"searchString": "ravenoushydra;ravhydra;damage;lifesteal;cooldownreduction;onhit;abilityhaste;attackdamage",
+			"stats": {
+				"FlatPhysicalDamageMod": 65,
+				"PercentLifeStealMod": 0.12,
+				"AbilityHasteMod": 15
+			},
+			"dataValues": {
+				"CleaveRadius": 350,
+				"Cooldown": 10,
+				"Radius": 450,
+				"ActiveADRatio": 0.8,
+				"VampAmp": 1,
+				"MaxProcPerAuto": 10
+			},
+			"itemCalculations": {
+				"MeleeItemCalcValue": {
+					"mFormulaParts": [
+						{
+							"mStat": 2,
+							"mCoefficient": 0.4,
+							"__type": "StatByCoefficientCalculationPart"
+						}
+					]
+				},
+				"RangedItemCalcValue": {
+					"mFormulaParts": [
+						{
+							"mStat": 2,
+							"mCoefficient": 0.2,
+							"__type": "StatByCoefficientCalculationPart"
+						}
+					]
+				},
+				"PrimaryDamage": {
+					"mFormulaParts": [
+						{
+							"mStat": 2,
+							"mDataValue": "ActiveADRatio",
+							"__type": "StatByNamedDataValueCalculationPart"
+						}
+					]
+				}
+			}
+		},
 		"3078": {
 			"searchString": "trinityforce;triforce;tonsofdamage;spellblade;health;damage;attackspeed;cooldownreduction;onhit;movement;abilityhaste;attackdamage",
 			"stats": {

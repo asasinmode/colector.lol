@@ -740,8 +740,7 @@ test('16.17 Aphelios', async (t) => {
 	});
 });
 
-test.only('16.17 Rengar', async (t) => {
-	t.runOnly(true);
+test('16.17 Rengar', async (t) => {
 	const sourceCommon: IOverrides<'Rengar'> = {
 		level: 1,
 		runes: {
@@ -781,7 +780,7 @@ test.only('16.17 Rengar', async (t) => {
 		}, damageSource);
 	});
 
-	await t.test('5 stacks | 4 infernals', { only: true }, async () => {
+	await t.test('5 stacks | 4 infernals', async () => {
 		const damageSource = await setupDamageSource(fixture, 'Rengar', {
 			...sourceCommon,
 			internalData: { passiveStacks: 5, isPassiveMSActive: 0 },
@@ -813,10 +812,33 @@ test.only('16.17 Rengar', async (t) => {
 			abilityHaste: 41,
 		}, damageSource);
 
-		damageSource.currentHealth.value = 485;
+		damageSource.currentHealth.value = 490;
 		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
 			attackDamage: 392,
 			abilityHaste: 47,
+		}, damageSource);
+	});
+
+	await t.test('" | " | " | more ad', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Rengar', {
+			...sourceCommon,
+			level: 18,
+			internalData: { passiveStacks: 5, isPassiveMSActive: 0 },
+			dragonStacks: infernalStacks,
+			roleQuest: 'mid',
+			items: sourceCommon.items!.concat([ITEMS_BY_NAME.infinityEdge, ITEMS_BY_NAME.bloodthirster, ITEMS_BY_NAME.ravenousHydra]),
+		});
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 793,
+			abilityHaste: 108,
+		}, damageSource);
+
+		/* this is a stretch of margin of error, 908 is shown in game from `1028` current hp */
+		damageSource.currentHealth.value = 1043;
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 908,
+			abilityHaste: 123,
 		}, damageSource);
 	});
 });

@@ -1980,42 +1980,53 @@ export const CHAMPION_SPECIFICS = {
 				},
 			},
 			postTotal: {
-				handler(self, { championPassiveStats, dragonStatMultipliers, itemPassivesStats, itemTotalStats, dragonStats, baseOnLevelStats, totalPreMultipliersStats, totalStats, bonusStats, totalMultipliersStats }, { calculatedVariables }) {
+				handler(self, { championPassiveStats, dragonStatMultipliers, itemPassivesStats, itemTotalStats, dragonStats, totalStats, bonusStats, totalMultipliersStats }, { calculatedVariables }) {
 					const bonusADPercent = self.internalData.value.passiveStacks ** 2 / 100;
-					const baseAD = baseOnLevelStats.attackDamage;
-					const preMultipliersBonusAD = totalPreMultipliersStats.attackDamage - baseAD;
+					if (!bonusADPercent) {
+						return;
+					}
 
+					const dragonMult = dragonStatMultipliers?.attackDamage ?? 0;
+					const midQuestMult = calculatedVariables.midQuestMultiplier;
 					const bloodmailMult = calculatedVariables.bloodmailRetributionPercentage ?? 0;
-					const totalAdMult = dragonStatMultipliers.attackDamage + bloodmailMult;
 
-					const denominator = 1 - bonusADPercent * totalAdMult;
-					const passiveAd = bonusADPercent * (preMultipliersBonusAD * (1 + totalAdMult) + baseAD * totalAdMult) / (denominator > 0 ? denominator : 1);
+					const dDragon = dragonMult;
+					const dMidQuest = (1 + dragonMult) * midQuestMult;
+					const dBloodmail = (1 + dMidQuest) * bloodmailMult;
+
+					const k = dDragon + dMidQuest + dBloodmail;
+					const denominator = 1 - bonusADPercent * k;
+					const passiveAd = (bonusADPercent * bonusStats.attackDamage) / (denominator > 0 ? denominator : 1);
 
 					championPassiveStats.attackDamage = passiveAd;
 					totalMultipliersStats.attackDamage += passiveAd;
 					totalStats.attackDamage += passiveAd;
 					bonusStats.attackDamage += passiveAd;
 
-					if (calculatedVariables.bloodmailRetribution !== undefined && bloodmailMult > 0) {
-						const trueRetribution = (baseAD + preMultipliersBonusAD + passiveAd) * bloodmailMult;
-						const retributionDiff = trueRetribution - calculatedVariables.bloodmailRetribution;
-
-						calculatedVariables.bloodmailRetribution = trueRetribution;
-						itemPassivesStats.attackDamage += retributionDiff;
-						itemTotalStats.attackDamage += retributionDiff;
-						totalMultipliersStats.attackDamage += retributionDiff;
-						bonusStats.attackDamage += retributionDiff;
-						totalStats.attackDamage += retributionDiff;
+					if (midQuestMult) {
+						const midQuestDiff = passiveAd * dMidQuest;
+						calculatedVariables.midQuestAd = (calculatedVariables.midQuestAd ?? 0) + midQuestDiff;
+						totalMultipliersStats.attackDamage += midQuestDiff;
+						bonusStats.attackDamage += midQuestDiff;
+						totalStats.attackDamage += midQuestDiff;
 					}
 
-					if (dragonStatMultipliers.attackDamage) {
-						const trueDragonAd = (baseAD + preMultipliersBonusAD + passiveAd) * dragonStatMultipliers.attackDamage;
-						const dragonDiff = trueDragonAd - (dragonStats.attackDamage ?? 0);
-
-						dragonStats.attackDamage = trueDragonAd;
+					if (dragonMult) {
+						const dragonDiff = passiveAd * dDragon;
+						dragonStats.attackDamage! += dragonDiff;
 						totalMultipliersStats.attackDamage += dragonDiff;
 						bonusStats.attackDamage += dragonDiff;
 						totalStats.attackDamage += dragonDiff;
+					}
+
+					if (bloodmailMult) {
+						const bloodmailDiff = (passiveAd + (passiveAd * dMidQuest)) * bloodmailMult;
+						calculatedVariables.bloodmailRetribution! += bloodmailDiff;
+						itemPassivesStats.attackDamage += bloodmailDiff;
+						itemTotalStats.attackDamage += bloodmailDiff;
+						totalMultipliersStats.attackDamage += bloodmailDiff;
+						bonusStats.attackDamage += bloodmailDiff;
+						totalStats.attackDamage += bloodmailDiff;
 					}
 				},
 				priority: HOOK_PRIORITIES.postTotal.Rengar,
