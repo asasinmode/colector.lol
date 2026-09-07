@@ -38,6 +38,7 @@ import type ISivir from '@lolcalc/data/files/champion/Sivir.json';
 import type ISona from '@lolcalc/data/files/champion/Sona.json';
 import type ISyndra from '@lolcalc/data/files/champion/Syndra.json';
 import type ITwistedFate from '@lolcalc/data/files/champion/TwistedFate.json';
+import type IVarus from '@lolcalc/data/files/champion/Varus.json';
 import type IVeigar from '@lolcalc/data/files/champion/Veigar.json';
 import type IVladimir from '@lolcalc/data/files/champion/Vladimir.json';
 import type IVolibear from '@lolcalc/data/files/champion/Volibear.json';
@@ -2578,6 +2579,30 @@ export const CHAMPION_SPECIFICS = {
 			return {
 				passiveVariantActive: clamp(0, Math.round(self.internalData.value.passiveVariantActive ?? 0), maxPassive),
 			};
+		},
+		passive: {
+			variables: defineChampionVariables<'Varus', typeof IVarus, 'passive'>()({
+				uninteresting: ['ASDuration'],
+			}),
+		},
+		calculateHooks: {
+			preBonus: {
+				handler(self, { championPassiveStats, bonusStats }, { calculatedVariables }) {
+					const { passiveVariantActive } = self.internalData.value;
+					const passiveParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self };
+
+					if (passiveVariantActive === CHAMPION_SPECIFICS.Varus.PASSIVE_OPTIONS.champion) {
+						const asCap = championAbilityVariableValue('NewASCap', passiveParams);
+						if (typeof asCap.value === 'number') {
+							calculatedVariables.attackSpeedCap = asCap.value;
+						} else {
+							console.warn('[CHAMPION_SPECIFICS varus] failed to calculate passive as cap', asCap);
+						}
+					} else if (passiveVariantActive) {
+
+					}
+				},
+			},
 		},
 	},
 	Vayne: {
