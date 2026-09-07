@@ -291,21 +291,30 @@ export const CHAMPION_SPECIFICS = {
 					if (typeof adPerRank.value === 'number') {
 						championPassiveStats.attackDamage = adPerRank.value * q;
 					} else {
-						console.warn('[CHAMPION_SPECIFICS aphelios] failed to calculate passive ad per rank');
+						console.warn('[CHAMPION_SPECIFICS aphelios] failed to calculate passive ad per rank', adPerRank);
 					}
 
 					const asPerRank = championAbilityVariableValue('ASPerRank', passiveParams);
 					if (typeof asPerRank.value === 'number') {
 						championPassiveStats.bonusAttackSpeedPercent = asPerRank.value * w;
 					} else {
-						console.warn('[CHAMPION_SPECIFICS aphelios] failed to calculate passive as per rank');
+						console.warn('[CHAMPION_SPECIFICS aphelios] failed to calculate passive as per rank', asPerRank);
 					}
 
 					const lethalityPerRank = championAbilityVariableValue('APPerRank', passiveParams);
 					if (typeof lethalityPerRank.value === 'number') {
 						championPassiveStats.lethality = lethalityPerRank.value * e;
 					} else {
-						console.warn('[CHAMPION_SPECIFICS aphelios] failed to calculate passive lethality per rank');
+						console.warn('[CHAMPION_SPECIFICS aphelios] failed to calculate passive lethality per rank', lethalityPerRank);
+					}
+
+					if (self.abilityVariantsIndexes.value.q === CHAMPION_SPECIFICS.Aphelios.WEAPON_VARIANT_INDEX_TO_NAME.indexOf('calibrum')) {
+						const bonusRange = championAbilityVariableValue('BonusRange', { abilityVariant: self.champion.value!.abilities.q.variants[CHAMPION_SPECIFICS.Aphelios.WEAPON_VARIANT_INDEX_TO_NAME.indexOf('calibrum')]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self });
+						if (typeof bonusRange.value === 'number') {
+							championPassiveStats.attackRange = bonusRange.value;
+						} else {
+							console.warn('[CHAMPION_SPECIFICS aphelios] failed to calculate passive calibrum bonus range', bonusRange);
+						}
 					}
 				},
 			},
