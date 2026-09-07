@@ -53,7 +53,7 @@ import type { IDefineVariablesConfig, IDeriveProgressFn, IEffectControlsProps, I
 import { STAT_ICON } from '@lolcalc/data';
 import { ALL_CHAMPION_STATS_ENTRIES, EFFECT_OBJECT_NAME, VariableType } from '@lolcalc/shared';
 import { clamp, roundNumber } from '@lolcalc/shared/utils.ts';
-import { computed, initCustomFormatter, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { combineCompounding } from '../calculate/util.ts';
 import { championAbilityVariableValue, VARIABLE_CALCULATION_FNS } from '../variables/game.ts';
 import { defineVariables, HOOK_PRIORITIES } from './index.ts';
@@ -1979,30 +1979,45 @@ export const CHAMPION_SPECIFICS = {
 				},
 			},
 			postTotal: {
-				handler(self, { adaptiveForceMeta, championPassiveStats, dragonStats, baseOnLevelStats, totalPreMultipliersStats, totalStats, bonusStats, totalMultipliersStats }, { calculatedVariables }) {
+				handler(self, { championPassiveStats, dragonStatMultipliers, itemPassivesStats, itemTotalStats, dragonStats, baseOnLevelStats, totalPreMultipliersStats, totalStats, bonusStats, totalMultipliersStats }, { calculatedVariables }) {
 					const bonusADPercent = self.internalData.value.passiveStacks ** 2 / 100;
+					const baseAD = baseOnLevelStats.attackDamage;
+					const preMultipliersBonusAD = totalPreMultipliersStats.attackDamage - baseAD;
 
-					/* need to add swiftmarch adaptive since it's not in `totalPreMultipliersStats` - it's added to `totalMultipliersStats` */
-					const passiveAd = (totalPreMultipliersStats.attackDamage - baseOnLevelStats.attackDamage) * bonusADPercent;
+					const bloodmailMult = calculatedVariables.bloodmailRetributionPercentage ?? 0;
+					const totalAdMult = dragonStatMultipliers.attackDamage + bloodmailMult;
 
-					if (calculatedVariables.midQuestMultiplier) {
-						const preMultiplierBonusAd = bonusStats.attackDamage - (dragonStats.attackDamage ?? 0) - (calculatedVariables.midQuestAd ?? 0);
-						const midQuestAd = preMultiplierBonusAd * calculatedVariables.midQuestMultiplier * bonusADPercent;
-
-						calculatedVariables.midQuestAd = (calculatedVariables.midQuestAd ?? 0) + midQuestAd;
-						totalMultipliersStats.attackDamage += midQuestAd;
-						totalStats.attackDamage += midQuestAd;
-						bonusStats.attackDamage += midQuestAd;
-						calculatedVariables.bloodmailRetributionExcludedAd += midQuestAd;
-					}
+					const denominator = 1 - bonusADPercent * totalAdMult;
+					const passiveAd = bonusADPercent * (preMultipliersBonusAD * (1 + totalAdMult) + baseAD * totalAdMult) / (denominator > 0 ? denominator : 1);
 
 					championPassiveStats.attackDamage = passiveAd;
 					totalMultipliersStats.attackDamage += passiveAd;
 					totalStats.attackDamage += passiveAd;
 					bonusStats.attackDamage += passiveAd;
 
-					calculatedVariables.bloodmailRetributionExcludedAd += passiveAd;
+					if (calculatedVariables.bloodmailRetribution !== undefined && bloodmailMult > 0) {
+						const trueRetribution = (baseAD + preMultipliersBonusAD + passiveAd) * bloodmailMult;
+						const retributionDiff = trueRetribution - calculatedVariables.bloodmailRetribution;
+
+						calculatedVariables.bloodmailRetribution = trueRetribution;
+						itemPassivesStats.attackDamage += retributionDiff;
+						itemTotalStats.attackDamage += retributionDiff;
+						totalMultipliersStats.attackDamage += retributionDiff;
+						bonusStats.attackDamage += retributionDiff;
+						totalStats.attackDamage += retributionDiff;
+					}
+
+					if (dragonStatMultipliers.attackDamage) {
+						const trueDragonAd = (baseAD + preMultipliersBonusAD + passiveAd) * dragonStatMultipliers.attackDamage;
+						const dragonDiff = trueDragonAd - (dragonStats.attackDamage ?? 0);
+
+						dragonStats.attackDamage = trueDragonAd;
+						totalMultipliersStats.attackDamage += dragonDiff;
+						bonusStats.attackDamage += dragonDiff;
+						totalStats.attackDamage += dragonDiff;
+					}
 				},
+				priority: HOOK_PRIORITIES.postTotal.Rengar,
 			},
 		},
 	},

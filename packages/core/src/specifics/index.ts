@@ -49,6 +49,8 @@ export const HOOK_PRIORITIES = {
 		Volibear: 1,
 		/** needs total hp, must be before immortal path */
 		DrMundo: 1,
+		/** after bloodmail, before endless hunger */
+		Rengar: 16,
 		/** needs bonus hp */
 		Briar: 100,
 		/** must be after champion passives that affect AD like Rammus/Hecarim */

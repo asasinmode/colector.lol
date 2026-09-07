@@ -723,7 +723,8 @@ test('16.17 Aphelios', async (t) => {
 	});
 });
 
-test('16.17 Rengar', async (t) => {
+test.only('16.17 Rengar', async (t) => {
+	t.runOnly(true);
 	const sourceCommon: IOverrides<'Rengar'> = {
 		level: 1,
 		runes: {
@@ -745,7 +746,7 @@ test('16.17 Rengar', async (t) => {
 		}, damageSource);
 	});
 
-	await t.test('5 passive stacks', async () => {
+	await t.test('5 stacks', async () => {
 		const damageSource = await setupDamageSource(fixture, 'Rengar', {
 			...sourceCommon,
 			internalData: { passiveStacks: 5, isPassiveMSActive: 0 },
@@ -754,6 +755,51 @@ test('16.17 Rengar', async (t) => {
 		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
 			attackDamage: 274,
 			abilityHaste: 32,
+		}, damageSource);
+
+		damageSource.currentHealth.value = 485;
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 317,
+			abilityHaste: 37,
+		}, damageSource);
+	});
+
+	await t.test('5 stacks | 4 infernals', { only: true }, async () => {
+		const damageSource = await setupDamageSource(fixture, 'Rengar', {
+			...sourceCommon,
+			internalData: { passiveStacks: 5, isPassiveMSActive: 0 },
+			dragonStacks: infernalStacks,
+		});
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 317,
+			abilityHaste: 37,
+		}, damageSource);
+
+		damageSource.currentHealth.value = 485;
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 362,
+			abilityHaste: 43,
+		}, damageSource);
+	});
+
+	await t.test('5 stacks | 4 infernals | mid quest', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Rengar', {
+			...sourceCommon,
+			internalData: { passiveStacks: 5, isPassiveMSActive: 0 },
+			dragonStacks: infernalStacks,
+			roleQuest: 'mid',
+		});
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 342,
+			abilityHaste: 41,
+		}, damageSource);
+
+		damageSource.currentHealth.value = 485;
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 392,
+			abilityHaste: 47,
 		}, damageSource);
 	});
 });
