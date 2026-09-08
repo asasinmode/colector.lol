@@ -45,6 +45,7 @@ import type IVolibear from '@lolcalc/data/files/champion/Volibear.json';
 import type IYasuo from '@lolcalc/data/files/champion/Yasuo.json';
 import type IYone from '@lolcalc/data/files/champion/Yone.json';
 import type IZaahen from '@lolcalc/data/files/champion/Zaahen.json';
+import type IZeri from '@lolcalc/data/files/champion/Zeri.json';
 import type IZilean from '@lolcalc/data/files/champion/Zilean.json';
 import type { IChampion, IChampionAbilityVariant, IChampionId } from '@lolcalc/data/types';
 import type { IChampionAbilityKey, IChampionStats } from '@lolcalc/shared';
@@ -3094,6 +3095,88 @@ export const CHAMPION_SPECIFICS = {
 			return {
 				passiveStacks: clamp(0, Math.round(self.internalData.value.passiveStacks ?? 0), maxStacks),
 			};
+		},
+	},
+	Zeri: {
+		passive: {
+			variables: defineChampionVariables<'Zeri', typeof IZeri, 'passive'>()({
+				known: {
+					TotalFullChargeDamage: [],
+				},
+				calculate(self, target) {
+					let TotalFullChargeDamage = Number.NaN;
+
+					const passiveParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.q.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self };
+					const baseDamage = championAbilityVariableValue('PassiveMaxDamage', passiveParams);
+					const percentHPDmg = championAbilityVariableValue('PassiveMaxChargePercentHealth', passiveParams);
+
+					if (typeof baseDamage.value === 'number' && typeof percentHPDmg.value === 'number') {
+						TotalFullChargeDamage = baseDamage.value + (target?.stats.value.total.hp ?? 0) * percentHPDmg.value;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS zeri] failed to calculate passive total full charge damage variables', baseDamage, percentHPDmg);
+					}
+
+					return {
+						TotalFullChargeDamage: {
+							value: TotalFullChargeDamage,
+						},
+					};
+				},
+				meta: {
+					TotalFullChargeDamage: {
+						isCustom: true,
+						type: VariableType.magic,
+					},
+					MinDamage: {
+						type: VariableType.magic,
+					},
+					PassiveMaxDamage: {
+						type: VariableType.magic,
+					},
+				},
+			}),
+		},
+		q: {
+			variables: defineChampionVariables<'Zeri', typeof IZeri, 'q'>()({
+				known: {
+					BonusAD: [],
+				},
+				calculate(self) {
+					return {
+						BonusAD: {
+							value: self.stats.value.championPassive.attackDamage ?? 0,
+						},
+					};
+				},
+				meta: {
+					ActiveDamageThatCanCrit: {
+						type: VariableType.physical,
+					},
+					BonusAD: {
+						isCustom: true,
+					},
+				},
+				uninteresting: ['NumberOfMissiles', 'ExcessAttackSpeedToADMult', 'AttackSpeedCap'],
+			}),
+		},
+		calculateHooks: {
+			onTotalPreMultipliers: {
+				handler(self, { totalPreMultipliersStats, bonusStats }, { calculatedVariables }) {
+					const passiveParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.q.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self };
+
+					let excessAS = 0;
+
+					const asCap = championAbilityVariableValue('AttackSpeedCap', passiveParams);
+					if (typeof asCap.value === 'number') {
+						calculatedVariables.attackSpeedCap = asCap.value;
+						excessAS = Math.max(0, totalPreMultipliersStats.attackSpeed - asCap.value);
+					} else {
+						console.warn('[CHAMPION_SPECIFICS] zeri failed to calculate attack speed cap', asCap);
+					}
+
+					console.log({ excessAS });
+				},
+			},
 		},
 	},
 	Zilean: {
