@@ -3100,6 +3100,12 @@ export const CHAMPION_SPECIFICS = {
 		},
 	},
 	Zeri: {
+		setupData(self) {
+			return {
+				rActive: clamp(0, self.internalData.value.rActive ?? 0, 1),
+				rStacks: Math.max(0, self.internalData.value.rStacks ?? 0),
+			};
+		},
 		passive: {
 			variables: defineChampionVariables<'Zeri', typeof IZeri, 'passive'>()({
 				known: {
@@ -3218,18 +3224,43 @@ export const CHAMPION_SPECIFICS = {
 			}),
 		},
 		calculateHooks: {
+			onChampionPassive: {
+				handler(self, _stats, { calculatedVariables }) {
+					if (!self.internalData.value.rActive) {
+						return;
+					}
+
+					const rParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value?.abilities.r.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self, abilityLevel: self.abilityLevels.value.r };
+
+					const ultBonusMS = championAbilityVariableValue('BaseBonusMS', rParams);
+					if (typeof ultBonusMS.value === 'number') {
+						calculatedVariables.totalBonusPercentMoveSpeed += ultBonusMS.value;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS] zeri failed to calculate r bonus ms', ultBonusMS);
+					}
+
+					if (self.internalData.value.rStacks) {
+						const stackMS = championAbilityVariableValue('MSPercent', rParams);
+						if (typeof stackMS.value === 'number') {
+							calculatedVariables.totalBonusPercentMoveSpeed += self.internalData.value.rStacks * stackMS.value;
+						} else {
+							console.warn('[CHAMPION_SPECIFICS] zeri failed to calculate r stacks bonus ms', stackMS);
+						}
+					}
+				},
+			},
 			onTotalPreMultipliers: {
 				handler(self, { totalPreMultipliersStats, baseStats, championPassiveStats, bonusStats }, { calculatedVariables, miscDebug }) {
 					const passiveParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.q.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self };
 
 					miscDebug.zeriExcessAS = 0;
 
-					const asCap = championAbilityVariableValue('AttackSpeedCap', passiveParams);
-					if (typeof asCap.value === 'number') {
-						calculatedVariables.attackSpeedCap = asCap.value;
-						miscDebug.zeriExcessAS = Math.max(0, totalPreMultipliersStats.attackSpeed - asCap.value);
+					const passiveASCap = championAbilityVariableValue('AttackSpeedCap', passiveParams);
+					if (typeof passiveASCap.value === 'number') {
+						calculatedVariables.attackSpeedCap = passiveASCap.value;
+						miscDebug.zeriExcessAS = Math.max(0, totalPreMultipliersStats.attackSpeed - passiveASCap.value);
 					} else {
-						console.warn('[CHAMPION_SPECIFICS] zeri failed to calculate attack speed cap', asCap);
+						console.warn('[CHAMPION_SPECIFICS] zeri failed to calculate passive attack speed cap', passiveASCap);
 					}
 
 					const asToAD = championAbilityVariableValue('ExcessAttackSpeedToADMult', passiveParams);
@@ -3241,6 +3272,23 @@ export const CHAMPION_SPECIFICS = {
 						totalPreMultipliersStats.attackDamage += championPassiveStats.attackDamage;
 					} else {
 						console.warn('[CHAMPION_SPECIFICS] zeri failed to calculate attack speed cap', asToAD);
+					}
+
+					if (!self.internalData.value.rActive) {
+						return;
+					}
+
+					const ultASPercent = championAbilityVariableValue('BaseASPercent', { abilityVariant: self.champion.value?.abilities.r.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self, abilityLevel: self.abilityLevels.value.r });
+					if (typeof ultASPercent.value === 'number') {
+						calculatedVariables.attackSpeedCap += ultASPercent.value * baseStats.attackSpeedRatio;
+						championPassiveStats.bonusAttackSpeedPercent = ultASPercent.value;
+						championPassiveStats.attackSpeed = baseStats.attackSpeedRatio * ultASPercent.value;
+						totalPreMultipliersStats.attackSpeed += championPassiveStats.attackSpeed;
+						totalPreMultipliersStats.bonusAttackSpeedPercent += ultASPercent.value;
+						bonusStats.bonusAttackSpeedPercent = ultASPercent.value;
+						bonusStats.attackSpeed += championPassiveStats.attackSpeed;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS] zeri failed to calculate r attack speed', ultASPercent);
 					}
 				},
 			},
@@ -3415,6 +3463,7 @@ export interface IChampionInternalDataMap {
 	Viktor: { passiveAbilityUpgradesMask: number };
 	Volibear: { passiveStacks: number };
 	MonkeyKing: { passiveStacks: number };
+	Zeri: { rActive: number; rStacks: number };
 	Zaahen: { passiveStacks: number };
 }
 

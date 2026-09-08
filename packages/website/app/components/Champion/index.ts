@@ -223,6 +223,12 @@ export const CHAMPION_COMPONENTS: Partial<Record<IChampionId, ISpecificComponent
 	MonkeyKing: {
 		extras: await numberExtra(GameAbilityId.build(AbilityType.champion, 'MonkeyKing', 'passive', 0), 'passiveStacks', 'Stone Skin stacks', 0, CHAMPION_SPECIFICS.MonkeyKing.MAX_PASSIVE_STACKS),
 	},
+	Zeri: {
+		extras: [
+			await booleanExtra(GameAbilityId.build(AbilityType.champion, 'Zeri', 'r', 0), 'rActive', 'is active', false),
+			await numberExtra(GameAbilityId.build(AbilityType.champion, 'Zeri', 'r', 0), 'rStacks', 'Overdrive stacks'),
+		],
+	},
 	Zaahen: {
 		extras: await numberExtra(GameAbilityId.build(AbilityType.champion, 'Zaahen', 'passive', 0), 'passiveStacks', 'Determination stacks', 0, CHAMPION_SPECIFICS.Zaahen.MAX_PASSIVE_STACKS),
 	},
