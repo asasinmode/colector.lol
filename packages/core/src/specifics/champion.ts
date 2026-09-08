@@ -3049,10 +3049,10 @@ export const CHAMPION_SPECIFICS = {
 		},
 		calculateHooks: {
 			postInit: {
-				handler(self, { baseStats, championPassiveStats }) {
+				handler(self, _stats, { calculatedVariables }) {
 					const critDamageMod = championAbilityVariableValue('CritDamageMod', { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self });
 					if (typeof critDamageMod.value === 'number') {
-						championPassiveStats.critDamageMultiplier = -baseStats.critDamageMultiplier * (1 - critDamageMod.value);
+						calculatedVariables.critMultiplierMod = critDamageMod.value;
 					} else {
 						console.warn('[CHAMPION_SPECIFICS yasuo] failed to calculate passive crit multiplier', critDamageMod);
 					}
