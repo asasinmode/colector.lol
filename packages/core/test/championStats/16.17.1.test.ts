@@ -383,6 +383,21 @@ test('16.17 adaptive force', async (t) => {
 			abilityPower: 55,
 		}, damageSource);
 	});
+
+	await t.test('yasuo', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Yasuo', {
+			...sourceCommon,
+			items: [ITEMS_BY_NAME.ampTome, ITEMS_BY_NAME.phantomDancer, ITEMS_BY_NAME.fiendhunterBolts, ITEMS_BY_NAME.navoriFlickerblade, ITEMS_BY_NAME.rfc],
+		});
+
+		typedPartialDeepStrictEqual(damageSource.stats.value.meta, {
+			adaptiveForceStat: 'abilityPower',
+		}, damageSource);
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 110,
+			abilityPower: 38,
+		}, damageSource);
+	});
 });
 
 test('16.17 Jhin', async (t) => {

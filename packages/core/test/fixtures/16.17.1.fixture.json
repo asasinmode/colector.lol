@@ -900,6 +900,157 @@
 				}
 			}
 		},
+		"Varus": {
+			"partype": "Mana",
+			"stats": {
+				"hp": 600,
+				"hpperlevel": 105,
+				"mp": 320,
+				"mpperlevel": 40,
+				"movespeed": 330,
+				"armor": 24,
+				"armorperlevel": 4,
+				"spellblock": 33,
+				"spellblockperlevel": 1.1,
+				"attackrange": 575,
+				"hpregen": 3.5,
+				"hpregenperlevel": 0.55,
+				"mpregen": 8,
+				"mpregenperlevel": 0.8,
+				"crit": 0,
+				"critperlevel": 0,
+				"attackdamage": 59,
+				"attackdamageperlevel": 3.4,
+				"attackspeedperlevel": 3.5,
+				"attackspeed": 0.658,
+				"attackspeedratio": 0.658
+			},
+			"abilities": {
+				"passive": {
+					"maxLevel": 0,
+					"variants": [
+						{
+							"name": "Living Vengeance",
+							"objectName": "VarusPassive",
+							"dataKey": "Characters/Varus/Spells/VarusPassiveAbility/VarusPassive",
+							"image": "assets/characters/varus/hud/icons2d/varuspassive.png",
+							"tooltip": "When Varus kills an enemy, he gains <attackSpeed>@MinionAS@ Attack Speed</attackSpeed>, <scaleAD>@MinionAD@ Attack Damage</scaleAD>, and <scaleAP>@MinionAP@ Ability Power</scaleAP> for @ASDuration@ seconds.<br><br>Champion takedowns grant <attackSpeed>@ChampionAS@ Attack Speed</attackSpeed> that can bypass the Attack Speed cap, <scaleAD>@ChampionAD@ Attack Damage</scaleAD>, and <scaleAP>@ChampionAP@ Ability Power</scaleAP> instead.",
+							"dataValues": {
+								"PassiveAS": [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3],
+								"PassiveASMinion": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
+								"PassiveASRatio": [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4],
+								"PassiveASRatioMinion": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+								"AStoADMinion": [11, 11, 11, 11, 11, 11, 11],
+								"AStoAPMinion": [11, 11, 11, 11, 11, 11, 11],
+								"AStoADChampion": [33, 33, 33, 33, 33, 33, 33],
+								"AStoAPChampion": [33, 33, 33, 33, 33, 33, 33],
+								"NewASCap": [3.33, 3.33, 3.33, 3.33, 3.33, 3.33, 3.33]
+							},
+							"spellCalculations": {
+								"MinionAS": {
+									"mFormulaParts": [
+										{
+											"mLevel1Value": 0.1,
+											"mBreakpoints": [
+												{
+													"mLevel": 7,
+													"mAdditionalBonusAtThisLevel": 0.05
+												},
+												{
+													"mLevel": 13,
+													"mAdditionalBonusAtThisLevel": 0.05
+												}
+											],
+											"__type": "ByCharLevelBreakpointsCalculationPart"
+										}
+									],
+									"mDisplayAsPercent": true
+								},
+								"ChampionAS": {
+									"mFormulaParts": [
+										{
+											"mDataValue": "PassiveAS",
+											"__type": "NamedDataValueCalculationPart"
+										}
+									],
+									"mDisplayAsPercent": true
+								},
+								"ASDuration": {
+									"mFormulaParts": [
+										{
+											"mLevel1Value": 5,
+											"mBreakpoints": [
+												{
+													"mLevel": 6,
+													"mAdditionalBonusAtThisLevel": 2
+												},
+												{
+													"mLevel": 11,
+													"mAdditionalBonusAtThisLevel": 2
+												},
+												{
+													"mLevel": 16,
+													"mAdditionalBonusAtThisLevel": 2
+												},
+												{
+													"mLevel": 21,
+													"mAdditionalBonusAtThisLevel": 2
+												},
+												{
+													"mLevel": 26,
+													"mAdditionalBonusAtThisLevel": 2
+												}
+											],
+											"__type": "ByCharLevelBreakpointsCalculationPart"
+										}
+									]
+								},
+								"MinionAD": {
+									"mFormulaParts": [
+										{
+											"mStat": 4,
+											"mStatFormula": 2,
+											"mDataValue": "AStoADMinion",
+											"__type": "StatByNamedDataValueCalculationPart"
+										}
+									]
+								},
+								"MinionAP": {
+									"mFormulaParts": [
+										{
+											"mStat": 4,
+											"mStatFormula": 2,
+											"mDataValue": "AStoAPMinion",
+											"__type": "StatByNamedDataValueCalculationPart"
+										}
+									]
+								},
+								"ChampionAD": {
+									"mFormulaParts": [
+										{
+											"mStat": 4,
+											"mStatFormula": 2,
+											"mDataValue": "AStoADChampion",
+											"__type": "StatByNamedDataValueCalculationPart"
+										}
+									]
+								},
+								"ChampionAP": {
+									"mFormulaParts": [
+										{
+											"mStat": 4,
+											"mStatFormula": 2,
+											"mDataValue": "AStoAPChampion",
+											"__type": "StatByNamedDataValueCalculationPart"
+										}
+									]
+								}
+							}
+						}
+					]
+				}
+			}
+		},
 		"Veigar": {
 			"partype": "Mana",
 			"stats": {
@@ -952,6 +1103,101 @@
 											"__type": "NumberCalculationPart"
 										}
 									]
+								}
+							}
+						}
+					]
+				}
+			}
+		},
+		"Yasuo": {
+			"partype": "Flow",
+			"stats": {
+				"hp": 590,
+				"hpperlevel": 110,
+				"mp": 100,
+				"mpperlevel": 0,
+				"movespeed": 345,
+				"armor": 32,
+				"armorperlevel": 4.6,
+				"spellblock": 32,
+				"spellblockperlevel": 2.05,
+				"attackrange": 175,
+				"hpregen": 6.5,
+				"hpregenperlevel": 0.9,
+				"mpregen": 0,
+				"mpregenperlevel": 0,
+				"crit": 0,
+				"critperlevel": 0,
+				"attackdamage": 60,
+				"attackdamageperlevel": 2.5,
+				"attackspeedperlevel": 3.5,
+				"attackspeed": 0.697,
+				"attackspeedratio": 0.67
+			},
+			"abilities": {
+				"passive": {
+					"maxLevel": 0,
+					"variants": [
+						{
+							"name": "Way of the Wanderer",
+							"objectName": "YasuoPassive",
+							"dataKey": "Characters/Yasuo/Spells/YasuoPassiveAbility/YasuoPassive",
+							"image": "assets/characters/yasuo/hud/icons2d/yasuo_passive.png",
+							"tooltip": "{{Spell_YasuoPassive_Tooltip}}",
+							"tooltipExtended": "{{Spell_YasuoPassive_Tooltip}}<br><br><rules>Intent is calculated after other Critical Strike Chance modifying effects.<br><onlyShowInGame>Current bonus: @f2@% Critical Strike Chance, <physicalDamage>@f3@ Bonus Attack Damage</physicalDamage>.</onlyShowInGame></rules>",
+							"dataValues": {
+								"YasuoCritToAD": [50, 50, 50, 50, 50, 50, 50],
+								"CritChanceMultiplier": [1, 1, 1, 1, 1, 1, 1],
+								"CritDamageMod": [0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95]
+							},
+							"spellCalculations": {
+								"ShieldValue": {
+									"mFormulaParts": [
+										{
+											"mStartValue": 125,
+											"mEndValue": 600,
+											"mScaleByStatProgressionMultiplier": true,
+											"__type": "ByCharLevelInterpolationCalculationPart"
+										}
+									]
+								},
+								"{74ce5438}": {
+									"mFormulaParts": [
+										{
+											"mLevel1Value": 55,
+											"mBreakpoints": [
+												{
+													"mLevel": 7,
+													"mAdditionalBonusAtThisLevel": -5
+												},
+												{
+													"mLevel": 13,
+													"mAdditionalBonusAtThisLevel": -5
+												},
+												{
+													"mLevel": 19,
+													"mAdditionalBonusAtThisLevel": -5
+												},
+												{
+													"mLevel": 25,
+													"mAdditionalBonusAtThisLevel": -5
+												}
+											],
+											"__type": "ByCharLevelBreakpointsCalculationPart"
+										}
+									]
+								},
+								"CurrentCritDamage": {
+									"mExpandedTooltipCalculationDisplay": 6,
+									"mFormulaParts": [
+										{
+											"mStat": 9,
+											"mCoefficient": 1,
+											"__type": "StatByCoefficientCalculationPart"
+										}
+									],
+									"mDisplayAsPercent": true
 								}
 							}
 						}
@@ -1090,6 +1336,23 @@
 						}
 					]
 				}
+			}
+		},
+		"2512": {
+			"searchString": "fiendhunterbolts;criticalstrike;attackspeed;movement;abilityhaste;criticalstrikechance;movespeed",
+			"stats": {
+				"FlatCritChanceMod": 0.25,
+				"PercentAttackSpeedMod": 0.45,
+				"PercentMovementSpeedMod": 0.04
+			},
+			"dataValues": {
+				"UltimateHaste": 30,
+				"Cooldown": 45,
+				"Duration": 8,
+				"BonusTrueDamage": 0.15,
+				"BonusAS": 0.5,
+				"NumberOfAttacks": 3,
+				"CritModifier": 0.8
 			}
 		},
 		"2517": {
@@ -1555,6 +1818,19 @@
 				"APAmp": 0.3
 			}
 		},
+		"3094": {
+			"searchString": "rapidfirecannon;rfc;rapidfire;canon;gun;energized;energised;criticalstrike;attackspeed;movement;criticalstrikechance;movespeed",
+			"stats": {
+				"FlatCritChanceMod": 0.25,
+				"PercentAttackSpeedMod": 0.35,
+				"PercentMovementSpeedMod": 0.04
+			},
+			"dataValues": {
+				"RangePercentIncrease": 0.35,
+				"MaxRangeIncrease": 150,
+				"BonusDamage": 40
+			}
+		},
 		"3110": {
 			"searchString": "frozenheart;armor;mana;aura;cooldownreduction;abilityhaste",
 			"stats": {
@@ -1610,6 +1886,25 @@
 				"GrievousAmount": 0.4
 			},
 			"effectAmount": [3]
+		},
+		"3145": {
+			"searchString": "hextechalternator;revolver;pewpew;spelldamage;abilitypower",
+			"stats": {
+				"FlatMagicDamageMod": 45
+			},
+			"dataValues": {
+				"Cooldown": 40
+			},
+			"itemCalculations": {
+				"DamageAmount": {
+					"mFormulaParts": [
+						{
+							"mNumber": 65,
+							"__type": "NumberCalculationPart"
+						}
+					]
+				}
+			}
 		},
 		"3170": {
 			"searchString": "swiftmarch;boots;movespeed",
@@ -1779,6 +2074,18 @@
 				"EternityCDPerCast": 1,
 				"SecondsPerStack": 60
 			}
+		},
+		"6675": {
+			"searchString": "navoriflickerblade;critshojin;criticalstrike;attackspeed;movement;criticalstrikechance;movespeed",
+			"stats": {
+				"FlatCritChanceMod": 0.25,
+				"PercentAttackSpeedMod": 0.4,
+				"PercentMovementSpeedMod": 0.04
+			},
+			"dataValues": {
+				"CDRAmount": 0.15
+			},
+			"effectAmount": [0.5, 1, 90, 0, 0, 0, 0, 0]
 		},
 		"6676": {
 			"searchString": "thecollector;deathblade;lethality;gun;damage;criticalstrike;armorpenetration;criticalstrikechance;attackdamage",

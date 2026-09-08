@@ -3073,7 +3073,7 @@ export const CHAMPION_SPECIFICS = {
 
 					const critToAD = championAbilityVariableValue('YasuoCritToAD', passiveParams);
 					if (typeof critToAD.value === 'number') {
-						championPassiveStats.attackDamage = Math.max(0, bonusStats.critChance - 1) * critToAD.value / 2;
+						championPassiveStats.attackDamage = Math.max(0, bonusStats.critChance - 1) * critToAD.value;
 						bonusStats.attackDamage += championPassiveStats.attackDamage;
 						totalPreMultipliersStats.attackDamage += championPassiveStats.attackDamage;
 					} else {
