@@ -242,8 +242,6 @@ export function calculateChampionStats(source: DamageSource): IStatsCalculationR
 	}
 
 	effectStats.attackSpeed += effectStats.bonusAttackSpeedPercent * baseOnLevelStats.attackSpeedRatio;
-	/* attack speed from level counts towards bonus */
-	bonusStats.bonusAttackSpeedPercent += baseOnLevelStats.bonusAttackSpeedPercent;
 	for (const stat in bonusStats) {
 		if (MULTIPLICATIVE_CHAMPION_STATS.includes(stat as IChampionStatName)) {
 			bonusStats[stat as IMultiplicativeChampionStatName] = 1 - addMultiplicative(
@@ -270,7 +268,8 @@ export function calculateChampionStats(source: DamageSource): IStatsCalculationR
 		([statName, statValue]) => [statName, statValue + baseOnLevelStats[statName as IChampionStatName]],
 	)) as IChampionStats;
 
-	bonusStats.attackSpeed += baseOnLevelStats.bonusAttackSpeedPercent * baseOnLevelStats.attackSpeedRatio;
+	/* attack speed from level counts towards bonus, add after totalPreMultipliersStats to avoid double counting */
+	bonusStats.bonusAttackSpeedPercent += baseOnLevelStats.bonusAttackSpeedPercent;
 	/* maybe should not be done like that but that's what it is at this point */
 	totalPreMultipliersStats.tenacity = bonusStats.tenacity;
 	totalPreMultipliersStats.slowResist = bonusStats.slowResist;
