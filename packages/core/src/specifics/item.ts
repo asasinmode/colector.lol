@@ -2188,18 +2188,8 @@ export const ITEM_SPECIFICS = {
 			},
 		} satisfies IEffectControlsProps<any>,
 		BONUS_AD_PERCENTAGE: (damageSource: DamageSource, maxHpOverride?: number) => {
-			const maxValueAt = variableResolveFn(ITEMS_BY_NAME.overlordsBloodmail?.itemCalculations.RemainingHealthThreshold)?.(
-				ITEMS_BY_NAME.overlordsBloodmail?.itemCalculations.RemainingHealthThreshold,
-				ITEMS_BY_NAME.overlordsBloodmail,
-				{
-					variableValueFn: itemVariableValue,
-					variableValueParams: {
-						item: ITEMS_BY_NAME.overlordsBloodmail,
-						damageSource,
-					},
-				},
-			);
-			if (!maxValueAt || typeof maxValueAt.value !== 'number') {
+			const maxValueAt = itemVariableValue('RemainingHealthThreshold', { item: ITEMS_BY_NAME.overlordsBloodmail, damageSource });
+			if (typeof maxValueAt?.value !== 'number') {
 				console.error('[ITEM_SPECIFICS bloodmail] failed to resolve RemainingHealthThreshold variable value');
 				return Number.NaN;
 			}
