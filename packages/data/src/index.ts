@@ -32,6 +32,10 @@ export const CONSTS = {
 	/** the value below which tenacity cannot reduce the duration of a cc, according to [the wiki](https://wiki.leagueoflegends.com/en-us/Tenacity) */
 	minCCDuration: 0.3,
 	defaultGrievous: 0.4,
+	/** [statistics growth formula modifier](https://wiki.leagueoflegends.com/en-us/Champion_statistic#Growth_statistic_calculations) */
+	statGfm(level: number) {
+		return 0.7025 + 0.0175 * (level - 1);
+	},
 };
 
 export const CHAMPIONS = championData.data satisfies Record<IChampionId, IListedChampion> as IChampionData;

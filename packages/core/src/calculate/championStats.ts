@@ -112,10 +112,9 @@ export function calculateChampionStats(source: DamageSource): IStatsCalculationR
 		critChance: champion?.stats.critperlevel ?? 0,
 	};
 
-	/** [statistics growth formula modifier](https://wiki.leagueoflegends.com/en-us/Champion_statistic#Growth_statistic_calculations) */
-	const STAT_GFM = 0.7025 + 0.0175 * (level - 1);
+	const gfm = CONSTS.statGfm(level);
 	for (const stat in levelStats) {
-		levelStats[stat as keyof typeof levelStats]! *= (level - 1) * STAT_GFM;
+		levelStats[stat as keyof typeof levelStats]! *= (level - 1) * gfm;
 	}
 
 	const baseOnLevelStats = Object.fromEntries(Object.entries(baseStats).map(

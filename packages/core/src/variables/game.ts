@@ -3,7 +3,7 @@ import type { IChampionAbilityKey, IChampionStatName, IStatsCalculationResult, V
 import type { DamageSource } from '../DamageSource.ts';
 import type { ICalculatesFromPart, ISpecificVariables, IVariableValueResult } from '../specifics/index';
 
-import { ICON_ON_HIT_IMG, PATCH_VERSION, STAT_ICON } from '@lolcalc/data';
+import { CONSTS, ICON_ON_HIT_IMG, PATCH_VERSION, STAT_ICON } from '@lolcalc/data';
 import { ITEM_STAT_META } from '@lolcalc/data/meta.ts';
 import { CHAMPION_LEVEL, CHAMPION_STAT_META } from '@lolcalc/shared';
 import { roundNumber } from '@lolcalc/shared/utils.ts';
@@ -1306,13 +1306,14 @@ export const VARIABLE_CALCULATION_FNS = {
 	},
 	/** calculates the value between `mStartValue` and `mEndValue` based on damage source's level. Formula taken from [Protoplasm Harness' wiki](https://wiki.leagueoflegends.com/en-us/Protoplasm_Harness) */
 	ByCharLevelInterpolationCalculationPart(variable: IGameVariablesByType['ByCharLevelInterpolationCalculationPart'], _whole, meta) {
-		const { mStartValue = 0, mEndValue, mScalePastDefaultMaxLevel = true } = variable;
+		const { mStartValue = 0, mEndValue, mScalePastDefaultMaxLevel = true, mScaleByStatProgressionMultiplier } = variable;
 		let level = meta.variableValueParams.damageSource?.level.value ?? 1;
 		if (!mScalePastDefaultMaxLevel) {
 			level = Math.min(CHAMPION_LEVEL.max, level);
 		}
+
 		return {
-			value: mStartValue + (mEndValue - mStartValue) / (CHAMPION_LEVEL.max - 1) * (level - 1),
+			value: mStartValue + (mEndValue - mStartValue) / (CHAMPION_LEVEL.max - 1) * (level - 1) * (mScaleByStatProgressionMultiplier ? CONSTS.statGfm(level) : 1),
 			calculatesFrom: [{
 				stat: 'level',
 				value: {
@@ -1660,6 +1661,7 @@ interface IGameVariablesByType {
 		mStartValue: number;
 		mEndValue: number;
 		mScalePastDefaultMaxLevel?: boolean;
+		mScaleByStatProgressionMultiplier?: boolean;
 		__type: string;
 	};
 	/** hashed `ByCharLevelInterpolationCalculationPart` */
