@@ -2111,6 +2111,148 @@
 					]
 				}
 			}
+		},
+		"Zeri": {
+			"partype": "Mana",
+			"stats": {
+				"hp": 600,
+				"hpperlevel": 110,
+				"mp": 250,
+				"mpperlevel": 45,
+				"movespeed": 330,
+				"armor": 24,
+				"armorperlevel": 4.2,
+				"spellblock": 33,
+				"spellblockperlevel": 1.1,
+				"attackrange": 550,
+				"hpregen": 3.25,
+				"hpregenperlevel": 0.7,
+				"mpregen": 6,
+				"mpregenperlevel": 0.8,
+				"crit": 0,
+				"critperlevel": 0,
+				"attackdamage": 56,
+				"attackdamageperlevel": 2,
+				"attackspeedperlevel": 2,
+				"attackspeed": 0.658,
+				"attackspeedratio": 0.625
+			},
+			"abilities": {
+				"q": {
+					"maxLevel": 5,
+					"variants": [
+						{
+							"name": "Burst Fire",
+							"objectName": "ZeriQ",
+							"dataKey": "Characters/Zeri/Spells/ZeriQAbility/ZeriQ",
+							"image": "assets/characters/zeri/hud/icons2d/zeriq.png",
+							"cooldownTime": [0, 0, 0, 0, 0, 0, 0],
+							"tooltip": "Zeri fires a burst of @NumberOfMissiles@ rounds that deals <physicalDamage>@ActiveDamageThatCanCrit@ physical damage</physicalDamage> to the first enemy hit. This Ability is treated as an Attack. ",
+							"tooltipExtendedBelowLine": "<rules>This Ability can crit, apply on-hit effects once per target, and hit anything that an Attack can. The Cooldown and cast time scale down with <attackSpeed>Attack Speed</attackSpeed> (max <attackSpeed>@AttackSpeedCap@ attacks per second</attackSpeed>). @ExcessAttackSpeedToADMult*100@% of excess <attackSpeed>Attack Speed</attackSpeed> is converted into <physicalDamage>Attack Damage</physicalDamage>.</rules>",
+							"extendedVariables": [
+								{
+									"name": "BaseDamage",
+									"nameOverride": "spell_listtype_damage"
+								},
+								{
+									"name": "ActiveADRatio",
+									"nameOverride": "spell_listtype_totaladratio"
+								}
+							],
+							"dataValues": {
+								"MinCooldown": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+								"AttackSpeedCap": [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5],
+								"ExcessAttackSpeedToADMult": [0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6],
+								"BaseDamage": [18, 22, 26, 30, 34, 38, 42],
+								"ActiveADRatio": [1, 1.02, 1.04, 1.06, 1.08, 1.1, 1.12],
+								"NumberOfMissiles": [7, 7, 7, 7, 7, 7, 7],
+								"EnergizedMissiles": [3, 3, 3, 3, 3, 3, 3],
+								"SlowDuration": [0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25],
+								"SlowPercent": [0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99],
+								"ActivePercentDamageToTowers": [1, 1, 1, 1, 1, 1, 1],
+								"MaxPercentHealthToMonsters": [300, 300, 300, 300, 300, 300, 300],
+								"ChargePerAttack": [10, 10, 10, 10, 10, 10, 10],
+								"ChargeDistanceMultiplier": [0.025, 0.025, 0.025, 0.025, 0.025, 0.025, 0.025]
+							},
+							"spellCalculations": {
+								"ActiveDamageThatCanCrit": {
+									"mFormulaParts": [
+										{
+											"mDataValue": "BaseDamage",
+											"__type": "NamedDataValueCalculationPart"
+										},
+										{
+											"mStat": 2,
+											"mDataValue": "ActiveADRatio",
+											"__type": "StatByNamedDataValueCalculationPart"
+										}
+									]
+								},
+								"MinDamage": {
+									"mFormulaParts": [
+										{
+											"mStartValue": 10,
+											"mEndValue": 25,
+											"mScaleByStatProgressionMultiplier": true,
+											"__type": "ByCharLevelInterpolationCalculationPart"
+										},
+										{
+											"mCoefficient": 0.03,
+											"__type": "StatByCoefficientCalculationPart"
+										}
+									]
+								},
+								"CurrentCritDamage": {
+									"mFormulaParts": [
+										{
+											"mStat": 9,
+											"mCoefficient": 1,
+											"__type": "StatByCoefficientCalculationPart"
+										}
+									]
+								},
+								"PassiveMaxDamage": {
+									"mFormulaParts": [
+										{
+											"mStartValue": 75,
+											"mEndValue": 160,
+											"__type": "ByCharLevelInterpolationCalculationPart"
+										},
+										{
+											"mCoefficient": 1.1,
+											"__type": "StatByCoefficientCalculationPart"
+										}
+									]
+								},
+								"PassiveMaxChargePercentHealth": {
+									"mFormulaParts": [
+										{
+											"mStartValue": 0.01,
+											"mEndValue": 0.11,
+											"__type": "ByCharLevelInterpolationCalculationPart"
+										}
+									],
+									"mDisplayAsPercent": true
+								},
+								"PassiveExecuteThreshold": {
+									"{72c5c2a8}": 2,
+									"mFormulaParts": [
+										{
+											"mStartValue": 70,
+											"mEndValue": 160,
+											"__type": "ByCharLevelInterpolationCalculationPart"
+										},
+										{
+											"mCoefficient": 0.2,
+											"__type": "StatByCoefficientCalculationPart"
+										}
+									]
+								}
+							}
+						}
+					]
+				}
+			}
 		}
 	},
 	"items": {

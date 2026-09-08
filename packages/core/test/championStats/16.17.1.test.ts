@@ -398,6 +398,22 @@ test('16.17 adaptive force', async (t) => {
 			abilityPower: 38,
 		}, damageSource);
 	});
+
+	await t.test('zeri', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Zeri', {
+			...sourceCommon,
+			level: 18,
+			items: [ITEMS_BY_NAME.ampTome, ITEMS_BY_NAME.phantomDancer, ITEMS_BY_NAME.fiendhunterBolts, ITEMS_BY_NAME.navoriFlickerblade],
+		});
+
+		typedPartialDeepStrictEqual(damageSource.stats.value.meta, {
+			adaptiveForceStat: 'abilityPower',
+		}, damageSource);
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 120,
+			abilityPower: 38,
+		}, damageSource);
+	});
 });
 
 test('16.17 Jhin', async (t) => {

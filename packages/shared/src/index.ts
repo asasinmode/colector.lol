@@ -317,6 +317,8 @@ export interface IStatsCalculationMiscDebug {
 	sennaPassiveStacksStep?: number;
 	/** pyke's passive variable ratio */
 	pykePassiveHpToAd?: number;
+	zeriExcessAS?: number;
+	zeriExcessASPercent?: number;
 }
 
 /** variables of effects applied onto the damage target */

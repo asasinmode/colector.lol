@@ -3163,20 +3163,29 @@ export const CHAMPION_SPECIFICS = {
 		},
 		calculateHooks: {
 			onTotalPreMultipliers: {
-				handler(self, { totalPreMultipliersStats, bonusStats }, { calculatedVariables }) {
+				handler(self, { totalPreMultipliersStats, baseStats, championPassiveStats, bonusStats }, { calculatedVariables, miscDebug }) {
 					const passiveParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.q.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self };
 
-					let excessAS = 0;
+					miscDebug.zeriExcessAS = 0;
 
 					const asCap = championAbilityVariableValue('AttackSpeedCap', passiveParams);
 					if (typeof asCap.value === 'number') {
 						calculatedVariables.attackSpeedCap = asCap.value;
-						excessAS = Math.max(0, totalPreMultipliersStats.attackSpeed - asCap.value);
+						miscDebug.zeriExcessAS = Math.max(0, totalPreMultipliersStats.attackSpeed - asCap.value);
 					} else {
 						console.warn('[CHAMPION_SPECIFICS] zeri failed to calculate attack speed cap', asCap);
 					}
 
-					console.log({ excessAS });
+					const asToAD = championAbilityVariableValue('ExcessAttackSpeedToADMult', passiveParams);
+					if (typeof asToAD.value === 'number') {
+						miscDebug.zeriExcessASPercent = (miscDebug.zeriExcessAS / baseStats.attackSpeedRatio);
+						/* passive calculates off of excess bonus % attack speed, so convert raw excess as to it */
+						championPassiveStats.attackDamage = miscDebug.zeriExcessASPercent * asToAD.value * 100;
+						bonusStats.attackDamage += championPassiveStats.attackDamage;
+						totalPreMultipliersStats.attackDamage += championPassiveStats.attackDamage;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS] zeri failed to calculate attack speed cap', asToAD);
+					}
 				},
 			},
 		},
