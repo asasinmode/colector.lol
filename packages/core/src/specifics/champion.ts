@@ -43,6 +43,7 @@ import type IVeigar from '@lolcalc/data/files/champion/Veigar.json';
 import type IVladimir from '@lolcalc/data/files/champion/Vladimir.json';
 import type IVolibear from '@lolcalc/data/files/champion/Volibear.json';
 import type IYasuo from '@lolcalc/data/files/champion/Yasuo.json';
+import type IYone from '@lolcalc/data/files/champion/Yone.json';
 import type IZaahen from '@lolcalc/data/files/champion/Zaahen.json';
 import type IZilean from '@lolcalc/data/files/champion/Zilean.json';
 import type { IChampion, IChampionAbilityVariant, IChampionId } from '@lolcalc/data/types';
@@ -3047,48 +3048,44 @@ export const CHAMPION_SPECIFICS = {
 				isImmobilizing: false,
 			},
 		},
-		calculateHooks: {
-			postInit: {
-				handler(self, _stats, { calculatedVariables }) {
-					const critDamageMod = championAbilityVariableValue('CritDamageMod', { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self });
-					if (typeof critDamageMod.value === 'number') {
-						calculatedVariables.critMultiplierMod = critDamageMod.value;
-					} else {
-						console.warn('[CHAMPION_SPECIFICS yasuo] failed to calculate passive crit multiplier', critDamageMod);
-					}
-				},
-			},
-			onTotalPreMultipliers: {
-				handler(self, { bonusStats, championPassiveStats, totalPreMultipliersStats }) {
-					const passiveParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self };
-
-					const critMultiplier = championAbilityVariableValue('CritChanceMultiplier', passiveParams);
-					if (typeof critMultiplier.value === 'number') {
-						championPassiveStats.critChance = bonusStats.critChance * critMultiplier.value;
-						bonusStats.critChance += championPassiveStats.critChance;
-						totalPreMultipliersStats.critChance += championPassiveStats.critChance;
-					} else {
-						console.warn('[CHAMPION_SPECIFICS yasuo] failed to calculate passive crit multiplier', critMultiplier);
-					}
-
-					const critToAD = championAbilityVariableValue('YasuoCritToAD', passiveParams);
-					if (typeof critToAD.value === 'number') {
-						championPassiveStats.attackDamage = Math.max(0, bonusStats.critChance - 1) * critToAD.value;
-						bonusStats.attackDamage += championPassiveStats.attackDamage;
-						totalPreMultipliersStats.attackDamage += championPassiveStats.attackDamage;
-					} else {
-						console.warn('[CHAMPION_SPECIFICS yasuo] failed to calculate passive crit to ad', critToAD);
-					}
-				},
-			},
-		},
+		calculateHooks: windBrotherCalculateHooks('Yasuo'),
 	},
 	Yone: {
+		passive: {
+			variables: defineChampionVariables<'Yone', typeof IYone, 'passive'>()({
+				known: {
+					f2: [],
+					f3: [],
+				},
+				calculate(self) {
+					return {
+						f2: {
+							value: self.stats.value.championPassive.critChance ?? 0,
+						},
+						f3: {
+							value: self.stats.value.championPassive.attackDamage,
+						},
+					};
+				},
+				meta: {
+					f2: {
+						displayedName: 'BonusCritChance',
+						resultsIsPercentage: true,
+						resultsMultiplier: 100,
+					},
+					f3: {
+						displayedName: 'BonusAD',
+					},
+				},
+				uninteresting: ['YoneCritToAD', 'CritChanceMultiplier', 'MagicDamageSplit'],
+			}),
+		},
 		q: {
 			dataOverrides: {
 				isImmobilizing: false,
 			},
 		},
+		calculateHooks: windBrotherCalculateHooks('Yone'),
 	},
 	Zaahen: {
 		MAX_PASSIVE_STACKS: (self: DamageSource<'Zaahen'>): number => (self.champion.value! as typeof IZaahen).abilities.passive.variants[0]!.dataValues.MaxStacks[1]!,
@@ -3156,6 +3153,44 @@ export type IChampionAbilityVariantSpecific = IProviderGroupImageText & {
 
 interface IChampionAbilityVariantDataOverrides {
 	isImmobilizing?: boolean;
+}
+
+function windBrotherCalculateHooks(id: 'Yasuo' | 'Yone'): ICalculateChampionStatsHookSource {
+	return {
+		postInit: {
+			handler(self, _stats, { calculatedVariables }) {
+				const critDamageMod = championAbilityVariableValue('CritDamageMod', { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self });
+				if (typeof critDamageMod.value === 'number') {
+					calculatedVariables.critMultiplierMod = critDamageMod.value;
+				} else {
+					console.warn(`[CHAMPION_SPECIFICS ${id}] failed to calculate passive crit multiplier`, critDamageMod);
+				}
+			},
+		},
+		onTotalPreMultipliers: {
+			handler(self, { bonusStats, championPassiveStats, totalPreMultipliersStats }) {
+				const passiveParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self };
+
+				const critMultiplier = championAbilityVariableValue('CritChanceMultiplier', passiveParams);
+				if (typeof critMultiplier.value === 'number') {
+					championPassiveStats.critChance = bonusStats.critChance * critMultiplier.value;
+					bonusStats.critChance += championPassiveStats.critChance;
+					totalPreMultipliersStats.critChance += championPassiveStats.critChance;
+				} else {
+					console.warn(`[CHAMPION_SPECIFICS ${id}] failed to calculate passive crit multiplier`, critMultiplier);
+				}
+
+				const critToAD = championAbilityVariableValue(`${id}CritToAD`, passiveParams);
+				if (typeof critToAD.value === 'number') {
+					championPassiveStats.attackDamage = Math.max(0, bonusStats.critChance - 1) * critToAD.value;
+					bonusStats.attackDamage += championPassiveStats.attackDamage;
+					totalPreMultipliersStats.attackDamage += championPassiveStats.attackDamage;
+				} else {
+					console.warn(`[CHAMPION_SPECIFICS ${id}] failed to calculate passive crit to ad`, critToAD);
+				}
+			},
+		},
+	};
 }
 
 export interface IChampionInternalDataMap {
