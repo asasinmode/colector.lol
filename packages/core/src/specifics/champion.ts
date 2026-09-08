@@ -3161,6 +3161,62 @@ export const CHAMPION_SPECIFICS = {
 				uninteresting: ['NumberOfMissiles', 'ExcessAttackSpeedToADMult', 'AttackSpeedCap'],
 			}),
 		},
+		w: {
+			variables: defineChampionVariables<'Zeri', typeof IZeri, 'w'>()({
+				known: {
+					WallCritDamage: [],
+				},
+				calculate() {
+					return {
+						WallCritDamage: {
+							value: 'TODO',
+						},
+					};
+				},
+				meta: {
+					TotalDamage: {
+						type: VariableType.physical,
+					},
+					SlowPercent: {
+						type: VariableType.affectedBySlowResist,
+					},
+					SlowDuration: {
+						type: VariableType.affectedByTenacity,
+					},
+					WallDamage: {
+						type: VariableType.physical,
+					},
+					WallCritDamage: {
+						type: VariableType.physical,
+						isCustom: true,
+					},
+				},
+				uninteresting: ['CriticalEffectiveness'],
+			}),
+		},
+		e: {
+			variables: defineChampionVariables<'Zeri', typeof IZeri, 'e'>()({
+				meta: {
+					BonusDamageTotal: {
+						type: VariableType.magic,
+					},
+				},
+				uninteresting: ['BuffDuration', 'CDReductionPerHit', 'CritCDReductionPerHit', 'CritScalingMod'],
+			}),
+		},
+		r: {
+			variables: defineChampionVariables<'Zeri', typeof IZeri, 'r'>()({
+				meta: {
+					TotalActiveDamage: {
+						type: VariableType.magic,
+					},
+					ChainPhysicalDamage: {
+						type: VariableType.physical,
+					},
+				},
+				uninteresting: ['BaseASPercent', 'BaseBonusMS', 'RDuration', 'MaxHyperchargeDuration', 'MSPercent'],
+			}),
+		},
 		calculateHooks: {
 			onTotalPreMultipliers: {
 				handler(self, { totalPreMultipliersStats, baseStats, championPassiveStats, bonusStats }, { calculatedVariables, miscDebug }) {
