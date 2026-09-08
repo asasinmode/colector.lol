@@ -83,9 +83,11 @@ export const CHAMPION_SPECIFICS = {
 		},
 		calculateHooks: {
 			postInit: {
-				handler(self, { baseStats }) {
+				handler(self, { baseStats, championPassiveStats }) {
 					for (const [statName, statMeta] of ALL_CHAMPION_STATS_ENTRIES) {
-						if (self.internalData.value[statName] !== undefined) {
+						if (statName === 'bonusAttackSpeedPercent') {
+							championPassiveStats.bonusAttackSpeedPercent = self.internalData.value[statName] * (statMeta.isPercentage ? 0.01 : 1);
+						} else if (self.internalData.value[statName] !== undefined) {
 							baseStats[statName] = self.internalData.value[statName] * (statMeta.isPercentage ? 0.01 : 1);
 						}
 					}
