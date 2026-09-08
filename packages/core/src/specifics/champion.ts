@@ -42,6 +42,7 @@ import type IVarus from '@lolcalc/data/files/champion/Varus.json';
 import type IVeigar from '@lolcalc/data/files/champion/Veigar.json';
 import type IVladimir from '@lolcalc/data/files/champion/Vladimir.json';
 import type IVolibear from '@lolcalc/data/files/champion/Volibear.json';
+import type IYasuo from '@lolcalc/data/files/champion/Yasuo.json';
 import type IZaahen from '@lolcalc/data/files/champion/Zaahen.json';
 import type IZilean from '@lolcalc/data/files/champion/Zilean.json';
 import type { IChampion, IChampionAbilityVariant, IChampionId } from '@lolcalc/data/types';
@@ -3004,6 +3005,38 @@ export const CHAMPION_SPECIFICS = {
 		},
 	},
 	Yasuo: {
+		passive: {
+			variables: defineChampionVariables<'Yasuo', typeof IYasuo, 'passive'>()({
+				known: {
+					f2: [],
+					f3: [],
+				},
+				calculate(self) {
+					return {
+						f2: {
+							value: self.stats.value.championPassive.critChance ?? 0,
+						},
+						f3: {
+							value: self.stats.value.championPassive.attackDamage,
+						},
+					};
+				},
+				meta: {
+					ShieldValue: {
+						type: VariableType.shield,
+					},
+					f2: {
+						displayedName: 'BonusCritChance',
+						resultsIsPercentage: true,
+						resultsMultiplier: 100,
+					},
+					f3: {
+						displayedName: 'BonusAD',
+					},
+				},
+				uninteresting: ['YasuoCritToAD', 'CritChanceMultiplier'],
+			}),
+		},
 		q: {
 			dataOverrides: {
 				isImmobilizing: false,
@@ -3012,6 +3045,41 @@ export const CHAMPION_SPECIFICS = {
 		e: {
 			dataOverrides: {
 				isImmobilizing: false,
+			},
+		},
+		calculateHooks: {
+			postInit: {
+				handler(self, { baseStats, championPassiveStats }) {
+					const critDamageMod = championAbilityVariableValue('CritDamageMod', { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self });
+					if (typeof critDamageMod.value === 'number') {
+						championPassiveStats.critDamageMultiplier = -baseStats.critDamageMultiplier * (1 - critDamageMod.value);
+					} else {
+						console.warn('[CHAMPION_SPECIFICS yasuo] failed to calculate passive crit multiplier', critDamageMod);
+					}
+				},
+			},
+			onTotalPreMultipliers: {
+				handler(self, { bonusStats, championPassiveStats, totalPreMultipliersStats }) {
+					const passiveParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self };
+
+					const critMultiplier = championAbilityVariableValue('CritChanceMultiplier', passiveParams);
+					if (typeof critMultiplier.value === 'number') {
+						championPassiveStats.critChance = bonusStats.critChance * critMultiplier.value;
+						bonusStats.critChance += championPassiveStats.critChance;
+						totalPreMultipliersStats.critChance += championPassiveStats.critChance;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS yasuo] failed to calculate passive crit multiplier', critMultiplier);
+					}
+
+					const critToAD = championAbilityVariableValue('YasuoCritToAD', passiveParams);
+					if (typeof critToAD.value === 'number') {
+						championPassiveStats.attackDamage = Math.max(0, bonusStats.critChance - 1) * critToAD.value / 2;
+						bonusStats.attackDamage += championPassiveStats.attackDamage;
+						totalPreMultipliersStats.attackDamage += championPassiveStats.attackDamage;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS yasuo] failed to calculate passive crit to ad', critToAD);
+					}
+				},
 			},
 		},
 	},
