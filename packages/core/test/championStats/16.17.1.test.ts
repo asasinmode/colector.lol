@@ -384,7 +384,7 @@ test('16.17 adaptive force', async (t) => {
 		}, damageSource);
 	});
 
-	await t.test('yasuo', async () => {
+	await t.test('yasuo & yone', async () => {
 		const damageSource = await setupDamageSource(fixture, 'Yasuo', {
 			...sourceCommon,
 			items: [ITEMS_BY_NAME.ampTome, ITEMS_BY_NAME.phantomDancer, ITEMS_BY_NAME.fiendhunterBolts, ITEMS_BY_NAME.navoriFlickerblade, ITEMS_BY_NAME.rfc],
@@ -722,11 +722,7 @@ test('16.17 Aphelios', async (t) => {
 				defensive: 'health',
 			},
 		},
-		abilityLevels: {
-			q: 6,
-			w: 6,
-			e: 6,
-		},
+		abilityLevels: { q: 6, w: 6, e: 6 },
 	};
 
 	await t.test('base', async () => {
@@ -858,6 +854,5 @@ test('16.17 Rengar', async (t) => {
 	});
 });
 
-// yasuo, yone
 // zaahen
 // zeri

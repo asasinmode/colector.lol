@@ -16,7 +16,7 @@ import { computed } from 'vue';
 import { addMultiplicative, combineCompounding, combineRecursive } from '../calculate/util.ts';
 import { simpleFormattingGameAbilityImage } from '../misc.ts';
 import { itemVariableValue, variableResolveFn } from '../variables/game.ts';
-import { defineVariables, HOOK_PRIORITIES, ITEM_SPECIFICS_SHARED, MODIFY_VARIABLE_PRIORITIES } from './index.ts';
+import { defineVariables, HOOK_PRIORITIES, MODIFY_VARIABLE_PRIORITIES } from './index.ts';
 
 const actualGWoundsItems = Object.values(ITEMS).filter(item => item.dataValues?.GrievousAmount);
 if (!actualGWoundsItems.every(item => (GRIEVOUS_WOUND_ITEMS as string[]).includes(item.id))) {
@@ -574,7 +574,7 @@ export const ITEM_SPECIFICS = {
 					calculatedVariables.riftmakerBonusDamagePercent = ((self.internalItemData.value as IInternalItemDataOf<'riftmaker'>).corruption ?? 0) * ITEMS_BY_NAME.riftmaker?.dataValues.EternityDamageIncreasePerSecond;
 
 					const bonusHp = (itemBaseStats.hp + itemPassivesStats.hp);
-					calculatedVariables.riftmakerBonusHPToAP = ITEM_SPECIFICS_SHARED[ITEM_NAME_TO_ID.riftmaker].HP_TO_AP;
+					calculatedVariables.riftmakerBonusHPToAP = ITEMS_BY_NAME.riftmaker?.dataValues.HealthToAPConversionPercent;
 					calculatedVariables.riftmakerVoidInfusion = bonusHp * calculatedVariables.riftmakerBonusHPToAP;
 					itemPassivesStats.abilityPower += calculatedVariables.riftmakerVoidInfusion;
 					calculatedVariables.additionalAdaptiveForceCheckAp -= calculatedVariables.riftmakerVoidInfusion;
@@ -592,7 +592,7 @@ export const ITEM_SPECIFICS = {
 			preBonus: {
 				handler(_self, { runeShardStats, itemPassivesStats, itemTotalStats }, { calculatedVariables, miscDebug }) {
 					if (runeShardStats.hp) {
-						const value = runeShardStats.hp * ITEM_SPECIFICS_SHARED[ITEM_NAME_TO_ID.riftmaker].HP_TO_AP;
+						const value = runeShardStats.hp * calculatedVariables.riftmakerBonusHPToAP!;
 						calculatedVariables.riftmakerVoidInfusion! += value;
 						itemPassivesStats.abilityPower += value;
 						itemTotalStats.abilityPower += value;
@@ -675,8 +675,8 @@ export const ITEM_SPECIFICS = {
 			preItemTotal: tearItem.calculateHookPreItemTotal,
 			preBonus: {
 				handler(_self, { itemPassivesStats, itemTotalStats }, { calculatedVariables, miscDebug }) {
-					const bonusAP = (miscDebug.tearItemBonusMana ?? 0) * ITEM_SPECIFICS_SHARED[ITEM_NAME_TO_ID.archangelsStaff].AP_FROM_MANA;
-					calculatedVariables.archangelSeraphManaToAp = ITEM_SPECIFICS_SHARED[ITEM_NAME_TO_ID.archangelsStaff].AP_FROM_MANA;
+					calculatedVariables.archangelSeraphManaToAp = ITEMS_BY_NAME.archangelsStaff?.dataValues.APFromMana;
+					const bonusAP = (miscDebug.tearItemBonusMana ?? 0) * calculatedVariables.archangelSeraphManaToAp;
 					calculatedVariables.apMultipliersBase += bonusAP;
 					itemPassivesStats.abilityPower += bonusAP;
 					itemTotalStats.abilityPower += bonusAP;
@@ -689,16 +689,17 @@ export const ITEM_SPECIFICS = {
 				f2: [],
 			},
 			calculate(self) {
+				const { APFromMana } = ITEMS_BY_NAME.archangelsStaff?.dataValues ?? {};
+
 				return {
 					/** ap gained from passive */
 					f2: {
-						value: self.stats.value.variables.archangelSeraphAwe
-							?? (self.stats.value.bonus.mana * ITEM_SPECIFICS_SHARED[ITEM_NAME_TO_ID.archangelsStaff].AP_FROM_MANA),
+						value: self.stats.value.variables.archangelSeraphAwe ?? (self.stats.value.bonus.mana * APFromMana),
 						calculatesFrom: [{
 							stat: 'mana',
 							type: 'bonus',
 							isPercentage: true,
-							value: ITEM_SPECIFICS_SHARED[ITEM_NAME_TO_ID.archangelsStaff].AP_FROM_MANA,
+							value: APFromMana,
 						}],
 					},
 				};
@@ -718,8 +719,8 @@ export const ITEM_SPECIFICS = {
 					if (!self.hasMana.value) {
 						return;
 					}
-					calculatedVariables.archangelSeraphAwe = itemTotalStats.mana * ITEM_SPECIFICS_SHARED[ITEM_NAME_TO_ID.seraphsEmbrace].AP_FROM_MANA;
-					calculatedVariables.archangelSeraphManaToAp = ITEM_SPECIFICS_SHARED[ITEM_NAME_TO_ID.seraphsEmbrace].AP_FROM_MANA;
+					calculatedVariables.archangelSeraphManaToAp = ITEMS_BY_NAME.seraphsEmbrace?.dataValues.APFromMana;
+					calculatedVariables.archangelSeraphAwe = itemTotalStats.mana * calculatedVariables.archangelSeraphManaToAp;
 					calculatedVariables.apMultipliersBase += calculatedVariables.archangelSeraphAwe;
 					itemPassivesStats.abilityPower += calculatedVariables.archangelSeraphAwe;
 					itemTotalStats.abilityPower += calculatedVariables.archangelSeraphAwe;
@@ -743,7 +744,7 @@ export const ITEM_SPECIFICS = {
 					BonusAPCalc: self.stats.value.variables.archangelSeraphAwe === undefined
 						? bonusAP
 						: {
-								value: self.stats.value.bonus.mana * ITEM_SPECIFICS_SHARED[ITEM_NAME_TO_ID.seraphsEmbrace].AP_FROM_MANA,
+								value: self.stats.value.bonus.mana * ITEMS_BY_NAME.seraphsEmbrace?.dataValues.APFromMana,
 								calculatesFrom: bonusAP.calculatesFrom,
 							},
 				};
@@ -849,9 +850,9 @@ export const ITEM_SPECIFICS = {
 		calculateHooks: {
 			preItemTotal: {
 				handler(self, args, meta) {
-					meta.calculatedVariables.approachFimbulManaToHp = ITEM_SPECIFICS_SHARED[ITEM_NAME_TO_ID.wintersApproach].HP_FROM_MANA;
+					meta.calculatedVariables.approachFimbulManaToHp = ITEMS_BY_NAME.wintersApproach?.itemCalculations.BonusHPFromMana.mFormulaParts[0]!.mCoefficient;
 					tearItem.calculateHookPreItemTotal.handler(self, args, meta);
-					const bonusHP = (meta.miscDebug.tearItemBonusMana ?? 0) * ITEM_SPECIFICS_SHARED[ITEM_NAME_TO_ID.wintersApproach].HP_FROM_MANA;
+					const bonusHP = (meta.miscDebug.tearItemBonusMana ?? 0) * meta.calculatedVariables.approachFimbulManaToHp;
 					args.itemPassivesStats.hp += bonusHP;
 					meta.calculatedVariables.approachFimbulAwe = bonusHP;
 				},
@@ -892,8 +893,8 @@ export const ITEM_SPECIFICS = {
 						return;
 					}
 
-					calculatedVariables.approachFimbulManaToHp = ITEM_SPECIFICS_SHARED[ITEM_NAME_TO_ID.fimbulwinter].HP_FROM_MANA;
-					const bonusHP = (itemBaseStats.mana + itemPassivesStats.mana) * ITEM_SPECIFICS_SHARED[ITEM_NAME_TO_ID.fimbulwinter].HP_FROM_MANA;
+					calculatedVariables.approachFimbulManaToHp = ITEMS_BY_NAME.fimbulwinter?.itemCalculations.BonusHPFromMana.mFormulaParts[0]!.mCoefficient;
+					const bonusHP = (itemBaseStats.mana + itemPassivesStats.mana) * calculatedVariables.approachFimbulManaToHp;
 					itemPassivesStats.hp += bonusHP;
 					calculatedVariables.approachFimbulAwe = bonusHP;
 				},

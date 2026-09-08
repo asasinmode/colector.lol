@@ -9,7 +9,7 @@ import type { TDragonSpecifics } from './dragon.ts';
 import type { EFFECT_SPECIFICS, IEffectSpecific, TEffectSpecifics } from './effect';
 import type { TItemSpecifics } from './item';
 import type { ITEM_SPECIFICS } from './item.ts';
-import { CONSTS, ITEMS_BY_NAME } from '@lolcalc/data';
+import { CONSTS } from '@lolcalc/data';
 import { ITEM_NAME_TO_ID, VariableType } from '@lolcalc/shared';
 
 export const HOOK_PRIORITIES = {
@@ -72,24 +72,6 @@ export const MODIFY_VARIABLE_PRIORITIES = {
 	},
 } satisfies {
 	items: Record<string, number>;
-};
-
-export const ITEM_SPECIFICS_SHARED = {
-	[ITEM_NAME_TO_ID.archangelsStaff]: {
-		AP_FROM_MANA: ITEMS_BY_NAME.archangelsStaff?.dataValues.APFromMana,
-	},
-	[ITEM_NAME_TO_ID.seraphsEmbrace]: {
-		AP_FROM_MANA: ITEMS_BY_NAME.seraphsEmbrace?.dataValues.APFromMana,
-	},
-	[ITEM_NAME_TO_ID.wintersApproach]: {
-		HP_FROM_MANA: ITEMS_BY_NAME.wintersApproach?.itemCalculations.BonusHPFromMana.mFormulaParts[0]!.mCoefficient,
-	},
-	[ITEM_NAME_TO_ID.fimbulwinter]: {
-		HP_FROM_MANA: ITEMS_BY_NAME.fimbulwinter?.itemCalculations.BonusHPFromMana.mFormulaParts[0]!.mCoefficient,
-	},
-	[ITEM_NAME_TO_ID.riftmaker]: {
-		HP_TO_AP: ITEMS_BY_NAME.riftmaker?.dataValues.HealthToAPConversionPercent,
-	},
 };
 
 // for getting specific ability's specific, maybe will be useful
