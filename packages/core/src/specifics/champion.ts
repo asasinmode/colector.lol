@@ -3130,7 +3130,7 @@ export const CHAMPION_SPECIFICS = {
 		},
 		calculateHooks: {
 			postTotal: {
-				handler(self, { totalPreMultipliersStats, totalMultipliersStats, championPassiveStats, bonusStats, totalStats, dragonStatMultipliers, dragonStats }, { calculatedVariables }) {
+				handler(self, { totalPreMultipliersStats, totalMultipliersStats, championPassiveStats, bonusStats, totalStats, dragonStats }, { calculatedVariables }) {
 					const { passiveStacks } = self.internalData.value;
 					if (!passiveStacks) {
 						return;
@@ -3148,16 +3148,18 @@ export const CHAMPION_SPECIFICS = {
 					const bonusADPercent = passiveStacks * adPercentPerStack.value * (passiveStacks === maxStacks ? maxStacksMult.value : 1);
 					calculatedVariables.zaahenPassiveAdMultiplier = bonusADPercent;
 
-					console.log('zaahen post total', {
-						bonusADPercent,
-						preMultAD: totalPreMultipliersStats.attackDamage,
-						bonusAD: bonusStats.attackDamage,
-						totalAD: totalStats.attackDamage,
-						dragonADMult: dragonStatMultipliers.attackDamage,
-						midQuestMult: calculatedVariables.midQuestMultiplier,
-					});
-
 					const passiveAd = totalPreMultipliersStats.attackDamage * bonusADPercent;
+
+					if (calculatedVariables.midQuestMultiplier) {
+						const preMultiplierBonusAd = bonusStats.attackDamage - (dragonStats.attackDamage ?? 0) - calculatedVariables.midQuestAd!;
+						const midQuestAd = preMultiplierBonusAd * calculatedVariables.midQuestMultiplier * bonusADPercent;
+
+						calculatedVariables.midQuestAd = (calculatedVariables.midQuestAd ?? 0) + midQuestAd;
+						totalMultipliersStats.attackDamage += midQuestAd;
+						totalStats.attackDamage += midQuestAd;
+						bonusStats.attackDamage += midQuestAd;
+						calculatedVariables.bloodmailRetributionExcludedAd = (calculatedVariables.bloodmailRetributionExcludedAd ?? 0) + midQuestAd;
+					}
 
 					championPassiveStats.attackDamage = passiveAd;
 					totalMultipliersStats.attackDamage += passiveAd;

@@ -950,4 +950,41 @@ test('16.17 Zaahen', async (t) => {
 			abilityHaste: 64,
 		}, damageSource);
 	});
+
+	await t.test('4 infernals', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Zaahen', {
+			...sourceCommon,
+			dragonStacks: infernalStacks,
+		});
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 587,
+			abilityHaste: 64,
+		}, damageSource);
+
+		damageSource.currentHealth.value = 967;
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 627,
+			abilityHaste: 69,
+		}, damageSource);
+	});
+
+	await t.test('4 infernals | mid quest', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Zaahen', {
+			...sourceCommon,
+			dragonStacks: infernalStacks,
+			roleQuest: 'mid',
+		});
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 615,
+			abilityHaste: 68,
+		}, damageSource);
+
+		damageSource.currentHealth.value = 880;
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 657,
+			abilityHaste: 73,
+		}, damageSource);
+	});
 });
