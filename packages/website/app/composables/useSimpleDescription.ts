@@ -1,9 +1,11 @@
 import { simpleDescriptionFormatting } from '@lolcalc/core/misc';
 
-export function useSimpleDescription(description: string, addAlt = true) {
-	const rv = ref('loading...');
+export function useSimpleDescription(key: string, description: string, addAlt = true) {
+	const { data } = useAsyncData(
+		key,
+		() => simpleDescriptionFormatting(description, addAlt),
+		{ default: () => 'loading...' },
+	);
 
-	simpleDescriptionFormatting(description, addAlt).then(value => rv.value = value);
-
-	return rv;
+	return data;
 }
