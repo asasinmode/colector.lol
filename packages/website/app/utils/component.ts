@@ -5,9 +5,7 @@ import type { ComputedRef, SlotsType } from 'vue';
 import type { IExtraComponentEmits, IExtraComponentProps } from './types';
 import { GameAbilityId } from '@lolcalc/core/GameAbilityId';
 import { gameAbilityImage } from '@lolcalc/core/misc';
-import { EFFECT_SPECIFICS_OBJECT_ENTRIES } from '@lolcalc/core/specifics/effect';
 import { replaceGameIcons } from '@lolcalc/core/variables/game';
-import { CHAMPION_ID_TO_KEY } from '@lolcalc/data';
 import { AbilityType } from '@lolcalc/shared';
 import { CalculatorEffectControls, CalculatorEffectSourceSelect, CalculatorExtraBoolean, CalculatorExtraEnum, CalculatorExtraNumber, CalculatorExtraProgress } from '#components';
 
@@ -308,7 +306,7 @@ function extraComponentData(abilityId: IGameAbilityId, property: PropertyKey, da
 			: 'internalItemData';
 
 	return [
-		GameAbilityId.stringify(abilityId, CHAMPION_ID_TO_KEY, EFFECT_SPECIFICS_OBJECT_ENTRIES),
+		GameAbilityId.stringify(abilityId),
 		computed(() => isEffect
 			? (appliedEffect?.value?.data.value[property as number] ?? 0)
 			: damageSource[dataProperty].value?.[property as string],

@@ -783,6 +783,8 @@ export const EFFECT_OBJECT_NAME = {
 
 export type IEffectObjectName = typeof EFFECT_OBJECT_NAME[keyof typeof EFFECT_OBJECT_NAME];
 
+export const EFFECT_OBJECT_NAME_ENTRIES = Object.entries(EFFECT_OBJECT_NAME) as [string, IEffectObjectName][];
+
 export const VariableType = {
 	shield: 'shield',
 	heal: 'heal',

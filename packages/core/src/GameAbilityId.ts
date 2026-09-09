@@ -1,7 +1,7 @@
 import type { IChampionId, IDragonName } from '@lolcalc/data/types';
 import type { IChampionAbilityKey, IEffectObjectName, TAbilityType } from '@lolcalc/shared';
-import { ALL_DRAGON_NAMES, CHAMPIONS, ITEMS } from '@lolcalc/data';
-import { AbilityType, ALL_ABILITY_TYPES, ALL_CHAMPION_ABILITY_KEYS } from '@lolcalc/shared';
+import { ALL_DRAGON_NAMES, CHAMPION_ID_TO_KEY, CHAMPION_KEY_TO_ID, CHAMPIONS, ITEMS } from '@lolcalc/data';
+import { AbilityType, ALL_ABILITY_TYPES, ALL_CHAMPION_ABILITY_KEYS, EFFECT_OBJECT_NAME_ENTRIES } from '@lolcalc/shared';
 import { markRaw } from 'vue';
 
 export interface IChampionAbilityId<
@@ -94,16 +94,12 @@ export class GameAbilityId {
 	 * `abilityKeyIndex` is `ALL_CHAMPION_ABILITY_KEYS.indexOf(abilityKey)`
 	 * `effectObjectIndex` is `Object.keys(EFFECT_OBJECT_NAMES).indexOf(id)`
 	 */
-	static stringify(
-		id: IGameAbilityId,
-		championIdToKey: Record<IChampionId, string>,
-		effectSpecificsObjectEntries: [effectObjectName: IEffectObjectName, any][],
-	): string {
+	static stringify(id: IGameAbilityId): string {
 		const typeIndex = ALL_ABILITY_TYPES.indexOf(id.type);
 		if (id.type === AbilityType.champion) {
 			return [
 				typeIndex,
-				championIdToKey[id.id],
+				CHAMPION_ID_TO_KEY[id.id],
 				ALL_CHAMPION_ABILITY_KEYS.indexOf(id.abilityKey),
 				id.abilityVariantIndex,
 			].join('-');
@@ -112,7 +108,7 @@ export class GameAbilityId {
 		if (id.type === AbilityType.effect) {
 			return [
 				typeIndex,
-				effectSpecificsObjectEntries.findIndex(entry => entry[0] === id.id),
+				EFFECT_OBJECT_NAME_ENTRIES.findIndex(entry => entry[1] === id.id),
 			].join('-');
 		}
 
@@ -127,11 +123,7 @@ export class GameAbilityId {
 		return `${typeIndex}-${id.id}`;
 	}
 
-	static parse(
-		value: string,
-		championKeyToId: Record<string, IChampionId>,
-		effectSpecificsObjectEntries: [effectObjectName: IEffectObjectName, any][],
-	): IGameAbilityId | undefined {
+	static parse(value: string): IGameAbilityId | undefined {
 		const [rawType, id, rawAbilityKeyIndex, rawAbilityVariantIndex] = value.split('-');
 		if (!id) {
 			return;
@@ -140,7 +132,7 @@ export class GameAbilityId {
 		const type = rawType ? ALL_ABILITY_TYPES[Number.parseInt(rawType)] : undefined;
 
 		if (type === AbilityType.champion) {
-			const championId = championKeyToId[id];
+			const championId = CHAMPION_KEY_TO_ID[id];
 			if (!championId || !(championId in CHAMPIONS)) {
 				return;
 			}
@@ -169,12 +161,12 @@ export class GameAbilityId {
 		}
 
 		if (type === AbilityType.effect) {
-			const specificEntry = effectSpecificsObjectEntries[Number.parseInt(id)];
+			const specificEntry = EFFECT_OBJECT_NAME_ENTRIES[Number.parseInt(id)];
 			if (!specificEntry) {
 				return;
 			}
 
-			return GameAbilityId.build(type, specificEntry[0]);
+			return GameAbilityId.build(type, specificEntry[1]);
 		}
 
 		if (type === AbilityType.dragon) {
