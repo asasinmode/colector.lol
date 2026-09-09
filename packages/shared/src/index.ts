@@ -98,7 +98,9 @@ export interface IStatsCalculationVariables {
 	/**
 	 * ad that's not supposed to be multiplied by overlord's retribution. Currently
 	 * - Rammus' passive infernal bonus. If Rammus' passive gives 100 ad and he has 1 infernal, it will be `3`
-	 * - Jhin's passive infernal bonus
+	 * - Jhin, Zeri passives ad from mid quest
+	 *
+	 * excluding mid quest -> passive ad seems to be a pattern. It's current implementation is a bit odd, which suggests that it's not really modelling well what's going on in the game. Maybe bloodmail/mid quest "collect" ad in parallel to regular calculations, then at an appropriate point they calculate the bonus value and add it?
 	 */
 	bloodmailRetributionExcludedAd: number;
 	/**

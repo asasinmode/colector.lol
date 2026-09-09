@@ -3270,6 +3270,8 @@ export const CHAMPION_SPECIFICS = {
 						championPassiveStats.attackDamage = miscDebug.zeriExcessASPercent * asToAD.value * 100;
 						bonusStats.attackDamage += championPassiveStats.attackDamage;
 						totalPreMultipliersStats.attackDamage += championPassiveStats.attackDamage;
+
+						calculatedVariables.bloodmailRetributionExcludedAd += championPassiveStats.attackDamage * calculatedVariables.midQuestMultiplier;
 					} else {
 						console.warn('[CHAMPION_SPECIFICS] zeri failed to calculate attack speed cap', asToAD);
 					}

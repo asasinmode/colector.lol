@@ -403,6 +403,7 @@ test('16.17 adaptive force', async (t) => {
 		const damageSource = await setupDamageSource(fixture, 'Zeri', {
 			...sourceCommon,
 			level: 18,
+			internalData: { rActive: 0, rStacks: 0 },
 			items: [ITEMS_BY_NAME.ampTome, ITEMS_BY_NAME.phantomDancer, ITEMS_BY_NAME.fiendhunterBolts, ITEMS_BY_NAME.navoriFlickerblade],
 		});
 
@@ -870,5 +871,39 @@ test('16.17 Rengar', async (t) => {
 	});
 });
 
+test('16.17 Zeri', async (t) => {
+	const sourceCommon: IOverrides<'Zeri'> = {
+		level: 18,
+		runes: {
+			shards: {
+				offensive: 'adaptive',
+				flex: 'adaptive',
+				defensive: 'health',
+			},
+		},
+		items: [ITEMS_BY_NAME.phantomDancer, ITEMS_BY_NAME.fiendhunterBolts, ITEMS_BY_NAME.navoriFlickerblade, ITEMS_BY_NAME.overlordsBloodmail, ITEMS_BY_NAME.endlessHunger],
+	};
+
+	await t.test('4 infernals | mid quest', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Zeri', {
+			...sourceCommon,
+			internalData: { rActive: 0, rStacks: 0 },
+			dragonStacks: infernalStacks,
+			roleQuest: 'mid',
+		});
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 283,
+			abilityHaste: 24,
+		}, damageSource);
+
+		damageSource.currentHealth.value = 780;
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 313,
+			abilityHaste: 27,
+			attackSpeed: 1.5,
+		}, damageSource);
+	});
+});
+
 // zaahen
-// zeri
