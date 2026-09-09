@@ -266,6 +266,8 @@ export interface IStatsCalculationVariables {
 	vladimirPassiveAp?: number;
 	/** hp gained from Vladimir's passive */
 	vladimirPassiveHp?: number;
+	/** bonus ad % from zaahen's passive */
+	zaahenPassiveAdMultiplier?: number;
 }
 
 /** all of the debuffs collected throughout the calculation that are applied in `calculateChampionStats` together */

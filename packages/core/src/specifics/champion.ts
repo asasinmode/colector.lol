@@ -3099,6 +3099,35 @@ export const CHAMPION_SPECIFICS = {
 				passiveStacks: clamp(0, Math.round(self.internalData.value.passiveStacks ?? 0), maxStacks),
 			};
 		},
+		passive: {
+			variables: defineChampionVariables<'Zaahen', typeof IZaahen, 'passive'>()({
+				known: {
+					BonusADPercent: [],
+					BonusAD: [],
+				},
+				calculate(self) {
+					return {
+						BonusADPercent: {
+							value: self.stats.value.variables.zaahenPassiveAdMultiplier,
+						},
+						BonusAD: {
+							value: self.stats.value.championPassive.attackDamage,
+						},
+					};
+				},
+				meta: {
+					BonusADPercent: {
+						isCustom: true,
+						resultsIsPercentage: true,
+						resultsMultiplier: 100,
+					},
+					BonusAD: {
+						isCustom: true,
+					},
+				},
+				uninteresting: ['MaxStacks', 'ReviveDuration'],
+			}),
+		},
 		calculateHooks: {
 			postTotal: {
 				handler(self, { totalPreMultipliersStats, totalMultipliersStats, championPassiveStats, bonusStats, totalStats, dragonStatMultipliers, dragonStats }, { calculatedVariables }) {
@@ -3117,6 +3146,7 @@ export const CHAMPION_SPECIFICS = {
 
 					const maxStacks = CHAMPION_SPECIFICS.Zaahen.MAX_PASSIVE_STACKS(self);
 					const bonusADPercent = passiveStacks * adPercentPerStack.value * (passiveStacks === maxStacks ? maxStacksMult.value : 1);
+					calculatedVariables.zaahenPassiveAdMultiplier = bonusADPercent;
 
 					console.log('zaahen post total', {
 						bonusADPercent,
