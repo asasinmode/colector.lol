@@ -411,7 +411,7 @@ export const CHAMPION_SPECIFICS = {
 		setupData(self) {
 			return {
 				passiveStacks: Math.max(0, Math.round(self.internalData.value.passiveStacks ?? 0)),
-				hasPassiveStack: clamp(0, Math.round(self.internalData.value.passiveStacks ?? 0), 1),
+				hasPassiveStack: clamp(0, Math.round(self.internalData.value.hasPassiveStack ?? 0), 1),
 			};
 		},
 	},
@@ -488,7 +488,7 @@ export const CHAMPION_SPECIFICS = {
 	},
 	Chogath: {
 		setupData(self) {
-			return { passiveStacks: Math.max(0, self.internalData.value.passiveStacks ?? 0) };
+			return { ultStacks: Math.max(0, self.internalData.value.ultStacks ?? 0) };
 		},
 		passive: {
 			variables: defineChampionVariables<'Chogath', typeof IChogath, 'passive'>()({
@@ -537,7 +537,7 @@ export const CHAMPION_SPECIFICS = {
 					'TotalDamage': [],
 				},
 				calculate(self, target) {
-					const variableParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.e.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, abilityLevel: self.abilityLevels.value.e, damageSource: self, dynamicVariables: { values: { '{8682fc00}': { value: self.internalData.value.passiveStacks } } } };
+					const variableParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.e.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, abilityLevel: self.abilityLevels.value.e, damageSource: self, dynamicVariables: { values: { '{8682fc00}': { value: self.internalData.value.ultStacks } } } };
 					const flat = championAbilityVariableValue('FlatDamageCalc', variableParams);
 					const percent = championAbilityVariableValue('MaxHealthPercentCalc', variableParams);
 
@@ -551,7 +551,7 @@ export const CHAMPION_SPECIFICS = {
 
 					return {
 						'{8682fc00}': {
-							value: self.internalData.value.passiveStacks,
+							value: self.internalData.value.ultStacks,
 						},
 						'TotalDamage': {
 							value: TotalDamage,
@@ -587,12 +587,16 @@ export const CHAMPION_SPECIFICS = {
 				known: {
 					f3: [],
 					HealthFromStacks: [],
+					Stacks: [],
 				},
 				calculate(self) {
 					return {
 						f3: { value: 0 },
 						HealthFromStacks: {
 							value: self.stats.value.championPassive.hp ?? 0,
+						},
+						Stacks: {
+							value: self.internalData.value.ultStacks,
 						},
 					};
 				},
@@ -606,6 +610,9 @@ export const CHAMPION_SPECIFICS = {
 					HealthFromStacks: {
 						isCustom: true,
 					},
+					Stacks: {
+						isCustom: true,
+					},
 				},
 				uninteresting: ['f3', 'AttackRangePerStack', 'CastRangePerStack', 'MaxBonusAttackRange', 'MaxBonusCastRange', 'RMinionMaxStacks'],
 			}),
@@ -617,7 +624,7 @@ export const CHAMPION_SPECIFICS = {
 					const hpPerStack = championAbilityVariableValue('RHealthPerStack', params);
 
 					if (typeof hpPerStack.value === 'number') {
-						const hp = hpPerStack.value * self.internalData.value.passiveStacks;
+						const hp = hpPerStack.value * self.internalData.value.ultStacks;
 						championPassiveStats.hp = hp;
 					} else {
 						console.warn('[CHAMPION_SPECIFICS chogath] failed to calculate hp per ult stack', hpPerStack);
@@ -625,7 +632,7 @@ export const CHAMPION_SPECIFICS = {
 
 					const rangePerStack = championAbilityVariableValue('AttackRangePerStack', params);
 					if (typeof rangePerStack.value === 'number') {
-						championPassiveStats.attackRange = rangePerStack.value * self.internalData.value.passiveStacks;
+						championPassiveStats.attackRange = rangePerStack.value * self.internalData.value.ultStacks;
 					} else {
 						console.warn('[CHAMPION_SPECIFICS chogath] failed to calculate range per ult stack', rangePerStack);
 					}
@@ -2300,26 +2307,30 @@ export const CHAMPION_SPECIFICS = {
 					};
 				},
 				meta: {
-					SiphonCurrentHealthDamage: {
+					'SiphonCurrentHealthDamage': {
 						type: VariableType.physical,
 						isCustom: true,
 					},
-					MoveSpeedFromTarget: {
+					'MoveSpeedFromTarget': {
 						isCustom: true,
 					},
-					SoulsAD: {
+					'SoulsAD': {
 						isCustom: true,
 					},
-					SoulsRange: {
+					'SoulsRange': {
 						isCustom: true,
 					},
-					SoulsLifesteal: {
+					'SoulsLifesteal': {
 						isCustom: true,
 						resultsIsPercentage: true,
 						resultsMultiplier: 100,
 					},
-					BonusOnHitDamage: {
+					'BonusOnHitDamage': {
 						type: VariableType.physical,
+					},
+					'{e88568f8}': {
+						isCustom: true,
+						displayedName: 'Stacks',
 					},
 				},
 				uninteresting: ['ADPerStack', 'StacksForBonus', 'BonusRange', 'BonusCritChance', 'CritToLifestealConversionPercent'],
@@ -2428,6 +2439,12 @@ export const CHAMPION_SPECIFICS = {
 							value: self.internalData.value.passiveStacks,
 						},
 					};
+				},
+				meta: {
+					'{bba88b2a}': {
+						isCustom: true,
+						displayedName: 'Stacks',
+					},
 				},
 				uninteresting: ['BonusArmor', 'BonusMagicResist', 'Stacks_Per_Large_Monster', 'Stacks_Per_Epic_Monster'],
 			}),
@@ -3509,7 +3526,7 @@ export interface IChampionInternalDataMap {
 	Ashe: { frostShot: number };
 	Bard: { passiveStacks: number; chimeMoveSpeed: number };
 	Belveth: { passiveStacks: number; hasPassiveStack: number };
-	Chogath: { passiveStacks: number };
+	Chogath: { ultStacks: number };
 	Darius: { isChampionAtMaxBleed: number };
 	Diana: { isPassiveEmpowered: number };
 	Draven: { passiveStacks: number };
