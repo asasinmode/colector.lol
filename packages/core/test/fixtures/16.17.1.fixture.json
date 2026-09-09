@@ -2112,6 +2112,126 @@
 				}
 			}
 		},
+		"Zaahen": {
+			"partype": "Mana",
+			"stats": {
+				"hp": 640,
+				"hpperlevel": 114,
+				"mp": 350,
+				"mpperlevel": 55,
+				"movespeed": 345,
+				"armor": 36,
+				"armorperlevel": 5,
+				"spellblock": 32,
+				"spellblockperlevel": 2.05,
+				"attackrange": 175,
+				"hpregen": 7.5,
+				"hpregenperlevel": 0.8,
+				"mpregen": 8.15,
+				"mpregenperlevel": 0.75,
+				"crit": 0,
+				"critperlevel": 0,
+				"attackdamage": 63,
+				"attackdamageperlevel": 4,
+				"attackspeedperlevel": 2.5,
+				"attackspeed": 0.625,
+				"attackspeedratio": 0.625
+			},
+			"abilities": {
+				"passive": {
+					"maxLevel": 0,
+					"variants": [
+						{
+							"name": "Cultivation of War",
+							"objectName": "ZaahenPassive",
+							"dataKey": "Characters/Zaahen/Spells/ZaahenPassiveAbility/ZaahenPassive",
+							"image": "assets/characters/zaahen/hud/icons2d/zaahenp.png",
+							"cooldownTime": [100, 100, 100, 100, 100, 100, 100],
+							"tooltip": "Zaahen gains a stack of <keyword>Determination</keyword> when he hits an enemy champion with an Attack or Ability (max @MaxStacks@). He gains <physicalDamage>@PercentBonusADCalc@ increased Attack Damage</physicalDamage> per stack.<br><br>When filled with <keyword>Determination</keyword>, Zaahen doubles the granted <physicalDamage>Attack Damage</physicalDamage>, and if he would die, he instead enters Stasis for @ReviveDuration@ seconds then revives with <healing>@RevivePercentCalc@ of his max Health</healing>.<br><br>Zaahen's revive has a @ReviveCooldownCalc@ second Cooldown.",
+							"tooltipExtended": "Zaahen gains a stack of <keyword>Determination</keyword> when he hits an enemy champion with an Attack or Ability (max @MaxStacks@). He gains <physicalDamage>@PercentBonusADCalc@ increased Attack Damage</physicalDamage> per stack.<br><br>When filled with <keyword>Determination</keyword>, Zaahen doubles the granted <physicalDamage>Attack Damage</physicalDamage>, and if he would die, he instead enters Stasis for @ReviveDuration@ seconds then revives with <healing>@RevivePercentCalc@ of his max Health</healing>.<br><br>Zaahen's revive has a @ReviveCooldownCalc@ second Cooldown.<br><br><rules>{{Reminder_Stasis}}</rules>",
+							"dataValues": {
+								"PercentBonusAD": [0.025, 0.025, 0.025, 0.025, 0.025, 0.025, 0.025],
+								"FallOffDuration": [5, 5, 5, 5, 5, 5, 5],
+								"RevivePercent": [0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6],
+								"MaxStacks": [12, 12, 12, 12, 12, 12, 12],
+								"ReviveDuration": [4, 4, 4, 4, 4, 4, 4],
+								"NumberOfTicks": [32, 32, 32, 32, 32, 32, 32],
+								"MaxStacksMultiplier": [2, 2, 2, 2, 2, 2, 2],
+								"PBonusADMin": [0.015, 0.015, 0.015, 0.015, 0.015, 0.015, 0.015],
+								"PBonusADMax": [0.028, 0.028, 0.028, 0.028, 0.028, 0.028, 0.028],
+								"ReviveLevel1Value": [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3],
+								"ReviveAdditionalBonusAtThisLevel": [0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15]
+							},
+							"spellCalculations": {
+								"ReviveCooldownCalc": {
+									"mFormulaParts": [
+										{
+											"mLevel1Value": 300,
+											"mBreakpoints": [
+												{
+													"mLevel": 6,
+													"mAdditionalBonusAtThisLevel": -60
+												},
+												{
+													"mLevel": 11,
+													"mAdditionalBonusAtThisLevel": -60
+												},
+												{
+													"mLevel": 16,
+													"mAdditionalBonusAtThisLevel": -60
+												}
+											],
+											"__type": "ByCharLevelBreakpointsCalculationPart"
+										}
+									]
+								},
+								"RevivePercentCalc": {
+									"mFormulaParts": [
+										{
+											"{91d404a5}": "ReviveLevel1Value",
+											"{bbd778a2}": "ReviveBonusPerLevel",
+											"{9823b29a}": [
+												{
+													"level": 6,
+													"{ae9b464d}": "ReviveAdditionalBonusAtThisLevel",
+													"{b0d8b2ac}": "ReviveBonusPerLevelAtAndAfter",
+													"__type": "{0333530c}"
+												},
+												{
+													"level": 11,
+													"{ae9b464d}": "ReviveAdditionalBonusAtThisLevel",
+													"{b0d8b2ac}": "ReviveBonusPerLevelAtAndAfter",
+													"__type": "{0333530c}"
+												},
+												{
+													"level": 16,
+													"{ae9b464d}": "ReviveAdditionalBonusAtThisLevel",
+													"{b0d8b2ac}": "ReviveBonusPerLevelAtAndAfter",
+													"__type": "{0333530c}"
+												}
+											],
+											"__type": "{4ce08984}"
+										}
+									],
+									"mDisplayAsPercent": true
+								},
+								"PercentBonusADCalc": {
+									"mFormulaParts": [
+										{
+											"{0589a59c}": "PBonusADMin",
+											"{0b65bc23}": "PBonusADMax",
+											"__type": "{ee18a47b}"
+										}
+									],
+									"mDisplayAsPercent": true,
+									"mPrecision": 1
+								}
+							}
+						}
+					]
+				}
+			}
+		},
 		"Zeri": {
 			"partype": "Mana",
 			"stats": {

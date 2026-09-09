@@ -415,6 +415,23 @@ test('16.17 adaptive force', async (t) => {
 			abilityPower: 38,
 		}, damageSource);
 	});
+
+	await t.test('zaahen', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Zaahen', {
+			...sourceCommon,
+			level: 18,
+			internalData: { passiveStacks: 12 },
+			items: [ITEMS_BY_NAME.ampTome],
+		});
+
+		typedPartialDeepStrictEqual(damageSource.stats.value.meta, {
+			adaptiveForceStat: 'abilityPower',
+		}, damageSource);
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 219,
+			abilityPower: 38,
+		}, damageSource);
+	});
 });
 
 test('16.17 Jhin', async (t) => {
@@ -905,4 +922,32 @@ test('16.17 Zeri', async (t) => {
 	});
 });
 
-// zaahen
+test('16.17 Zaahen', async (t) => {
+	const sourceCommon: IOverrides<'Zaahen'> = {
+		level: 18,
+		runes: {
+			shards: {
+				offensive: 'adaptive',
+				flex: 'adaptive',
+				defensive: 'health',
+			},
+		},
+		items: [ITEMS_BY_NAME.overlordsBloodmail, ITEMS_BY_NAME.endlessHunger, ITEMS_BY_NAME.steraksGage],
+		internalData: { passiveStacks: 12 },
+	};
+
+	await t.test('base', async () => {
+		const damageSource = await setupDamageSource(fixture, 'Zaahen', sourceCommon);
+
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 548,
+			abilityHaste: 59,
+		}, damageSource);
+
+		damageSource.currentHealth.value = 1085;
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 587,
+			abilityHaste: 64,
+		}, damageSource);
+	});
+});

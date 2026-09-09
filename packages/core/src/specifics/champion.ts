@@ -1086,6 +1086,7 @@ export const CHAMPION_SPECIFICS = {
 
 					calculatedVariables.bloodmailRetributionExcludedAd += passiveAd;
 				},
+				priority: HOOK_PRIORITIES.postTotal.Jhin,
 			},
 		},
 	},
@@ -3097,6 +3098,44 @@ export const CHAMPION_SPECIFICS = {
 			return {
 				passiveStacks: clamp(0, Math.round(self.internalData.value.passiveStacks ?? 0), maxStacks),
 			};
+		},
+		calculateHooks: {
+			postTotal: {
+				handler(self, { totalPreMultipliersStats, totalMultipliersStats, championPassiveStats, bonusStats, totalStats, dragonStatMultipliers, dragonStats }, { calculatedVariables }) {
+					const { passiveStacks } = self.internalData.value;
+					if (!passiveStacks) {
+						return;
+					}
+
+					const passiveParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self };
+					const adPercentPerStack = championAbilityVariableValue('PercentBonusADCalc', passiveParams);
+					const maxStacksMult = championAbilityVariableValue('MaxStacksMultiplier', passiveParams);
+					if (typeof adPercentPerStack.value !== 'number' || typeof maxStacksMult.value !== 'number') {
+						console.warn('[CHAMPION_SPECIFICS zaahen] failed to calculate passive ad per stack', adPercentPerStack, maxStacksMult);
+						return;
+					}
+
+					const maxStacks = CHAMPION_SPECIFICS.Zaahen.MAX_PASSIVE_STACKS(self);
+					const bonusADPercent = passiveStacks * adPercentPerStack.value * (passiveStacks === maxStacks ? maxStacksMult.value : 1);
+
+					console.log('zaahen post total', {
+						bonusADPercent,
+						preMultAD: totalPreMultipliersStats.attackDamage,
+						bonusAD: bonusStats.attackDamage,
+						totalAD: totalStats.attackDamage,
+						dragonADMult: dragonStatMultipliers.attackDamage,
+						midQuestMult: calculatedVariables.midQuestMultiplier,
+					});
+
+					const passiveAd = totalPreMultipliersStats.attackDamage * bonusADPercent;
+
+					championPassiveStats.attackDamage = passiveAd;
+					totalMultipliersStats.attackDamage += passiveAd;
+					totalStats.attackDamage += passiveAd;
+					bonusStats.attackDamage += passiveAd;
+				},
+				priority: HOOK_PRIORITIES.postTotal.Zaahen,
+			},
 		},
 	},
 	Zeri: {
