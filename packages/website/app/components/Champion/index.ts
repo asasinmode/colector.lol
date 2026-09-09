@@ -10,6 +10,9 @@ export const CHAMPION_COMPONENTS: Partial<Record<IChampionId, ISpecificComponent
 	TargetDummy: {
 		extras: ChampionExtrasTargetDummy,
 	},
+	Akali: {
+		extras: await booleanExtra(GameAbilityId.build(AbilityType.champion, 'Akali', 'passive', 0), 'isPassiveMSActive', 'is passive MS active (towards/after crossing the ring)', false),
+	},
 	Ambessa: {
 		extras: await booleanExtra(GameAbilityId.build(AbilityType.champion, 'Ambessa', 'passive', 0), 'hasPassiveStack', 'has passive stack (from using ability)', false),
 	},

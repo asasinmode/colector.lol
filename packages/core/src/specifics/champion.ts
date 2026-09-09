@@ -1,3 +1,4 @@
+import type IAkali from '@lolcalc/data/files/champion/Akali.json';
 import type IAphelios from '@lolcalc/data/files/champion/Aphelios.json';
 import type IAshe from '@lolcalc/data/files/champion/Ashe.json';
 import type IBard from '@lolcalc/data/files/champion/Bard.json';
@@ -58,6 +59,7 @@ import { STAT_ICON } from '@lolcalc/data';
 import { ALL_CHAMPION_STATS_ENTRIES, EFFECT_OBJECT_NAME, VariableType } from '@lolcalc/shared';
 import { clamp, roundNumber } from '@lolcalc/shared/utils.ts';
 import { computed, watch } from 'vue';
+import { calculateResistPercentageReduction } from '../calculate/damage.ts';
 import { combineCompounding } from '../calculate/util.ts';
 import { championAbilityVariableValue, VARIABLE_CALCULATION_FNS } from '../variables/game.ts';
 import { defineVariables, HOOK_PRIORITIES } from './index.ts';
@@ -89,6 +91,36 @@ export const CHAMPION_SPECIFICS = {
 							championPassiveStats.bonusAttackSpeedPercent = self.internalData.value[statName] * (statMeta.isPercentage ? 0.01 : 1);
 						} else if (self.internalData.value[statName] !== undefined) {
 							baseStats[statName] = self.internalData.value[statName] * (statMeta.isPercentage ? 0.01 : 1);
+						}
+					}
+				},
+			},
+		},
+	},
+	Akali: {
+		setupData(self) {
+			return {
+				isPassiveMSActive: clamp(0, self.internalData.value.isPassiveMSActive ?? 0, 1),
+			};
+		},
+		passive: {
+			variables: defineChampionVariables<'Akali', typeof IAkali, 'passive'>()({
+				meta: {
+					Damage: {
+						type: VariableType.magic,
+					},
+				},
+			}),
+		},
+		calculateHooks: {
+			onChampionPassive: {
+				handler(self, _stats, { calculatedVariables }) {
+					if (self.internalData.value.isPassiveMSActive) {
+						const bonusMSPercent = championAbilityVariableValue('PassiveSpeedBonus', { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self });
+						if (typeof bonusMSPercent.value === 'number') {
+							calculatedVariables.totalBonusPercentMoveSpeed += bonusMSPercent.value;
+						} else {
+							console.warn('[CHAMPION_SPECIFICS akali] failed to calculate passive bonus ms', bonusMSPercent);
 						}
 					}
 				},
@@ -3468,6 +3500,7 @@ function windBrotherCalculateHooks(id: 'Yasuo' | 'Yone'): ICalculateChampionStat
 
 export interface IChampionInternalDataMap {
 	TargetDummy: IChampionStats;
+	Akali: { isPassiveMSActive: number };
 	Ambessa: { hasPassiveStack: number };
 	Amumu: { applyPassive: number };
 	Anivia: { isEgg: number };
