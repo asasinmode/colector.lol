@@ -14,6 +14,7 @@ import { AbilityType, CHAMPION_LEVEL, GRIEVOUS_WOUND_ITEMS, ITEM_NAME_TO_ID, RAN
 import { clamp, roundNumber } from '@lolcalc/shared/utils.ts';
 import { computed } from 'vue';
 import { addMultiplicative, combineCompounding, combineRecursive } from '../calculate/util.ts';
+import { GameAbilityId } from '../GameAbilityId.ts';
 import { simpleFormattingGameAbilityImage } from '../misc.ts';
 import { itemVariableValue, variableResolveFn } from '../variables/game.ts';
 import { defineVariables, HOOK_PRIORITIES, MODIFY_VARIABLE_PRIORITIES } from './index.ts';
@@ -3705,7 +3706,7 @@ export const ITEM_SPECIFICS = {
 			meta: {
 				ShieldAmount: {
 					type: VariableType.shield,
-					additionalInfo: `while the calculated value is affected by [${simpleFormattingGameAbilityImage(AbilityType.item, ITEM_NAME_TO_ID.serpentsFang)} Serpent's Fang's](https://wiki.leagueoflegends.com/en-us/Serpent%27s_Fang) Shield Reave, the actual shield in game will probably be bigger because of how the Lifeline triggers. See the [${simpleFormattingGameAbilityImage(AbilityType.item, ITEM_NAME_TO_ID.immortalShieldbow)} Shieldbow's wiki notes](https://wiki.leagueoflegends.com/en-us/Immortal_Shieldbow#Notes)`,
+					additionalInfo: `while the calculated value is affected by [${simpleFormattingGameAbilityImage(GameAbilityId.build(AbilityType.item, ITEM_NAME_TO_ID.serpentsFang))} Serpent's Fang's](https://wiki.leagueoflegends.com/en-us/Serpent%27s_Fang) Shield Reave, the actual shield in game will probably be bigger because of how the Lifeline triggers. See the [${simpleFormattingGameAbilityImage(GameAbilityId.build(AbilityType.item, ITEM_NAME_TO_ID.immortalShieldbow))} Shieldbow's wiki notes](https://wiki.leagueoflegends.com/en-us/Immortal_Shieldbow#Notes)`,
 				},
 			},
 			uninteresting: ['f3', 'HealthThreshold', 'ShieldDuration'],

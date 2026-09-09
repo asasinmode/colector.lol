@@ -1,9 +1,9 @@
-import type { TAbilityType } from '@lolcalc/shared';
 import type { ITexture } from '@lolcalc/shared/types.d.ts';
 import type { IGameAbilityId } from './GameAbilityId';
-import { CHAMPION_IMAGES, EFFECTS, imgUrl, ITEMS, textureBgImageAttrs, UI, useChampion } from '@lolcalc/data';
+import { CHAMPION_IMAGES, CHAMPION_KEY_TO_ID, EFFECTS, imgUrl, ITEMS, textureBgImageAttrs, UI, useChampion } from '@lolcalc/data';
 import { AbilityType } from '@lolcalc/shared';
-import { CUSTOM_EFFECT_IMAGES, EFFECT_SPECIFICS } from './specifics/effect.ts';
+import { GameAbilityId } from './GameAbilityId.ts';
+import { CUSTOM_EFFECT_IMAGES, EFFECT_SPECIFICS, EFFECT_SPECIFICS_OBJECT_ENTRIES } from './specifics/effect.ts';
 import { replaceGameIcons } from './variables/game.ts';
 
 export type IGameImageData = [src: string, width: number, height?: number, abilityName?: string] | (ITexture & { abilityName?: string });
@@ -76,8 +76,8 @@ export async function gameAbilityImgAttrs(abilityId: IGameAbilityId) {
 }
 
 /** used for creating a _game ability_ image string that will be parsed by `simpleDescriptionFormatting` */
-export function simpleFormattingGameAbilityImage(type: TAbilityType, id: string) {
-	return `%a:${type}-${id}%`;
+export function simpleFormattingGameAbilityImage(abilityId: IGameAbilityId) {
+	return `%a:${GameAbilityId.stringify(abilityId, CHAMPION_KEY_TO_ID, EFFECT_SPECIFICS_OBJECT_ENTRIES)}%`;
 }
 
 export async function simpleDescriptionFormatting(text: string, addAlt?: boolean) {
@@ -87,12 +87,14 @@ export async function simpleDescriptionFormatting(text: string, addAlt?: boolean
 		.split(/(%a:[^-%]+-[^%]+%)/g);
 
 	for (let i = 0; i < parts.length; i++) {
-		const match = parts[i]!.match(/%a:([^-%]+)-([^%]+)%/);
+		const match = parts[i]!.match(/%a:(.+?)%/);
 		if (match) {
-			const abilityImage = await gameAbilityImage({
-				type: match[1],
-				id: match[2],
-			} as IGameAbilityId);
+			const abilityId = GameAbilityId.parse(match[1] ?? '', CHAMPION_KEY_TO_ID, EFFECT_SPECIFICS_OBJECT_ENTRIES);
+			if (!abilityId) {
+				console.warn('[simpleDescriptionFormatting] failed to parse game ability id from', match[1]);
+				continue;
+			}
+			const abilityImage = await gameAbilityImage(abilityId);
 
 			if (Array.isArray(abilityImage)) {
 				parts[i] = `<img src="${abilityImage[0]}" width="${abilityImage[1]}" height="${abilityImage[2] ?? abilityImage[1]}"${addAlt ? ` alt="${abilityImage[3] ?? 'unknown'} icon"` : ''}>`;
