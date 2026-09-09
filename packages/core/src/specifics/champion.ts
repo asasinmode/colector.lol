@@ -3163,6 +3163,8 @@ export const CHAMPION_SPECIFICS = {
 					totalMultipliersStats.attackDamage += passiveAd;
 					totalStats.attackDamage += passiveAd;
 					bonusStats.attackDamage += passiveAd;
+
+					calculatedVariables.bloodmailRetributionExcludedAd += passiveAd;
 				},
 				priority: HOOK_PRIORITIES.postTotal.Zaahen,
 			},
