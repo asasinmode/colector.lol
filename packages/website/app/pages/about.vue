@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { GameAbilityId } from '@lolcalc/core/GameAbilityId';
-import { gameAbilityImgAttrs, simpleFormattingGameAbilityImage } from '@lolcalc/core/misc';
+import { simpleFormattingGameAbilityImage } from '@lolcalc/core/misc';
 import { STAT_ICON } from '@lolcalc/data/index';
 import { AbilityType, ITEM_NAME_TO_ID } from '@lolcalc/shared/index';
 
 const { reportAnIssue } = useReportIssueDialog();
 
-const ambessaRImg = await gameAbilityImgAttrs(GameAbilityId.build(AbilityType.champion, 'Ambessa', 'r', 0));
-const nocturneWImg = await gameAbilityImgAttrs(GameAbilityId.build(AbilityType.champion, 'Nocturne', 'w', 0));
-
 const discrepancyMaxHealthMana = useSimpleDescription('about-discrepancy-1', `max <scalehealth>%i:${STAT_ICON.hp}%health</scalehealth> and <scalemana>%i:${STAT_ICON.mana}%mana</scalemana>/<scaleenergy>ability resource</scaleenergy> have a <span class="error-margin">margin of error of <strong>1</strong></span>. Most of the differences should be coming from floating point arithmetic and the in game ui rounding the displayed <scalehealth>hp</scalehealth> up and <scalemana>mana</scalemana> down. This means that the game displays something like <span class="code-like">2773.0000001</span> as <span class="code-like">2774</span>, even though it's effectively <span class="code-like">2773</span> ([example config](#TODO))`);
 const discrepancyAttackRangeRfc = useSimpleDescription('about-discrepancy-2', `%i:${STAT_ICON.attackRange}%attack range with [${simpleFormattingGameAbilityImage(GameAbilityId.build(AbilityType.item, ITEM_NAME_TO_ID.rfc))}Rapid Firecannon's](https://wiki.leagueoflegends.com/en-us/Rapid_Firecannon) passive active has a <span class="error-margin">margin of error of <strong>1</strong></span>. I don't know why ([config with chogath with R 6 stacks/rakan from test](#TODO))`);
 const discrepancyBloodmailRetribution = useSimpleDescription('about-discrepancy-3', `<scalead>%i:${STAT_ICON.attackDamage}%attack damage</scalead> with [${simpleFormattingGameAbilityImage(GameAbilityId.build(AbilityType.item, ITEM_NAME_TO_ID.overlordsBloodmail))}Overlord's Bloodmail's](https://wiki.leagueoflegends.com/en-us/Overlord's_Bloodmail) [Retribution](https://wiki.leagueoflegends.com/en-us/Named_item_effect#Retribution) passive can be slightly off for high <scalehealth>max hp</scalehealth> values, or might be difficult to exactly verify with the game, since it calculates it &quot;on top&quot; of other stat calculations (as if it was an external effect). For example, if in game you see a champion with <scalehealth>300 %i:${STAT_ICON.hp}%hp</scalehealth>, in that exact moment you are looking at their stats, their displayed <scalead>ad</scalead> might be lagging behind and showing the value for <scalehealth>299 %i:${STAT_ICON.hp}%hp</scalehealth> that was just there, before it regenerated. Because of this, when [Retribution](https://wiki.leagueoflegends.com/en-us/Named_item_effect#Retribution) is being calculated, <scalead>%i:${STAT_ICON.attackDamage}%attack damage's</scalead> <span class="error-margin">margin of error is <strong>1</strong> within <strong>+/-0.5%</strong></span> <scalehealth>%i:${STAT_ICON.hp}%current health</scalehealth> (check if <scalead>ad</scalead> is correct within +/-0.5% <scalehealth>hp</scalehealth>)`);
+
+const nonPassiveAbilitiesDisclaimer = useSimpleDescription('about-non-passive-abilities-disclaimer', `non-passive abilities (like [${simpleFormattingGameAbilityImage(GameAbilityId.build(AbilityType.champion, 'Ambessa', 'r', 0))}Ambessa R passive](https://wiki.leagueoflegends.com/en-us/Ambessa#Public_Execution) or [${simpleFormattingGameAbilityImage(GameAbilityId.build(AbilityType.champion, 'Nocturne', 'w', 0))}Nocturne W passive](https://wiki.leagueoflegends.com/en-us/Nocturne#Shroud_of_Darkness) and [rune paths](https://wiki.leagueoflegends.com/en-us/Rune#Rune_paths) <span class="error-margin">are not implemented</span> <i>(yet)</i>. See the [champion/item/rune setup](/guide#test-setup) recommended for verifying the calculations yourself`);
 </script>
 
 <template>
@@ -39,9 +38,7 @@ const discrepancyBloodmailRetribution = useSimpleDescription('about-discrepancy-
 			for now only champion <u>passives</u> (not QWER), items, and rune <u>shards</u> (not paths) calculate properly
 			<Icon class="i-ph:info" />
 		</p>
-		<p>
-			non-passive abilities (like <a href="https://wiki.leagueoflegends.com/en-us/Ambessa#Public_Execution" target="_blank"><img v-bind="ambessaRImg" alt="Ambessa R icon">Ambessa R passive</a> or <a href="https://wiki.leagueoflegends.com/en-us/Nocturne#Shroud_of_Darkness" target="_blank"><img v-bind="nocturneWImg" alt="Nocturne W icon">Nocturne W passive</a>) and <a href="https://wiki.leagueoflegends.com/en-us/Rune#Rune_paths" target="_blank">rune paths</a> <span class="error-margin">are not implemented</span> <i>(yet)</i>. See the <NuxtLink to="/guide#test-setup">champion/item/rune setup</NuxtLink> recommended for verifying the calculations yourself
-		</p>
+		<p class="game-description" v-html="nonPassiveAbilitiesDisclaimer" />
 		<p>for when these and other features will be implemented, check <a href="#TODO">the roadmap</a></p>
 
 		<h2 id="known-discrepancies">currently known calculation discrepancies</h2>

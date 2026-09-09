@@ -1,9 +1,9 @@
 import type { ITexture } from '@lolcalc/shared/types.d.ts';
 import type { IGameAbilityId } from './GameAbilityId';
-import { CHAMPION_ID_TO_KEY, CHAMPION_IMAGES, CHAMPION_KEY_TO_ID, EFFECTS, imgUrl, ITEMS, textureBgImageAttrs, UI, useChampion } from '@lolcalc/data';
+import { CHAMPION_IMAGES, EFFECTS, imgUrl, ITEMS, textureBgImageAttrs, UI, useChampion } from '@lolcalc/data';
 import { AbilityType } from '@lolcalc/shared';
 import { GameAbilityId } from './GameAbilityId.ts';
-import { CUSTOM_EFFECT_IMAGES, EFFECT_SPECIFICS, EFFECT_SPECIFICS_OBJECT_ENTRIES } from './specifics/effect.ts';
+import { CUSTOM_EFFECT_IMAGES, EFFECT_SPECIFICS } from './specifics/effect.ts';
 import { replaceGameIcons } from './variables/game.ts';
 
 export type IGameImageData = [src: string, width: number, height?: number, abilityName?: string] | (ITexture & { abilityName?: string });
