@@ -1997,10 +1997,10 @@ export const CHAMPION_SPECIFICS = {
 
 					const dDragon = dragonMult;
 					const dMidQuest = (1 + dragonMult) * midQuestMult;
-					const dBloodmail = (1 + dMidQuest) * bloodmailMult;
+					const dBloodmail = (1 + midQuestMult) * bloodmailMult;
 
-					const k = dDragon + dMidQuest + dBloodmail;
-					const denominator = 1 - bonusADPercent * k;
+					const K1 = dDragon + dMidQuest + dBloodmail;
+					const denominator = 1 - bonusADPercent * K1;
 					const passiveAd = (bonusADPercent * bonusStats.attackDamage) / (denominator > 0 ? denominator : 1);
 
 					championPassiveStats.attackDamage = passiveAd;
@@ -2025,7 +2025,7 @@ export const CHAMPION_SPECIFICS = {
 					}
 
 					if (bloodmailMult) {
-						const bloodmailDiff = (passiveAd + (passiveAd * dMidQuest)) * bloodmailMult;
+						const bloodmailDiff = passiveAd * dBloodmail;
 						calculatedVariables.bloodmailRetribution! += bloodmailDiff;
 						itemPassivesStats.attackDamage += bloodmailDiff;
 						itemTotalStats.attackDamage += bloodmailDiff;

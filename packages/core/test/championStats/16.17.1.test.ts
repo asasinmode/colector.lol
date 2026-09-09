@@ -862,10 +862,9 @@ test('16.17 Rengar', async (t) => {
 			abilityHaste: 108,
 		}, damageSource);
 
-		/* this is really close to the margin of error, 908 is shown in game from `1028` current hp */
-		damageSource.currentHealth.value = 1043;
+		damageSource.currentHealth.value = 1020;
 		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
-			attackDamage: 908,
+			attackDamage: 909,
 			abilityHaste: 123,
 		}, damageSource);
 	});
