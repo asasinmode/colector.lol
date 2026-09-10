@@ -495,9 +495,65 @@ export const CHAMPION_SPECIFICS = {
 		},
 		r: {
 			variables: defineChampionVariables<'Belveth', typeof IBelveth, 'r'>()({
+				known: {
+					TotalComputedExplosionDamage: [],
+				},
+				calculate(self, target) {
+					let TotalComputedExplosionDamage = Number.NaN;
+
+					const ultParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.r.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, abilityLevel: self.abilityLevels.value.r, damageSource: self };
+					const baseDamage = championAbilityVariableValue('TotalExplosionDamage', ultParams);
+					const missingHealthPercent = championAbilityVariableValue('MissingHealthDamage', ultParams);
+					if (typeof baseDamage.value === 'number' && typeof missingHealthPercent.value === 'number') {
+						TotalComputedExplosionDamage = baseDamage.value + Math.max(0, (target?.stats.value.total.hp ?? 0) - (target?.currentHealth.value ?? 0)) * missingHealthPercent.value;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate ult total computed damage', baseDamage, missingHealthPercent);
+					}
+
+					return {
+						TotalComputedExplosionDamage: {
+							value: TotalComputedExplosionDamage,
+						},
+					};
+				},
+				meta: {
+					FinalOnHitDamage: {
+						type: VariableType.true,
+					},
+					TotalExplosionDamage: {
+						type: VariableType.true,
+						displayedName: 'ExplosionDamage',
+					},
+					TotalComputedExplosionDamage: {
+						isCustom: true,
+						type: VariableType.true,
+						displayedName: 'TotalDamage',
+					},
+					MaxMonsterOnHitTooltip: {
+						type: VariableType.true,
+					},
+					BaseMaxHealth: {
+						type: VariableType.heal,
+					},
+				},
+				uninteresting: ['PassiveStacksOnDevour', 'MissingHealthDamage', 'SteroidDuration', 'SteroidDurationUpgrade', 'StackThresholdForUpgrade', 'StackThresholdForPermanent', 'TotalASMod', 'VoidlingHPScale', 'VoidlingADScale'],
 			}),
 		},
 		calculateHooks: {
+			postInit: {
+				handler(self, { championPassiveStats }) {
+					if (!self.currentAbilityResource.value) {
+						return;
+					}
+
+					const trueFormRange = championAbilityVariableValue('BonusAARange', { abilityVariant: self.champion.value!.abilities.r.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, abilityLevel: self.abilityLevels.value.r, damageSource: self });
+					if (typeof trueFormRange.value === 'number') {
+						championPassiveStats.attackRange = trueFormRange.value;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate true form range', trueFormRange);
+					}
+				},
+			},
 			onChampionPassive: {
 				handler(self, { championPassiveStats }, { calculatedVariables }) {
 
