@@ -1789,36 +1789,9 @@ function resolveMStatWithFormula(stat: IStatWithFormula, stats?: IStatsCalculati
 function resolveMMultiplier(
 	variable: IMMultiplier,
 	whole: any,
-	meta: Parameters<IHypotheticalVariableCalculationFns[keyof IHypotheticalVariableCalculationFns]>[2],
+	meta: IVariableCalculationFnMeta,
 ): number | undefined {
-	const { mNumber, mDataValue, mPart1, mSubparts } = variable;
-	let rv: number | undefined;
-	if (mNumber) {
-		rv = mNumber;
-	} else if (mDataValue) {
-		meta.accessedVariables?.add(variable.mDataValue);
-		const value = whole.dataValues?.[mDataValue];
-
-		/* expected to happen for champions */
-		if (Array.isArray(value)) {
-			if (value.length === 2) {
-				console.warn('[resolveMMultiplier] suspiciously melee/ranged looking value having abilityLevel applied to it', { mNumber, mDataValue }, variable);
-			}
-			rv = value[(meta.variableValueParams as IChampionAbilityVariableParams).abilityLevel || 1];
-		} else {
-			rv = value;
-		}
-	} else if (mPart1) {
-		rv = VARIABLE_CALCULATION_FNS.ProductOfSubPartsCalculationPart(variable as IGameVariablesByType['ProductOfSubPartsCalculationPart'], whole, meta)?.value;
-	} else if (mSubparts) {
-		rv = VARIABLE_CALCULATION_FNS.SumOfSubPartsCalculationPart(variable as IGameVariablesByType['SumOfSubPartsCalculationPart'], whole, meta)?.value as number;
-		if (typeof rv !== 'number') {
-			console.warn('[variables/game resolveMMultiplier] recieved NaN from SumOfSubPartsCalculationPart', rv, variable);
-		}
-	} else {
-		console.warn('[variables/game resolveMMultiplier] unknown mMultiplier structure', variable);
-		rv = undefined;
-	}
+	const rv = variableResolveFn(variable)?.(variable, whole, meta)?.value as number;
 	/* there could be a better way */
 	return rv === 0.66667 ? (2 / 3) : rv === 0.33334 ? (1 / 3) : rv;
 }

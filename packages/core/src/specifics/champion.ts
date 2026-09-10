@@ -431,6 +431,11 @@ export const CHAMPION_SPECIFICS = {
 						isCustom: true,
 						displayedName: 'Stacks',
 					},
+					'TotalAttackSpeedFromStacks': {
+						/* game doesn't show any of these */
+						extendedEquals: undefined,
+						calculatesFrom: [],
+					},
 				},
 			}),
 		},
