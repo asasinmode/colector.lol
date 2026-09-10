@@ -458,7 +458,7 @@ test('16.17 Jhin', async (t) => {
 		}, damageSource);
 	});
 
-	await t.test('withered', async () => {
+	await t.test('winter caressed', async () => {
 		const damageSource = await setupDamageSource(fixture, 'Jhin', {
 			level: 18,
 			runes: {

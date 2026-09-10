@@ -55,6 +55,8 @@ export const HOOK_PRIORITIES = {
 		Rengar: 16,
 		/** needs bonus hp */
 		Briar: 100,
+		/** before bloodmail, needs ap & ad */
+		Belveth: 14,
 		/** must be after champion passives that affect AD like Rammus/Hecarim */
 		[ITEM_NAME_TO_ID.overlordsBloodmail]: 15,
 		/** must be after bloodmail */

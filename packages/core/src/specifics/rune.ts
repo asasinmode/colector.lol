@@ -41,9 +41,11 @@ export const RUNE_SPECIFICS = {
 			}),
 			calculateHooks: {
 				onRuneShards: {
-					handler(_self, { runeShardStats, adaptiveForceMeta }) {
+					handler(_self, { runeShardStats, adaptiveForceMeta }, { calculatedVariables }) {
 						runeShardStats[adaptiveForceMeta[0]] ??= 0;
-						runeShardStats[adaptiveForceMeta[0]]! += (RUNES as TRunes).shards.flex.adaptive.effectAmount[`StatGain${(adaptiveForceMeta[1] + 1) as 1 | 2}`];
+						const value = (RUNES as TRunes).shards.flex.adaptive.effectAmount[`StatGain${(adaptiveForceMeta[1] + 1) as 1 | 2}`];
+						runeShardStats[adaptiveForceMeta[0]]! += value;
+						calculatedVariables.totalAdaptiveForce += value;
 					},
 					priority: -1,
 				},

@@ -339,7 +339,7 @@ export const ITEM_SPECIFICS = {
 			},
 			onTotalPreMultipliers: {
 				handler(_self, { adaptiveForceMeta, itemPassivesStats, totalMultipliersStats, itemTotalStats }, { calculatedVariables }) {
-					if (calculatedVariables.swiftmarchAdaptive && adaptiveForceMeta[0] === 'abilityPower') {
+					if (calculatedVariables.swiftmarchAdaptive && adaptiveForceMeta[1]) {
 						const value = calculatedVariables.swiftmarchAdaptive * calculatedVariables.blackfireTorchBBlazeMultiplier!;
 						calculatedVariables.blackfireTorchBBlazeAP! += value;
 						itemPassivesStats.abilityPower += value;
@@ -2374,19 +2374,10 @@ export const ITEM_SPECIFICS = {
 			onTotalPreMultipliers: {
 				handler(_self, { totalPreMultipliersStats, totalMultipliersStats, itemTotalStats, itemPassivesStats, adaptiveForceMeta }, { calculatedVariables, miscDebug }) {
 					miscDebug.swiftmarchTotalMs = totalPreMultipliersStats.moveSpeed;
-					const adaptiveForce = variableResolveFn(ITEMS_BY_NAME.swiftmarch?.itemCalculations.MSToAdaptiveCalc)?.(
-						ITEMS_BY_NAME.swiftmarch?.itemCalculations.MSToAdaptiveCalc,
-						ITEMS_BY_NAME.swiftmarch,
-						{
-							variableValueFn: itemVariableValue,
-							variableValueParams: {
-								item: ITEMS_BY_NAME.swiftmarch,
-								damageSource: { stats: { value: { total: totalPreMultipliersStats } } } as DamageSource,
-							},
-						},
-					);
+					const adaptiveForce = itemVariableValue('MSToAdaptiveCalc', { item: ITEMS_BY_NAME.swiftmarch, damageSource: { stats: { value: { total: totalPreMultipliersStats } } } as DamageSource });
 
-					if (typeof adaptiveForce?.value === 'number') {
+					if (typeof adaptiveForce.value === 'number') {
+						calculatedVariables.totalAdaptiveForce += adaptiveForce.value;
 						calculatedVariables.swiftmarchAdaptive = adaptiveForce.value;
 						const statValue = calculatedVariables.swiftmarchAdaptive * adaptiveForceMeta[2];
 

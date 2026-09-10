@@ -638,15 +638,7 @@ export const CHAMPION_SPECIFICS = {
 						return;
 					}
 
-					const rParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.r.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, abilityLevel: self.abilityLevels.value.r, damageSource: self };
-					const maxHP = championAbilityVariableValue('MaxHealthOnDevour', rParams);
-					if (typeof maxHP.value === 'number') {
-						championPassiveStats.hp = maxHP.value;
-					} else {
-						console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate true form range', maxHP);
-					}
-
-					const totalASMult = championAbilityVariableValue('TotalASMod', rParams);
+					const totalASMult = championAbilityVariableValue('TotalASMod', { abilityVariant: self.champion.value!.abilities.r.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, abilityLevel: self.abilityLevels.value.r, damageSource: self });
 					if (typeof totalASMult.value === 'number') {
 						calculatedVariables.totalAttackSpeedMult = totalASMult.value;
 					} else {
@@ -3191,7 +3183,7 @@ export const CHAMPION_SPECIFICS = {
 		},
 		calculateHooks: {
 			postTotal: {
-				handler(self, { totalStats, bonusStats, runeShardStats, dragonStatMultipliers, championPassiveStats }, { calculatedVariables, miscDebug }) {
+				handler(self, { adaptiveForceMeta, totalStats, bonusStats, dragonStatMultipliers, championPassiveStats }, { calculatedVariables, miscDebug }) {
 					const hpToAp = championAbilityVariableValue('HPforAP', { abilityVariant: self.champion.value!.abilities.passive.variants[0]! });
 					const apToHp = championAbilityVariableValue('APRatioBonusHP', { abilityVariant: self.champion.value!.abilities.passive.variants[0]! });
 
@@ -3202,8 +3194,7 @@ export const CHAMPION_SPECIFICS = {
 
 					const totalApMultiplier = calculatedVariables.totalItemApMultipliers + dragonStatMultipliers.abilityPower + calculatedVariables.midQuestMultiplier;
 
-					const excludedHPBaseAP = (runeShardStats.abilityPower ?? 0)
-						+ (calculatedVariables.swiftmarchAdaptive ?? 0)
+					const excludedHPBaseAP = (adaptiveForceMeta[1] === 1 ? calculatedVariables.totalAdaptiveForce : 0)
 						+ (calculatedVariables.riftmakerVoidInfusion ?? 0);
 
 					miscDebug.vladimirPassiveAPHPBase = bonusStats.hp;

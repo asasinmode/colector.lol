@@ -47,6 +47,7 @@ export function calculateChampionStats(source: DamageSource): IStatsCalculationR
 	const calculatedVariables: IStatsCalculationVariables = {
 		apMultipliersBase: 0,
 		postItemTotalApMultipliersBase: 0,
+		totalAdaptiveForce: 0,
 		baseItemManaRegenPercent: 0,
 		totalItemApMultipliers: 1,
 		totalBonusPercentMoveSpeed: 0,

@@ -94,6 +94,7 @@ export interface IStatsCalculationVariables {
 	totalMultiplicativeMoveSpeed: number;
 	/** penalty from move speed soft cap */
 	movespeedSoftCapPenalty: number;
+	totalAdaptiveForce: number;
 	attackSpeedCap: number;
 	/** https://wiki.leagueoflegends.com/en-us/Tenacity#Stacking */
 	tenacityBucketB: number;
@@ -377,7 +378,12 @@ export interface IStatsCalculationEffectVars extends Pick<IEffectOntoTargetVars,
 
 export type IAdaptiveForceStat = 'attackDamage' | 'abilityPower';
 
-export type IAdaptiveForceStatRv = [IAdaptiveForceStat, adaptiveForceVariable: 0 | 1, multiplier: number];
+/**
+ * adaptiveForceVariable
+ * 0 - ad
+ * 1 - ap
+ */
+export type IAdaptiveForceStatRv = [ IAdaptiveForceStat, adaptiveForceVariable: 0 | 1, multiplier: number ];
 
 export const CHAMPION_STAT_META: Record<IChampionStatName, IChampionStatMeta> = {
 	hp: {
