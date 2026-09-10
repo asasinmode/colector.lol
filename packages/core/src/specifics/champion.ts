@@ -55,7 +55,7 @@ import type { ComputedRef } from 'vue';
 import type { DamageSource, ICalculateChampionStatsHookSource, IDamageSourceInternalDataBase, IEffectOntoTargetVarsHook, IProviderGroupDataSetup, IProviderGroupImageText } from '../DamageSource';
 import type { DetectChampionVariables } from '../types';
 import type { IGameVariableValueParameters } from '../variables/game.ts';
-import type { IDefineVariablesConfig, IDeriveProgressFn, IEffectControlsProps, IExtractExtraVariables, ISpecificVariables, IVariableValueResult } from './index';
+import type { IDefineVariablesConfig, IDeriveProgressFn, IEffectControlsProps, IExtractExtraVariables, IGameAbilityData, ISpecificVariables, IVariableValueResult } from './index';
 import { STAT_ICON } from '@lolcalc/data';
 import { ALL_CHAMPION_STATS_ENTRIES, EFFECT_OBJECT_NAME, VariableType } from '@lolcalc/shared';
 import { clamp, roundNumber } from '@lolcalc/shared/utils.ts';
@@ -437,6 +437,7 @@ export const CHAMPION_SPECIFICS = {
 						calculatesFrom: [],
 					},
 				},
+				uninteresting: ['SheenSpeedPerStack', 'SheenDuration', 'MonsterStacks', 'ChampionStacks'],
 			}),
 		},
 		q: {
@@ -458,7 +459,7 @@ export const CHAMPION_SPECIFICS = {
 
 					const perSideASToAHRatio = championAbilityVariableValue('PerSideCDAttackSpeedMultiplier', qParams);
 					if (typeof perSideASToAHRatio.value === 'number') {
-						const haste = (self.stats.value.total.bonusAttackSpeedPercent - self.stats.value.baseOnLevel.bonusAttackSpeedPercent) * perSideASToAHRatio.value * 100;
+						const haste = (self.stats.value.total.bonusAttackSpeedPercent - (self.stats.value.variables.belvethPostAbilityBonusAS ?? 0)) * perSideASToAHRatio.value * 100;
 						const cdr = cooldownReductionPercentageFromHaste(haste);
 						f1 *= 1 - (cdr / 100);
 					} else {
@@ -580,12 +581,28 @@ export const CHAMPION_SPECIFICS = {
 		},
 		calculateHooks: {
 			postInit: {
-				handler(self, { championPassiveStats }) {
+				handler(self, { baseStats, championPassiveStats }, { calculatedVariables }) {
+					calculatedVariables.attackSpeedCap = Number.POSITIVE_INFINITY;
+
+					const rParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.r.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, abilityLevel: self.abilityLevels.value.r, damageSource: self };
+					const firstDurationIncreaseThreshold = championAbilityVariableValue('StackThresholdForUpgrade', rParams);
+					const firstDurationIncrease = championAbilityVariableValue('SteroidDurationUpgrade', rParams);
+					const secondDurationIncreaseThreshold = championAbilityVariableValue('StackThresholdForPermanent', rParams);
+					if (typeof firstDurationIncreaseThreshold.value === 'number' && typeof secondDurationIncreaseThreshold.value === 'number' && typeof firstDurationIncrease.value === 'number') {
+						if (self.internalData.value.passiveStacks >= secondDurationIncreaseThreshold.value) {
+							baseStats.mana = 1;
+						} else if (self.internalData.value.passiveStacks >= firstDurationIncreaseThreshold.value) {
+							baseStats.mana = firstDurationIncrease.value;
+						}
+					} else {
+						console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate true form duration modifiers', firstDurationIncrease, firstDurationIncrease, secondDurationIncreaseThreshold);
+					}
+
 					if (!self.currentAbilityResource.value) {
 						return;
 					}
 
-					const trueFormRange = championAbilityVariableValue('BonusAARange', { abilityVariant: self.champion.value!.abilities.r.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, abilityLevel: self.abilityLevels.value.r, damageSource: self });
+					const trueFormRange = championAbilityVariableValue('BonusAARange', rParams);
 					if (typeof trueFormRange.value === 'number') {
 						championPassiveStats.attackRange = trueFormRange.value;
 					} else {
@@ -595,7 +612,39 @@ export const CHAMPION_SPECIFICS = {
 			},
 			onChampionPassive: {
 				handler(self, { championPassiveStats }, { calculatedVariables }) {
+					const { passiveStacks, hasPassiveStack } = self.internalData.value;
+					const passiveParams = { abilityVariant: self.champion.value!.abilities.passive.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self };
 
+					championPassiveStats.bonusAttackSpeedPercent = 0;
+
+					if (hasPassiveStack) {
+						const sheenBonusAS = championAbilityVariableValue('SheenSpeedPerStack', passiveParams);
+						if (typeof sheenBonusAS.value === 'number') {
+							championPassiveStats.bonusAttackSpeedPercent += sheenBonusAS.value;
+							calculatedVariables.belvethPostAbilityBonusAS = sheenBonusAS.value;
+						} else {
+							console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate passive post ability as', sheenBonusAS);
+						}
+					}
+
+					const asPerStack = championAbilityVariableValue('AttackSpeedPerStack', passiveParams);
+					if (typeof asPerStack.value === 'number') {
+						championPassiveStats.bonusAttackSpeedPercent += passiveStacks * asPerStack.value / 100;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate passive stack as', asPerStack);
+					}
+
+					if (!self.currentAbilityResource.value) {
+						return;
+					}
+
+					const rParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.r.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, abilityLevel: self.abilityLevels.value.r, damageSource: self };
+					const maxHP = championAbilityVariableValue('MaxHealthOnDevour', rParams);
+					if (typeof maxHP.value === 'number') {
+						championPassiveStats.hp = maxHP.value;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate true form range', maxHP);
+					}
 				},
 			},
 		},

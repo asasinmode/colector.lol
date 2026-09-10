@@ -270,6 +270,8 @@ export interface IStatsCalculationVariables {
 	vladimirPassiveHp?: number;
 	/** bonus ad % from zaahen's passive */
 	zaahenPassiveAdMultiplier?: number;
+	/** temporary bonus attack speed belveth gains after using an ability, needed because it's excluded from Q cd calc */
+	belvethPostAbilityBonusAS?: number;
 }
 
 /** all of the debuffs collected throughout the calculation that are applied in `calculateChampionStats` together */
