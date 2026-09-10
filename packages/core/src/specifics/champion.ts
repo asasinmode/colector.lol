@@ -2,6 +2,7 @@ import type IAkali from '@lolcalc/data/files/champion/Akali.json';
 import type IAphelios from '@lolcalc/data/files/champion/Aphelios.json';
 import type IAshe from '@lolcalc/data/files/champion/Ashe.json';
 import type IBard from '@lolcalc/data/files/champion/Bard.json';
+import type IBelveth from '@lolcalc/data/files/champion/Belveth.json';
 import type IBriar from '@lolcalc/data/files/champion/Briar.json';
 import type ICassiopeia from '@lolcalc/data/files/champion/Cassiopeia.json';
 import type IChogath from '@lolcalc/data/files/champion/Chogath.json';
@@ -59,7 +60,6 @@ import { STAT_ICON } from '@lolcalc/data';
 import { ALL_CHAMPION_STATS_ENTRIES, EFFECT_OBJECT_NAME, VariableType } from '@lolcalc/shared';
 import { clamp, roundNumber } from '@lolcalc/shared/utils.ts';
 import { computed, watch } from 'vue';
-import { calculateResistPercentageReduction } from '../calculate/damage.ts';
 import { combineCompounding } from '../calculate/util.ts';
 import { championAbilityVariableValue, VARIABLE_CALCULATION_FNS } from '../variables/game.ts';
 import { defineVariables, HOOK_PRIORITIES } from './index.ts';
@@ -413,6 +413,96 @@ export const CHAMPION_SPECIFICS = {
 				passiveStacks: Math.max(0, Math.round(self.internalData.value.passiveStacks ?? 0)),
 				hasPassiveStack: clamp(0, Math.round(self.internalData.value.hasPassiveStack ?? 0), 1),
 			};
+		},
+		passive: {
+			variables: defineChampionVariables<'Belveth', typeof IBelveth, 'passive'>()({
+				known: {
+					'{7f3c01cf}': [],
+				},
+				calculate(self) {
+					return {
+						'{7f3c01cf}': {
+							value: self.internalData.value.passiveStacks,
+						},
+					};
+				},
+				meta: {
+					'{7f3c01cf}': {
+						isCustom: true,
+						displayedName: 'Stacks',
+					},
+				},
+			}),
+		},
+		q: {
+			variables: defineChampionVariables<'Belveth', typeof IBelveth, 'q'>()({
+				known: {
+					f1: [],
+					TotalMonsterDamage: [],
+				},
+				calculate(self) {
+					let f1 = Number.NaN;
+					const qParams: IGameVariableValueParameters['championAbility'] = { abilityVariant: self.champion.value!.abilities.q.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, damageSource: self, abilityLevel: self.abilityLevels.value.q };
+					const perSideCD = championAbilityVariableValue('PerSideCooldown', qParams);
+
+					if (typeof perSideCD.value === 'number') {
+						f1 = perSideCD.value;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate q per side cd', perSideCD);
+					}
+
+					const perSideASToAHRatio = championAbilityVariableValue('PerSideCDAttackSpeedMultiplier', qParams);
+					if (typeof perSideASToAHRatio.value === 'number') {
+						const haste = (self.stats.value.total.bonusAttackSpeedPercent - self.stats.value.baseOnLevel.bonusAttackSpeedPercent) * perSideASToAHRatio.value * 100;
+						const cdr = cooldownReductionPercentageFromHaste(haste);
+						f1 *= 1 - (cdr / 100);
+					} else {
+						console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate q as to ah ratio', perSideASToAHRatio);
+					}
+
+					return {
+						f1: {
+							value: f1,
+							roundReplaced: 1,
+						},
+						TotalMonsterDamage: {
+							value: (championAbilityVariableValue('BaseDamage', qParams).value as number) + (championAbilityVariableValue('MonsterMod', qParams).value as number),
+						},
+					};
+				},
+				meta: {
+					f1: {
+						displayedName: 'PerSideCD',
+					},
+					BaseDamage: {
+						type: VariableType.physical,
+					},
+					TotalMonsterDamage: {
+						isCustom: true,
+						type: VariableType.physical,
+					},
+				},
+				uninteresting: ['PerSideCDAttackSpeedMultiplier', 'MonsterMod'],
+			}),
+		},
+		w: {
+			variables: defineChampionVariables<'Belveth', typeof IBelveth, 'w'>()({
+			}),
+		},
+		e: {
+			variables: defineChampionVariables<'Belveth', typeof IBelveth, 'e'>()({
+			}),
+		},
+		r: {
+			variables: defineChampionVariables<'Belveth', typeof IBelveth, 'r'>()({
+			}),
+		},
+		calculateHooks: {
+			onChampionPassive: {
+				handler(self, { championPassiveStats }, { calculatedVariables }) {
+
+				},
+			},
 		},
 	},
 	Briar: {
