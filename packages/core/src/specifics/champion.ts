@@ -491,6 +491,28 @@ export const CHAMPION_SPECIFICS = {
 		},
 		e: {
 			variables: defineChampionVariables<'Belveth', typeof IBelveth, 'e'>()({
+				known: {
+					'f2.0': [],
+				},
+				calculate(self) {
+					return {
+						'f2.0': {
+							value: championAbilityVariableValue('TotalStrikes', { abilityVariant: self.champion.value!.abilities.e.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, abilityLevel: self.abilityLevels.value.e, damageSource: self }).value,
+						},
+					};
+				},
+				meta: {
+					'f2.0': {
+						displayedName: 'TotalStrikes',
+					},
+					'DamagePerStrike': {
+						type: VariableType.physical,
+					},
+					'MaxDamagePerStrikeTooltip': {
+						type: VariableType.physical,
+					},
+				},
+				uninteresting: ['TotalDuration', 'OnHitRatio', 'MonsterMod'],
 			}),
 		},
 		r: {
