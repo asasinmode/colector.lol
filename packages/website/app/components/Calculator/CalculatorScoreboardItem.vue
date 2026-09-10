@@ -3014,7 +3014,11 @@ defineExpose({ el });
 
 	[data-scoreboard-item='Belveth'] {
 		.current-ability-resource {
-			--fill-bg: theme('colors.purple.500');
+			--fill-bg: theme('colors.white');
+
+			> * {
+				mix-blend-mode: difference;
+			}
 		}
 	}
 

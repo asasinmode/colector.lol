@@ -1,0 +1,553 @@
+{
+	"version": "26.18.1",
+	"champions": {
+		"Belveth": {
+			"partype": "",
+			"stats": {
+				"hp": 580,
+				"hpperlevel": 105,
+				"mp": 45,
+				"mpperlevel": 0,
+				"movespeed": 340,
+				"armor": 28,
+				"armorperlevel": 5,
+				"spellblock": 32,
+				"spellblockperlevel": 2.05,
+				"attackrange": 150,
+				"hpregen": 6,
+				"hpregenperlevel": 0.6,
+				"mpregen": 0,
+				"mpregenperlevel": 0,
+				"crit": 0,
+				"critperlevel": 0,
+				"attackdamage": 55,
+				"attackdamageperlevel": 1.5,
+				"attackspeedperlevel": 0,
+				"attackspeed": 0.67,
+				"attackspeedratio": 0.67
+			},
+			"abilities": {
+				"passive": {
+					"maxLevel": 0,
+					"variants": [
+						{
+							"name": "Death in Lavender ",
+							"objectName": "BelvethPassive",
+							"dataKey": "Characters/Belveth/Spells/BelvethPassiveAbility/BelvethPassive",
+							"image": "assets/characters/belveth/hud/icons2d/belveth_passive.png",
+							"tooltip": "{{Spell_BelvethPassive_Tooltip}}",
+							"tooltipExtended": "{{Spell_BelvethPassive_Tooltip}}<br><rules>Bel'Veth does not gain <attackSpeed>Attack Speed</attackSpeed> on level up and has no cap on <attackSpeed>Attack Speed</attackSpeed>.<br>{{Reminder_Ghosted}}</rules>",
+							"dataValues": {
+								"MonsterStacks": [1, 1, 1, 1, 1, 1, 1],
+								"ChampionStacks": [2, 2, 2, 2, 2, 2, 2],
+								"ARAMBonusStacks": [1, 1, 1, 1, 1, 1, 1],
+								"TakedownDuration": [4, 4, 4, 4, 4, 4, 4],
+								"SheenDuration": [3, 3, 3, 3, 3, 3, 3],
+								"BaronBuffDuration": [180, 180, 180, 180, 180, 180, 180],
+								"SheenNumberOfAttacks": [2, 2, 2, 2, 2, 2, 2],
+								"AttackADRatio": [1, 1, 1, 1, 1, 1, 1],
+								"OnHitRatio": [1, 1, 1, 1, 1, 1, 1],
+								"BrawlBonusStacks": [2, 2, 2, 2, 2, 2, 2],
+								"ASPerStackLevel1Value": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
+								"ASPerStackInitialBonusPerLevel": [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05],
+								"ASPerStackLevel6BonusPerLevel": [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1],
+								"ASPerStackLevel11BonusPerLevel": [0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15]
+							},
+							"spellCalculations": {
+								"AttackSpeedPerStack": {
+									"mFormulaParts": [
+										{
+											"{91d404a5}": "ASPerStackLevel1Value",
+											"{bbd778a2}": "ASPerStackInitialBonusPerLevel",
+											"{9823b29a}": [
+												{
+													"level": 6,
+													"{ae9b464d}": "AdditionalBonusAtThisLevel",
+													"{b0d8b2ac}": "ASPerStackLevel6BonusPerLevel",
+													"__type": "{0333530c}"
+												},
+												{
+													"level": 11,
+													"{ae9b464d}": "AdditionalBonusAtThisLevel",
+													"{b0d8b2ac}": "ASPerStackLevel11BonusPerLevel",
+													"__type": "{0333530c}"
+												}
+											],
+											"__type": "{4ce08984}"
+										}
+									],
+									"mPrecision": 2
+								},
+								"SheenSpeedPerStack": {
+									"mFormulaParts": [
+										{
+											"mStartValue": 0.2,
+											"mEndValue": 0.2,
+											"mScaleByStatProgressionMultiplier": true,
+											"__type": "ByCharLevelInterpolationCalculationPart"
+										}
+									],
+									"mDisplayAsPercent": true
+								},
+								"TotalAttackSpeedFromStacks": {
+									"mMultiplier": {
+										"mBuffName": "{7f3c01cf}",
+										"mCoefficient": 1,
+										"__type": "BuffCounterByCoefficientCalculationPart"
+									},
+									"mSimpleTooltipCalculationDisplay": 5,
+									"mExpandedTooltipCalculationDisplay": 5,
+									"mModifiedGameCalculation": "AttackSpeedPerStack",
+									"__type": "GameCalculationModified"
+								}
+							}
+						}
+					]
+				},
+				"r": {
+					"maxLevel": 3,
+					"variants": [
+						{
+							"name": "Endless Banquet",
+							"objectName": "BelvethR",
+							"dataKey": "Characters/Belveth/Spells/BelvethRAbility/BelvethR",
+							"image": "assets/characters/belveth/hud/icons2d/belvethr.png",
+							"cooldownTime": [1, 1, 1, 1, 1, 1, 1],
+							"tooltip": "<spellPassive>Passive:</spellPassive> Attacks deal an additional <trueDamage>@FinalOnHitDamage@ true damage</trueDamage>, stacking infinitely. Takedowns against champions and epic monsters leave behind a piece of Void Coral.<br><br><spellActive>Active:</spellActive> Bel'Veth consumes a Void Coral, gaining <keywordMajor>@PassiveStacksOnDevour@ Lavender</keywordMajor> stack and activating her true form. Void Coral from void epic monsters causes minions that die nearby to become Void Remora. While casting, Bel'Veth <status>Slows</status> nearby enemies before exploding, dealing <trueDamage>@TotalExplosionDamage@ + @MissingHealthDamage*100@% missing-Health true damage</trueDamage>.<br><br>In her true form, Bel'Veth gains <healing>@MaxHealthOnDevour@ max Health</healing>, @BonusAARange@ Attack range, <attackSpeed>@TotalASMod*100@% Total Attack Speed</attackSpeed>, and <spellName>Void Surge</spellName> can pass through walls.<br><br><rules>True form lasts @SteroidDuration@ seconds, increased to @SteroidDurationUpgrade@ seconds at <keywordMajor>@StackThresholdForUpgrade@ Lavender</keywordMajor> stacks. At <keywordMajor>@StackThresholdForPermanent@ Lavender</keywordMajor> stacks, true form lasts until death.</rules>",
+							"tooltipExtendedBelowLine": "<rules>Void Remora count as lane minions with <healing>@VoidlingHPScale*100@% Health</healing> and <physicalDamage>@VoidlingADScale*100@% Attack Damage</physicalDamage>.<br>The applied <status>Slow</status> ramps up to 99% while Bel'Veth consumes Void Coral. <br>The passive deals a maximum of <trueDamage>@MaxMonsterOnHitTooltip@ true damage</trueDamage> to epic monsters.<br>While in true form, consuming Void Coral renews the form's duration and restores <healing>@BaseMaxHealth@ Health</healing>.</rules>",
+							"extendedVariables": [
+								{
+									"name": "OnHitDamage",
+									"nameOverride": "spell_listtype_onhitdamage"
+								},
+								{
+									"name": "BaseDamage",
+									"nameOverride": "spell_listtype_explosiondamage"
+								},
+								{
+									"name": "BaseMaxHealth",
+									"nameOverride": "spell_listtype_bonushealth"
+								},
+								{
+									"name": "TotalASMod",
+									"nameOverride": "spell_listtype_attackspeed"
+								},
+								{
+									"name": "BonusAARange",
+									"nameOverride": "spell_listtype_range"
+								},
+								{
+									"name": "VoidlingHPScale",
+									"nameOverride": "spell_belvethr_voidremorahealth"
+								}
+							],
+							"dataValues": {
+								"PassiveStacksOnDevour": [1, 1, 1, 1, 1, 1, 1],
+								"OnHitDamage": [0, 2, 4, 6, 8, 10, 12],
+								"CorpseDuration": [15, 15, 15, 15, 15, 15, 15],
+								"BaseDamage": [100, 150, 200, 250, 300, 350, 400],
+								"MissingHealthDamage": [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+								"AoERange": [500, 500, 500, 500, 500, 500, 500],
+								"MaxExecuteVsMonsters": [1500, 1500, 1500, 1500, 1500, 1500, 1500],
+								"SteroidDuration": [45, 45, 45, 45, 45, 45, 45],
+								"SteroidDurationUpgrade": [90, 90, 90, 90, 90, 90, 90],
+								"StackThresholdForUpgrade": [40, 40, 40, 40, 40, 40, 40],
+								"StackThresholdForPermanent": [80, 80, 80, 80, 80, 80, 80],
+								"VoidDuration": [180, 180, 180, 180, 180, 180, 180],
+								"MinionRadius": [1000, 1000, 1000, 1000, 1000, 1000, 1000],
+								"BonusAARange": [-25, 25, 75, 125, 175, 225, 275],
+								"RPassiveStackDuration": [5, 5, 5, 5, 5, 5, 5],
+								"BaseMaxHealth": [-50, 100, 250, 400, 550, 700, 850],
+								"TotalASMod": [-0.01, 0.06, 0.13, 0.2, 0.27, 0.34, 0.41],
+								"MaxEpicMonsterStacks": [8, 8, 8, 8, 8, 8, 8],
+								"VoidlingHPScale": [-0.05, 0.2, 0.45, 0.7, 0.95, 1.2, 1.45],
+								"VoidlingADScale": [1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1],
+								"MeleeVoidlingSkinScaleMod": [0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15],
+								"VoidlingMovementSpeedMod": [100, 100, 100, 100, 100, 100, 100],
+								"SizeIncreasePercent": [-0.03, 0.05, 0.13, 0.21, 0.29, 0.37, 0.45]
+							},
+							"spellCalculations": {
+								"FinalOnHitDamage": {
+									"mFormulaParts": [
+										{
+											"mDataValue": "OnHitDamage",
+											"__type": "NamedDataValueCalculationPart"
+										},
+										{
+											"mStat": 2,
+											"mStatFormula": 2,
+											"mCoefficient": 0.03,
+											"__type": "StatByCoefficientCalculationPart"
+										}
+									]
+								},
+								"MaxHealthOnDevour": {
+									"mFormulaParts": [
+										{
+											"mDataValue": "BaseMaxHealth",
+											"__type": "NamedDataValueCalculationPart"
+										},
+										{
+											"mStat": 2,
+											"mStatFormula": 2,
+											"mCoefficient": 1.5,
+											"__type": "StatByCoefficientCalculationPart"
+										},
+										{
+											"mCoefficient": 1.5,
+											"__type": "StatByCoefficientCalculationPart"
+										}
+									]
+								},
+								"TotalExplosionDamage": {
+									"mFormulaParts": [
+										{
+											"mDataValue": "BaseDamage",
+											"__type": "NamedDataValueCalculationPart"
+										},
+										{
+											"mCoefficient": 1.5,
+											"__type": "StatByCoefficientCalculationPart"
+										}
+									]
+								},
+								"MaxMonsterOnHitTooltip": {
+									"mMultiplier": {
+										"mDataValue": "MaxEpicMonsterStacks",
+										"__type": "NamedDataValueCalculationPart"
+									},
+									"tooltipOnly": true,
+									"mModifiedGameCalculation": "FinalOnHitDamage",
+									"__type": "GameCalculationModified"
+								}
+							}
+						}
+					]
+				}
+			}
+		}
+	},
+	"items": {
+		"2501": {
+			"searchString": "overlordsbloodmail;health;damage;attackdamage",
+			"stats": {
+				"FlatHPPoolMod": 550,
+				"FlatPhysicalDamageMod": 30
+			},
+			"dataValues": {
+				"HPToADPercentage": 0.025,
+				"MissingHealthAD": 0.12,
+				"MissingHealthThreshold": 0.7
+			},
+			"itemCalculations": {
+				"RemainingHealthThreshold": {
+					"mMultiplier": {
+						"mNumber": -1,
+						"__type": "NumberCalculationPart"
+					},
+					"mExpandedTooltipCalculationDisplay": 5,
+					"mFormulaParts": [
+						{
+							"mNumber": -1,
+							"__type": "NumberCalculationPart"
+						},
+						{
+							"mDataValue": "MissingHealthThreshold",
+							"__type": "NamedDataValueCalculationPart"
+						}
+					],
+					"mDisplayAsPercent": true
+				}
+			}
+		},
+		"3031": {
+			"searchString": "infinityedge;ie;banana;criticalstrike;damage;criticalstrikechance;attackdamage",
+			"stats": {
+				"FlatCritChanceMod": 0.25,
+				"FlatPhysicalDamageMod": 75,
+				"FlatCritDamageMod": 0.3
+			}
+		},
+		"3036": {
+			"searchString": "lorddominiksregards;lw;ldr;doms;damage;criticalstrike;armorpenetration;criticalstrikechance;attackdamage",
+			"stats": {
+				"FlatCritChanceMod": 0.25,
+				"FlatPhysicalDamageMod": 35,
+				"PercentArmorPenetrationMod": 0.35
+			},
+			"dataValues": {
+				"MaxBonusDamagePercent": 0.15,
+				"MaxBonusHealth": 1500
+			}
+		},
+		"3095": {
+			"searchString": "stormrazor;energized;energised;damage;criticalstrike;attackspeed;movement;criticalstrikechance;attackdamage",
+			"stats": {
+				"FlatCritChanceMod": 0.25,
+				"FlatPhysicalDamageMod": 50,
+				"PercentAttackSpeedMod": 0.25
+			},
+			"dataValues": {
+				"BuffStrength": 0.45,
+				"BuffDuration": 1.5
+			},
+			"itemCalculations": {
+				"TotalProcDamage": {
+					"mFormulaParts": [
+						{
+							"mNumber": 100,
+							"__type": "NumberCalculationPart"
+						}
+					]
+				}
+			}
+		},
+		"3110": {
+			"searchString": "frozenheart;armor;mana;aura;cooldownreduction;abilityhaste",
+			"stats": {
+				"FlatMPPoolMod": 400,
+				"FlatArmorMod": 75,
+				"AbilityHasteMod": 20
+			},
+			"dataValues": {
+				"ASPDSlow": -0.2,
+				"AuraRadius": 700
+			}
+		},
+		"3124": {
+			"searchString": "guinsoosrageblade;damage;attackspeed;spelldamage;onhit;abilitypower;attackdamage",
+			"stats": {
+				"FlatMagicDamageMod": 30,
+				"FlatPhysicalDamageMod": 30,
+				"PercentAttackSpeedMod": 0.25
+			},
+			"dataValues": {
+				"OnHitDamage": 30,
+				"AttackSpeedPerStack": 0.08,
+				"MaxStacks": 4,
+				"BuffDuration": 4
+			},
+			"itemCalculations": {
+				"MaxAttackSpeedCalc": {
+					"tooltipOnly": true,
+					"mFormulaParts": [
+						{
+							"mPart1": {
+								"mDataValue": "AttackSpeedPerStack",
+								"__type": "NamedDataValueCalculationPart"
+							},
+							"mPart2": {
+								"mDataValue": "MaxStacks",
+								"__type": "NamedDataValueCalculationPart"
+							},
+							"__type": "ProductOfSubPartsCalculationPart"
+						}
+					],
+					"mDisplayAsPercent": true
+				},
+				"TotalMagicPen": {
+					"mMultiplier": {
+						"mDataValue": "MythicMagicPen",
+						"__type": "NamedDataValueCalculationPart"
+					},
+					"mFormulaParts": [
+						{
+							"epicness": 5,
+							"__type": "ByItemEpicnessCountCalculationPart"
+						}
+					],
+					"mDisplayAsPercent": true
+				},
+				"TotalArmorPen": {
+					"mMultiplier": {
+						"mDataValue": "MythicArmorPen",
+						"__type": "NamedDataValueCalculationPart"
+					},
+					"mFormulaParts": [
+						{
+							"epicness": 5,
+							"__type": "ByItemEpicnessCountCalculationPart"
+						}
+					],
+					"mDisplayAsPercent": true
+				},
+				"{592c02e8}": {
+					"{72c5c2a8}": 1,
+					"mFormulaParts": [
+						{
+							"mDataValue": "OnHitDamage",
+							"__type": "NamedDataValueCalculationPart"
+						}
+					]
+				}
+			},
+			"effectAmount": [0.08, 2.5, 2.5, 4, 4, 0.1, 0.1, 15, 1, 3, 0, 0, 3]
+		},
+		"3170": {
+			"searchString": "swiftmarch;boots;movespeed",
+			"stats": {
+				"FlatMovementSpeedMod": 65
+			},
+			"dataValues": {
+				"MoveSpeedMultiplier": 0.04,
+				"SlowResistTooltip": 0.25,
+				"MSAdaptiveRatio": 0.05
+			},
+			"itemCalculations": {
+				"{5e4a31e2}": {
+					"mFormulaParts": [
+						{
+							"mBuffName": "{35c412b6}",
+							"mCoefficient": 1,
+							"__type": "BuffCounterByCoefficientCalculationPart"
+						}
+					]
+				},
+				"MSToAdaptiveCalc": {
+					"mFormulaParts": [
+						{
+							"mStat": 7,
+							"mDataValue": "MSAdaptiveRatio",
+							"__type": "StatByNamedDataValueCalculationPart"
+						}
+					]
+				}
+			}
+		},
+		"6672": {
+			"searchString": "krakenslayer;damage;attackspeed;onhit;movement;attackdamage;movespeed",
+			"stats": {
+				"FlatPhysicalDamageMod": 45,
+				"PercentAttackSpeedMod": 0.4,
+				"PercentMovementSpeedMod": 0.04
+			},
+			"dataValues": {
+				"AttackCount": 3,
+				"BuffDuration": 4,
+				"MaxAmpNumber": 1.75,
+				"RangedDamageMultiplier": 0.8
+			},
+			"itemCalculations": {
+				"DamageAmount": {
+					"mFormulaParts": [
+						{
+							"mLevel1Value": 150,
+							"mBreakpoints": [
+								{
+									"mLevel": 9,
+									"mBonusPerLevelAtAndAfter": 5
+								}
+							],
+							"__type": "ByCharLevelBreakpointsCalculationPart"
+						}
+					],
+					"mRangedMultiplier": {
+						"mDataValue": "RangedDamageMultiplier",
+						"__type": "NamedDataValueCalculationPart"
+					}
+				},
+				"MaximumDamage": {
+					"mMultiplier": {
+						"mDataValue": "MaxAmpNumber",
+						"__type": "NamedDataValueCalculationPart"
+					},
+					"mModifiedGameCalculation": "DamageAmount",
+					"__type": "GameCalculationModified"
+				}
+			}
+		},
+		"6676": {
+			"searchString": "thecollector;deathblade;lethality;gun;damage;criticalstrike;armorpenetration;criticalstrikechance;attackdamage",
+			"stats": {
+				"FlatCritChanceMod": 0.25,
+				"FlatPhysicalDamageMod": 50,
+				"PhysicalLethality": 10
+			},
+			"dataValues": {
+				"LethalityAmount": 10,
+				"ExecuteThreshold": 0.05,
+				"GoldAmount": 25
+			}
+		}
+	},
+	"runes": {
+		"shards": {
+			"offensive": {
+				"adaptive": {
+					"effectAmount": {
+						"StatGain2": 12,
+						"StatGain1": 5.4
+					}
+				},
+				"attackspeed": {
+					"effectAmount": {
+						"StatGain": 10
+					}
+				},
+				"cdrscaling": {
+					"effectAmount": {
+						"HasteGain": 8
+					}
+				}
+			},
+			"flex": {
+				"adaptive": {
+					"effectAmount": {
+						"StatGain2": 9,
+						"StatGain1": 5.4
+					}
+				},
+				"movementspeed": {
+					"effectAmount": {
+						"StatGain1": 2.5
+					}
+				},
+				"healthscaling": {
+					"effectAmount": {
+						"StatGainMin": 10,
+						"StatGainMax": 180
+					}
+				}
+			},
+			"defensive": {
+				"health": {
+					"effectAmount": {
+						"StatGain": 65
+					}
+				},
+				"tenacity": {
+					"effectAmount": {
+						"StatGain": 15
+					}
+				},
+				"healthscaling": {
+					"effectAmount": {
+						"StatGainMin": 10,
+						"StatGainMax": 180
+					}
+				}
+			}
+		}
+	},
+	"misc": {
+		"dragons": {
+			"Hextech": {
+				"stack": {
+					"objectName": "SRX_DragonBuffHextech",
+					"dataKey": "Shared/Spells/SRX_DragonBuffHextech",
+					"dataValues": {
+						"AbilityHaste": [5, 5, 5, 5, 5, 5, 5],
+						"AttackSpeed": [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]
+					}
+				}
+			}
+		},
+		"roleQuests": {
+			"mid": {
+				"dataValues": {
+					"BonusADAP": 0.08
+				}
+			}
+		}
+	}
+}

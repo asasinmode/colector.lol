@@ -634,18 +634,38 @@ export const CHAMPION_SPECIFICS = {
 						console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate passive stack as', asPerStack);
 					}
 
+					if (self.currentAbilityResource.value) {
+						const totalASMult = championAbilityVariableValue('TotalASMod', { abilityVariant: self.champion.value!.abilities.r.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, abilityLevel: self.abilityLevels.value.r, damageSource: self });
+						if (typeof totalASMult.value === 'number') {
+							calculatedVariables.totalAttackSpeedMult = totalASMult.value;
+						} else {
+							console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate true form total as', totalASMult);
+						}
+					}
+				},
+			},
+			postTotal: {
+				handler(self, { adaptiveForceMeta, totalStats, bonusStats, championPassiveStats }, { calculatedVariables }) {
 					if (!self.currentAbilityResource.value) {
 						return;
 					}
 
-					const totalASMult = championAbilityVariableValue('TotalASMod', { abilityVariant: self.champion.value!.abilities.r.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, abilityLevel: self.abilityLevels.value.r, damageSource: self });
-					if (typeof totalASMult.value === 'number') {
-						calculatedVariables.totalAttackSpeedMult = totalASMult.value;
+					let bonusAD = bonusStats.attackDamage;
+					if (adaptiveForceMeta[0] === 'attackDamage') {
+						bonusAD -= calculatedVariables.totalAdaptiveForce;
+					}
+
+					const maxHP = championAbilityVariableValue('MaxHealthOnDevour', { abilityVariant: self.champion.value!.abilities.r.variants[0]!, allAbilitiesVariants: self.allAbilityVariants.value, abilityLevel: self.abilityLevels.value.r, damageSource: { stats: { value: { total: { abilityPower: totalStats.abilityPower }, bonus: { attackDamage: bonusAD } } } } as DamageSource });
+					if (typeof maxHP.value === 'number') {
+						console.log('belvething', maxHP.value);
+						// championPassiveStats.hp = maxHP.value;
 					} else {
-						console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate true form total as', totalASMult);
+						console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate true form max hp', maxHP);
 					}
 				},
+				priority: HOOK_PRIORITIES.postTotal.Belveth,
 			},
+
 		},
 	},
 	Briar: {
