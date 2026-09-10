@@ -3157,10 +3157,10 @@ export const CHAMPION_SPECIFICS = {
 				calculate(self) {
 					return {
 						BonusADPercent: {
-							value: self.stats.value.variables.zaahenPassiveAdMultiplier,
+							value: self.stats.value.variables.zaahenPassiveAdMultiplier ?? 0,
 						},
 						BonusAD: {
-							value: self.stats.value.championPassive.attackDamage,
+							value: self.stats.value.championPassive.attackDamage ?? 0,
 						},
 					};
 				},
