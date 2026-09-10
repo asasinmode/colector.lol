@@ -243,8 +243,6 @@ function hideSharePopover() {
 <style>
 @layer base {
 	:root {
-		/* bg color of the 'plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/-1.png' */
-		--placeholder-champion-bg-clr: #020a13;
 		--header-logo-size: calc(10 * var(--spacing));
 		--header-py: calc(2.5 * var(--spacing));
 		--menu-btn-bs: calc(2.75 * var(--spacing));

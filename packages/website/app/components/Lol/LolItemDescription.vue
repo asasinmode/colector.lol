@@ -216,7 +216,7 @@ defineExpose({ header });
 		}
 
 		> span:nth-of-type(4) {
-			--at-apply: 'text-end text-neutral-300';
+			--at-apply: 'text-end text-neutral-[--hover-tooltip-text-clr]';
 		}
 
 		&[data-show-subtitles],
@@ -251,10 +251,14 @@ defineExpose({ header });
 	.item-description {
 		> ul {
 			> li {
-				--at-apply: 'flex items-center text-neutral-200';
+				--at-apply: 'flex items-center text-neutral-50';
 
 				> img {
 					--at-apply: 'size-4.5 me-[0.5ch]';
+				}
+
+				> span:last-of-type {
+					--at-apply: 'text-[--hover-tooltip-text-clr]';
 				}
 
 				> span[data-increased] {
@@ -284,8 +288,6 @@ defineExpose({ header });
 		}
 
 		> h4 {
-			--at-apply: 'text-neutral-300';
-
 			&:has(img) {
 				--at-apply: 'flex items-center gap-[0.5ch]';
 			}
@@ -302,8 +304,6 @@ defineExpose({ header });
 		}
 
 		> div {
-			--at-apply: 'text-neutral-300';
-
 			> img {
 				--at-apply: 'inline-block size-4 align-middle';
 			}
@@ -312,7 +312,7 @@ defineExpose({ header });
 		> div,
 		> p {
 			> li {
-				--at-apply: 'text-neutral-300 ms-5 list-item list-disc';
+				--at-apply: 'ms-5 list-item list-disc';
 			}
 		}
 
@@ -352,6 +352,8 @@ defineExpose({ header });
 
 	.item-description,
 	.game-description {
+		--at-apply: 'text-[--hover-tooltip-text-clr]';
+
 		img {
 			--at-apply: 'inline-block align-middle size-4 z-1 relative';
 		}
@@ -496,7 +498,7 @@ defineExpose({ header });
 		}
 
 		rules {
-			--at-apply: 'text-neutral-400';
+			--at-apply: 'text-neutral-500';
 		}
 
 		const {
@@ -526,7 +528,8 @@ defineExpose({ header });
 		spellname,
 		spellpassive,
 		spellactive,
-		unique {
+		unique,
+		specialrules {
 			--at-apply: 'text-white';
 		}
 
