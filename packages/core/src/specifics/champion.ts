@@ -487,6 +487,18 @@ export const CHAMPION_SPECIFICS = {
 		},
 		w: {
 			variables: defineChampionVariables<'Belveth', typeof IBelveth, 'w'>()({
+				meta: {
+					Damage: {
+						type: VariableType.magic,
+					},
+					SlowPercent: {
+						type: VariableType.affectedBySlowResist,
+					},
+					SlowDuration: {
+						type: VariableType.affectedByTenacity,
+					},
+				},
+				uninteresting: ['Duration'],
 			}),
 		},
 		e: {
