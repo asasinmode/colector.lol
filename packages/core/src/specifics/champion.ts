@@ -645,6 +645,13 @@ export const CHAMPION_SPECIFICS = {
 					} else {
 						console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate true form range', maxHP);
 					}
+
+					const totalASMult = championAbilityVariableValue('TotalASMod', rParams);
+					if (typeof totalASMult.value === 'number') {
+						calculatedVariables.totalAttackSpeedMult = totalASMult.value;
+					} else {
+						console.warn('[CHAMPION_SPECIFICS belveth] failed to calculate true form total as', totalASMult);
+					}
 				},
 			},
 		},

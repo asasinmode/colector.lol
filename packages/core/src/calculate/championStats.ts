@@ -65,6 +65,7 @@ export function calculateChampionStats(source: DamageSource): IStatsCalculationR
 		additionalAdaptiveForceCheckAd: 0,
 		additionalAdaptiveForceCheckAp: 0,
 		critMultiplierMod: 1,
+		totalAttackSpeedMult: 0,
 	};
 	const debuffs: IStatsCalculationDebuffs = {
 		grievousWounds: 0,
@@ -328,6 +329,10 @@ export function calculateChampionStats(source: DamageSource): IStatsCalculationR
 			hook(source, { isRanged, totalPreMultipliersStats, totalMultipliersStats, bonusStats, effectStats, itemPassivesStats, itemTotalStats, championPassiveStats, baseStats, baseOnLevelStats, adaptiveForceMeta }, { calculatedVariables, debuffs, effectVars, miscDebug });
 		}
 	}
+
+	totalMultipliersStats.attackSpeed = totalPreMultipliersStats.attackSpeed * calculatedVariables.totalAttackSpeedMult;
+	bonusStats.bonusAttackSpeedPercent *= 1 + calculatedVariables.totalAttackSpeedMult;
+	debuffs.totalCrippledAttackSpeed *= 1 + calculatedVariables.totalAttackSpeedMult;
 
 	dragonStats.abilityPower = calculatedVariables.apMultipliersBase * dragonStatMultipliers.abilityPower;
 	totalMultipliersStats.abilityPower += dragonStats.abilityPower;

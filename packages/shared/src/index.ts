@@ -162,6 +162,8 @@ export interface IStatsCalculationVariables {
 	 * from my understanding it's all "flat" ap bonuses, multipliers add, so rabadon's 30% and 1 blackfire burning champion's 4% would be 34% bonus ap
 	 */
 	apMultipliersBase: number;
+	/** total attack speed multipliers */
+	totalAttackSpeedMult: number;
 	/** ap multipliers base is used for rabadon & blackfire torch passive, which are calculated in 2 steps - `postItemTotal` and `preBonus` (to make them factor into adaptive force stat choice). This variable keeps the value of `apMultipliersBase` after `postItemTotal` hooks. The difference between that and `apMultipliersBase` is then used to calculate rabadon & blackfire torch passive again */
 	postItemTotalApMultipliersBase: number;
 	/** ap multipliers from items like rabadon and blackfire torch */
