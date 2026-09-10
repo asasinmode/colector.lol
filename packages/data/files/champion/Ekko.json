@@ -84,7 +84,7 @@
 									"__type": "NamedDataValueCalculationPart"
 								},
 								{
-									"mCoefficient": 0.6,
+									"mCoefficient": 0.7,
 									"__type": "StatByCoefficientCalculationPart"
 								}
 							]

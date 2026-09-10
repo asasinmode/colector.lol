@@ -1,5 +1,5 @@
 {
-	"version": "16.17.1",
+	"version": "16.18.1",
 	"data": {
 		"TargetDummy": {
 			"id": "TargetDummy",
@@ -38,8 +38,8 @@
 			"name": "Akali",
 			"image": "Akali.png",
 			"roles": {
-				"top": true,
-				"mid": true
+				"mid": true,
+				"top": true
 			}
 		},
 		"Akshan": {
@@ -447,8 +447,8 @@
 			"name": "Irelia",
 			"image": "Irelia.png",
 			"roles": {
-				"top": true,
-				"mid": true
+				"mid": true,
+				"top": true
 			}
 		},
 		"Ivern": {
@@ -765,8 +765,8 @@
 			"name": "Mel",
 			"image": "Mel.png",
 			"roles": {
-				"bot": true,
-				"mid": true
+				"mid": true,
+				"bot": true
 			}
 		},
 		"Milio": {
@@ -829,7 +829,7 @@
 			"name": "Nasus",
 			"image": "Nasus.png",
 			"roles": {
-				"jungle": true,
+				"mid": true,
 				"top": true
 			}
 		},
@@ -1084,8 +1084,8 @@
 			"name": "Seraphine",
 			"image": "Seraphine.png",
 			"roles": {
-				"bot": true,
-				"support": true
+				"support": true,
+				"bot": true
 			}
 		},
 		"Sett": {
@@ -1212,8 +1212,8 @@
 			"name": "Syndra",
 			"image": "Syndra.png",
 			"roles": {
-				"bot": true,
-				"mid": true
+				"mid": true,
+				"bot": true
 			}
 		},
 		"TahmKench": {
@@ -1241,8 +1241,7 @@
 			"name": "Talon",
 			"image": "Talon.png",
 			"roles": {
-				"jungle": true,
-				"mid": true
+				"jungle": true
 			}
 		},
 		"Taric": {
@@ -1350,8 +1349,8 @@
 			"name": "Vayne",
 			"image": "Vayne.png",
 			"roles": {
-				"bot": true,
-				"top": true
+				"top": true,
+				"bot": true
 			}
 		},
 		"Veigar": {
@@ -1360,8 +1359,8 @@
 			"name": "Veigar",
 			"image": "Veigar.png",
 			"roles": {
-				"bot": true,
-				"mid": true
+				"mid": true,
+				"bot": true
 			}
 		},
 		"Velkoz": {
@@ -1406,8 +1405,8 @@
 			"name": "Viktor",
 			"image": "Viktor.png",
 			"roles": {
-				"bot": true,
-				"mid": true
+				"mid": true,
+				"bot": true
 			}
 		},
 		"Vladimir": {
@@ -1461,7 +1460,6 @@
 			"name": "Xerath",
 			"image": "Xerath.png",
 			"roles": {
-				"bot": true,
 				"support": true,
 				"mid": true
 			}
@@ -1481,9 +1479,9 @@
 			"name": "Yasuo",
 			"image": "Yasuo.png",
 			"roles": {
-				"bot": true,
+				"mid": true,
 				"top": true,
-				"mid": true
+				"bot": true
 			}
 		},
 		"Yone": {
@@ -1492,8 +1490,8 @@
 			"name": "Yone",
 			"image": "Yone.png",
 			"roles": {
-				"top": true,
-				"mid": true
+				"mid": true,
+				"top": true
 			}
 		},
 		"Yorick": {

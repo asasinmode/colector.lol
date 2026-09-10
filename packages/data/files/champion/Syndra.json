@@ -322,11 +322,11 @@
 							"mFormulaParts": [
 								{
 									"mLevel1Value": 20,
-									"mInitialBonusPerLevel": 5,
+									"mInitialBonusPerLevel": 4,
 									"mBreakpoints": [
 										{
-											"mLevel": 6,
-											"mBonusPerLevelAtAndAfter": 8
+											"mLevel": 7,
+											"mBonusPerLevelAtAndAfter": 6
 										},
 										{
 											"mLevel": 11,

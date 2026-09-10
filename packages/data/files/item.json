@@ -1,5 +1,5 @@
 {
-	"version": "16.17.1",
+	"version": "16.18.1",
 	"data": {
 		"1001": {
 			"id": "1001",
@@ -4705,7 +4705,7 @@
 				"OnHitDamage": 30,
 				"AttackSpeedPerStack": 0.08,
 				"MaxStacks": 4,
-				"BuffDuration": 3
+				"BuffDuration": 4
 			},
 			"itemCalculations": {
 				"MaxAttackSpeedCalc": {
@@ -4761,7 +4761,7 @@
 					]
 				}
 			},
-			"effectAmount": [0.08, 2.5, 2.5, 3, 4, 0.1, 0.1, 15, 1, 3, 0, 0, 3]
+			"effectAmount": [0.08, 2.5, 2.5, 4, 4, 0.1, 0.1, 15, 1, 3, 0, 0, 3]
 		},
 		"3133": {
 			"id": "3133",

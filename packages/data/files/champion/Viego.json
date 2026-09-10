@@ -21,7 +21,7 @@
 		"crit": 0,
 		"critperlevel": 0,
 		"attackdamage": 57,
-		"attackdamageperlevel": 3.5,
+		"attackdamageperlevel": 4,
 		"attackspeedperlevel": 2.75,
 		"attackspeed": 0.658,
 		"attackspeedratio": 0.658
@@ -411,6 +411,12 @@
 									"mStat": 4,
 									"mStatFormula": 2,
 									"mCoefficient": 5,
+									"__type": "StatByCoefficientCalculationPart"
+								},
+								{
+									"mStat": 12,
+									"mStatFormula": 2,
+									"mCoefficient": 0.004,
 									"__type": "StatByCoefficientCalculationPart"
 								}
 							],
