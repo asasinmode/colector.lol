@@ -58,4 +58,11 @@ export const KNOWN_GAME_DESCRIPTION_TAGS: string[] = [
 	'release', // irelia W, no styles
 	'charge', // irelia W, no styles
 	'activerank', // volibear E rules text
+	'toggle', // singed Q, no styles
+	'specialrules', // tahm kench R
+	'keywordname', // tahm kench R, no styles
+	'magicpen', // mordekaiser E, annie R
+	'armorpen', // zaahen R, ambessa R
+	'tap', // pyke Q, warwick Q
+	'hold', // pyke Q, warwick Q
 ];

@@ -431,7 +431,9 @@ defineExpose({ header });
 			--at-apply: 'text-cyan-300';
 		}
 
-		scalelethality {
+		scalelethality,
+		armorpen {
+			/* maybe should be a custom one that's slightly more saturated but still pinkish, not fully text-red-500 */
 			--at-apply: 'text-red';
 		}
 
@@ -525,6 +527,12 @@ defineExpose({ header });
 			--at-apply: 'text-orange-400';
 		}
 
+		magicpen {
+			--at-apply: 'text-fuchsia-400';
+		}
+
+		tap,
+		hold,
 		spellname,
 		spellpassive,
 		spellactive,
