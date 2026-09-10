@@ -1688,7 +1688,7 @@ export function computeAbilityDescription(
 			extendedVariables ||= [];
 			extendedVariables.push({
 				name: 'Cooldown',
-				values: variant.cooldownTime!.slice(1, lastExtendedVariableIndex),
+				values: variant.cooldownTime!.slice(1, lastExtendedVariableIndex).map(v => roundNumber(v * (damageSource?.stats.value.cdr ?? 1), 2)),
 			});
 		}
 	}
@@ -1703,7 +1703,7 @@ export function computeAbilityDescription(
 		tooltipExtended: tooltipExtendedReplaced,
 		tooltipExtendedBelowLine: tooltipExtendedBLReplaced,
 		anyUnknownVariables,
-		cooldown,
+		cooldown: cooldown !== undefined ? roundNumber((cooldown * (damageSource?.stats.value.cdr ?? 1)), 2) : cooldown,
 		cost,
 		abilityLevel,
 		partype: champion.partype,

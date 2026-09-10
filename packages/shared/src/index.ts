@@ -32,6 +32,8 @@ export type IChampionStats = Record<IChampionStatName, number>;
 
 export interface IStatsCalculationResult {
 	isRanged?: boolean;
+	/** cooldown reduction % from ability haste */
+	cdr: number;
 	/** raw stats from champion file */
 	initial: IChampionStats;
 	/** stats that could've been already modified from raw, like custom target dummy ones */
