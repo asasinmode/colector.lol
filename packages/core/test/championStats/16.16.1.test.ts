@@ -557,13 +557,14 @@ test('16.16 Ryze passive interactions', async (t) => {
 			assert.equal(damageSource.maxAbilityResource.value, 4509);
 		});
 
-		/* TODO this test is failing because the adaptive force in game goes towards AD. From what I can tell, it's because overlord's retribution passive (AD increase from missing health) seems to count when deciding which stat adaptive force should give. On full hp (previous test) this Ryze is gaining ap from adaptive force */
-		await t.test('seraph, muramana, fimbulwinter, bloodmail+, riftmaker, swiftmarch', { skip: true }, async () => {
+		await t.test('seraph, muramana, fimbulwinter, bloodmail+, riftmaker, swiftmarch', async () => {
 			const damageSource = await setupDamageSource(fixture, 'Ryze', {
 				...questCommon,
 				items: [ITEMS_BY_NAME.seraphsEmbrace, ITEMS_BY_NAME.muramana, ITEMS_BY_NAME.fimbulwinter, ITEMS_BY_NAME.overlordsBloodmail, ITEMS_BY_NAME.riftmaker, ITEMS_BY_NAME.swiftmarch],
 				currentHealth: 955,
 			});
+			(damageSource.internalItemData.value as IInternalItemDataOf<'overlordsBloodmail'>).retribution = damageSource.stats.value.variables.bloodmailRetribution;
+			(damageSource.internalItemData.value as IInternalItemDataOf<'overlordsBloodmail'>).tyranny = damageSource.stats.value.variables.bloodmailTyranny;
 
 			typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
 				attackDamage: 371,
