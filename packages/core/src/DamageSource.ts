@@ -1169,13 +1169,14 @@ export class DamageSource<Id extends IChampionId | undefined = any> {
 						abilityKey,
 						/* test fixtures might not have all abilities filled so check against it */
 						this.champion.value?.abilities[abilityKey]
-							? this.champion.value!.abilities[abilityKey].variants.map((): IDynamicVariables => {
+							? this.champion.value!.abilities[abilityKey].variants.map((_, variantIndex): IDynamicVariables => {
 									const abilitySpecific = championSpecific?.[abilityKey];
 									const abilityDynamicVariables = calculateDynamicVariables(this, this.calculationDamageTarget.value, abilitySpecific?.variables);
+									const specificDynamicVariables = calculateDynamicVariables(this, this.calculationDamageTarget.value, abilitySpecific?.[variantIndex]?.variables);
 
 									return {
-										values: Object.assign({ ...championDynamicVariables?.values }, abilityDynamicVariables?.values),
-										meta: Object.assign({ ...championDynamicVariables?.meta }, abilityDynamicVariables?.meta),
+										values: Object.assign({ ...championDynamicVariables?.values }, abilityDynamicVariables?.values, specificDynamicVariables?.values),
+										meta: Object.assign({ ...championDynamicVariables?.meta }, abilityDynamicVariables?.meta, specificDynamicVariables?.meta),
 									};
 								})
 							: [],

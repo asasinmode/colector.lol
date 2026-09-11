@@ -55,7 +55,7 @@ import type { ComputedRef } from 'vue';
 import type { DamageSource, ICalculateChampionStatsHookSource, IDamageSourceInternalDataBase, IEffectOntoTargetVarsHook, IProviderGroupDataSetup, IProviderGroupImageText } from '../DamageSource';
 import type { DetectChampionVariables } from '../types';
 import type { IGameVariableValueParameters } from '../variables/game.ts';
-import type { IDefineVariablesConfig, IDeriveProgressFn, IEffectControlsProps, IExtractExtraVariables, IGameAbilityData, ISpecificVariables, IVariableValueResult } from './index';
+import type { IDefineVariablesConfig, IDeriveProgressFn, IEffectControlsProps, IExtractExtraVariables, ISpecificVariables, IVariableValueResult } from './index';
 import { STAT_ICON } from '@lolcalc/data';
 import { ALL_CHAMPION_STATS_ENTRIES, EFFECT_OBJECT_NAME, VariableType } from '@lolcalc/shared';
 import { clamp, roundNumber } from '@lolcalc/shared/utils.ts';
@@ -264,16 +264,17 @@ export const CHAMPION_SPECIFICS = {
 					f7: Array.from({ length: 5 }, (_, i) => i + 1).flatMap(i => Array.from({ length: 5 }, (_, j) => i === (j + 1) ? undefined : `${i}${j + 1}`).filter(Boolean)) as string[],
 				},
 				calculate(self) {
-					const { q: qVariant, w: wVariant } = self.abilityVariantsIndexes.value;
+					/* check e variables for more details on what's going on with indexes */
+					const { q, w } = self.abilityVariantsIndexes.value;
 					const { WEAPON_NAME_TO_STRINGTABLE_INDEX, WEAPON_VARIANT_INDEX_TO_NAME } = CHAMPION_SPECIFICS.Aphelios;
 
-					const offhandWeaponIndex: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[wVariant]!];
-					const mainWeaponIndex: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[qVariant]!];
+					const mainWeaponIndex: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[q]!];
+					const offhandWeaponIndex: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[w]!];
 
 					return {
 						f1: { value: mainWeaponIndex },
 						f3: { value: mainWeaponIndex },
-						f5: { value: offhandWeaponIndex },
+						f5: { value: mainWeaponIndex },
 						f7: {
 							value: `${mainWeaponIndex}${offhandWeaponIndex}`,
 						},
@@ -308,16 +309,16 @@ export const CHAMPION_SPECIFICS = {
 						f3: [],
 					},
 					calculate(self) {
-						// const { w: weaponVariantIndex } = self.abilityVariantsIndexes.value;
-						console.log(`calculating e ${i} variant`, { ...self.abilityVariantsIndexes.value });
 						const { WEAPON_NAME_TO_STRINGTABLE_INDEX, WEAPON_VARIANT_INDEX_TO_NAME } = CHAMPION_SPECIFICS.Aphelios;
+						const { q, w, e } = self.abilityVariantsIndexes.value;
 
 						const stringtableIndex: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[i]!];
 
 						return {
-							f1: { value: stringtableIndex },
-							/* as of 26.17 doesn't seem like it's supposed to come from anywhere, is expected to be `spell_apheliose_1` which itself points to something using @f3@ */
-							f2: { value: 1 },
+							/* 1 - main, 2 - offhand, 3 - next. The numbers are for stringtable. The ability indexes of q/w/e are used in Aphelios' abilities component */
+							f1: { value: i === e ? 3 : i === w ? 2 : 1 },
+							/* when it's main hand weapon, a more detailed description is displayed and the stringtable key is under `1`. If offhand/next, less details - 2 */
+							f2: { value: q === i ? 1 : 2 },
 							f3: { value: stringtableIndex },
 						};
 					},

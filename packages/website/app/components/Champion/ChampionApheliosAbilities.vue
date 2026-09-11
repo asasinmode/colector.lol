@@ -93,7 +93,7 @@ function replaceMainWithNext(event: MouseEvent) {
 			:width="abilitySize"
 			:height="abilitySize"
 			aria-hidden="true"
-			@mouseenter="value.champion.value && $emit('abilityHover', $event, GameAbilityId.build('champion', 'Aphelios', 'e', 0))"
+			@mouseenter="value.champion.value && $emit('abilityHover', $event, GameAbilityId.build('champion', 'Aphelios', 'e', value.abilityVariantsIndexes.value.q))"
 		>
 		<h5>Q</h5>
 		<img

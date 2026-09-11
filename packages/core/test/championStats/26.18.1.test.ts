@@ -4,7 +4,6 @@ import test from 'node:test';
 import { GameAbilityId } from '@lolcalc/core/GameAbilityId.ts';
 import { ITEMS_BY_NAME } from '@lolcalc/data';
 import { AbilityType, EFFECT_OBJECT_NAME } from '@lolcalc/shared';
-import { nextTick } from 'vue';
 import fixture from '../fixtures/26.18.1.fixture.json' with { type: 'json' };
 import { overridesAppliedEffect, setupDamageSource, setupPatchFixture, typedPartialDeepStrictEqual } from '../utils.ts';
 
