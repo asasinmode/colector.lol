@@ -284,24 +284,45 @@ export const CHAMPION_SPECIFICS = {
 		e: {
 			variables: defineChampionVariables<'Aphelios', typeof IAphelios, 'e'>()({
 				known: {
+					/* "[main|next|offhand] weapons" text */
 					f1: [1, 2, 3],
+					/* seem to be variants for the same thing f1 is */
 					f2: [1, 2, 3],
-					f3: [1, 2, 3],
+					/* each weapon's stringtable indexes */
+					f3: [1, 2, 3, 4, 5],
 				},
-				calculate(self) {
-					const { q: qVariant } = self.abilityVariantsIndexes.value;
-					const { WEAPON_NAME_TO_STRINGTABLE_INDEX, WEAPON_VARIANT_INDEX_TO_NAME } = CHAMPION_SPECIFICS.Aphelios;
-
-					const qVariantIndex: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[qVariant]!];
-
+				/** unused, overwritten by indexes' variables */
+				calculate() {
 					return {
-						f1: { value: qVariantIndex },
-						/* as of 26.17 doesn't seem like it's supposed to come from anywhere, is expected to be `spell_apheliose_1` which itself points to something using @f3@ */
-						f2: { value: 1 },
-						f3: { value: qVariantIndex },
+						f1: { value: Number.NaN },
+						f2: { value: Number.NaN },
+						f3: { value: Number.NaN },
 					};
 				},
 			}),
+			...Object.fromEntries(Array.from({ length: 5 }, (_, i) => [i, {
+				variables: defineChampionVariables<'Aphelios', typeof IAphelios, 'e'>()({
+					known: {
+						f1: [],
+						f2: [],
+						f3: [],
+					},
+					calculate(self) {
+						// const { w: weaponVariantIndex } = self.abilityVariantsIndexes.value;
+						console.log(`calculating e ${i} variant`, { ...self.abilityVariantsIndexes.value });
+						const { WEAPON_NAME_TO_STRINGTABLE_INDEX, WEAPON_VARIANT_INDEX_TO_NAME } = CHAMPION_SPECIFICS.Aphelios;
+
+						const stringtableIndex: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[i]!];
+
+						return {
+							f1: { value: stringtableIndex },
+							/* as of 26.17 doesn't seem like it's supposed to come from anywhere, is expected to be `spell_apheliose_1` which itself points to something using @f3@ */
+							f2: { value: 1 },
+							f3: { value: stringtableIndex },
+						};
+					},
+				}),
+			}])),
 		},
 		r: {
 			variables: defineChampionVariables<'Aphelios', typeof IAphelios, 'r'>()({
