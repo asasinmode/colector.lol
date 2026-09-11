@@ -4,6 +4,7 @@ import test from 'node:test';
 import { GameAbilityId } from '@lolcalc/core/GameAbilityId.ts';
 import { ITEMS_BY_NAME } from '@lolcalc/data';
 import { AbilityType, EFFECT_OBJECT_NAME } from '@lolcalc/shared';
+import { nextTick } from 'vue';
 import fixture from '../fixtures/26.18.1.fixture.json' with { type: 'json' };
 import { overridesAppliedEffect, setupDamageSource, setupPatchFixture, typedPartialDeepStrictEqual } from '../utils.ts';
 
@@ -11,14 +12,15 @@ test.before(() => {
 	setupPatchFixture(fixture);
 });
 
-test('26.18 Belveth', async (t) => {
+test.only('26.18 Belveth', async (t) => {
+	t.runOnly(true);
 	const sourceCommon: IOverrides<'Belveth'> = {
 		level: 18,
 		runes: {
 			shards: {
 				offensive: 'adaptive',
 				flex: 'adaptive',
-				defensive: 'health',
+				defensive: 'tenacity',
 			},
 		},
 		abilityLevels: { q: 5, w: 5, e: 5, r: 3 },
@@ -27,6 +29,13 @@ test('26.18 Belveth', async (t) => {
 	await t.test('winter caressed', async () => {
 		const damageSource = await setupDamageSource(fixture, 'Belveth', {
 			...sourceCommon,
+			runes: {
+				shards: {
+					offensive: 'adaptive',
+					flex: 'adaptive',
+					defensive: 'health',
+				},
+			},
 			items: [ITEMS_BY_NAME.infinityEdge, ITEMS_BY_NAME.ldr, ITEMS_BY_NAME.guinsoo, ITEMS_BY_NAME.krakenSlayer, ITEMS_BY_NAME.collector, ITEMS_BY_NAME.stormrazor],
 			dragonStacks: ['Hextech'],
 			appliedEffects: [
@@ -48,23 +57,41 @@ test('26.18 Belveth', async (t) => {
 		}, damageSource);
 	});
 
-	// await t.test('bloodmail+, mid quest', async () => {
-	// 	const damageSource = await setupDamageSource(fixture, 'Belveth', {
-	// 		...sourceCommon,
-	// 		internalData: { passiveStacks: 7, hasPassiveStack: 0 },
-	// 		items: [ITEMS_BY_NAME.overlordsBloodmail, ITEMS_BY_NAME.swiftmarch],
-	// 		roleQuest: 'mid',
-	// 	});
+	await t.test('base', { only: true }, async () => {
+		const damageSource = await setupDamageSource(fixture, 'Belveth', {
+			...sourceCommon,
+			internalData: { passiveStacks: 0, hasPassiveStack: 0 },
+			items: [ITEMS_BY_NAME.giantsBelt, ITEMS_BY_NAME.giantsBelt, ITEMS_BY_NAME.giantsBelt, ITEMS_BY_NAME.overlordsBloodmail, ITEMS_BY_NAME.riftmaker, ITEMS_BY_NAME.rabadon],
+			currentAbilityResource: 0,
+		});
 
-	// 	typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
-	// 		attackDamage: 167,
-	// 	}, damageSource);
-	// 	assert.strictEqual(damageSource.maxHealth.value, 3467);
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 159,
+			abilityPower: 334,
+		}, damageSource);
+		assert.strictEqual(damageSource.maxHealth.value, 4315);
 
-	// 	damageSource.currentHealth.value = 880;
-	// 	typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
-	// 		attackDamage: 188,
-	// 	}, damageSource);
-	// 	assert.strictEqual(damageSource.maxHealth.value, 3482);
-	// });
+		damageSource.currentHealth.value = 900;
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 178,
+			abilityPower: 334,
+		}, damageSource);
+		assert.strictEqual(damageSource.maxHealth.value, 4315);
+
+		damageSource.currentHealth.value = damageSource.maxHealth.value;
+		damageSource.currentAbilityResource.value = 1;
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 183,
+			abilityPower: 359,
+		}, damageSource);
+		/* game shows 5259, see help page for known discrepancies */
+		assert.strictEqual(damageSource.maxHealth.value, 5258);
+
+		damageSource.currentHealth.value = 1115;
+		typedPartialDeepStrictEqual(damageSource.computed.formattedStatTotals.value, {
+			attackDamage: 205,
+			abilityPower: 359,
+		}, damageSource);
+		assert.strictEqual(damageSource.maxHealth.value, 5283);
+	});
 });

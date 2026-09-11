@@ -228,6 +228,12 @@
 		}
 	},
 	"items": {
+		"1011": {
+			"searchString": "giantsbelt;health",
+			"stats": {
+				"FlatHPPoolMod": 350
+			}
+		},
 		"2501": {
 			"searchString": "overlordsbloodmail;health;damage;attackdamage",
 			"stats": {
@@ -278,6 +284,15 @@
 			"dataValues": {
 				"MaxBonusDamagePercent": 0.15,
 				"MaxBonusHealth": 1500
+			}
+		},
+		"3089": {
+			"searchString": "rabadonsdeathcap;dc;dcap;hat;banksys;wooglets;witchcap;spelldamage;abilitypower",
+			"stats": {
+				"FlatMagicDamageMod": 130
+			},
+			"dataValues": {
+				"APAmp": 0.3
 			}
 		},
 		"3095": {
@@ -411,6 +426,54 @@
 							"__type": "StatByNamedDataValueCalculationPart"
 						}
 					]
+				}
+			}
+		},
+		"4633": {
+			"searchString": "riftmaker;velkoz;health;spelldamage;cooldownreduction;spellvamp;abilitypower",
+			"stats": {
+				"FlatHPPoolMod": 350,
+				"FlatMagicDamageMod": 70,
+				"AbilityHasteMod": 15
+			},
+			"dataValues": {
+				"SecondsInCombat": 4,
+				"EternityDamageIncreasePerSecond": 0.02,
+				"EternityDamageIncreaseMax": 0.08,
+				"BuffCounterDuration": 4,
+				"HealthToAPConversionPercent": 0.02,
+				"MaxAPMultiplier": 0.05,
+				"VampAmountMelee": 0.1,
+				"VampAmountRanged": 0.06
+			},
+			"itemCalculations": {
+				"{1247259a}": {
+					"mFormulaParts": [
+						{
+							"mStat": 12,
+							"mStatFormula": 2,
+							"mDataValue": "HealthToAPConversionPercent",
+							"__type": "StatByNamedDataValueCalculationPart"
+						}
+					]
+				},
+				"MeleeItemCalcValue": {
+					"mFormulaParts": [
+						{
+							"mDataValue": "VampAmountMelee",
+							"__type": "NamedDataValueCalculationPart"
+						}
+					],
+					"mDisplayAsPercent": true
+				},
+				"RangedItemCalcValue": {
+					"mFormulaParts": [
+						{
+							"mDataValue": "VampAmountRanged",
+							"__type": "NamedDataValueCalculationPart"
+						}
+					],
+					"mDisplayAsPercent": true
 				}
 			}
 		},
