@@ -61,7 +61,7 @@ export interface IVariableMeta<T = any> {
 	 *	- rune: `IRuneVariableParams`
 	 *	- champion: `IChampionAbilityVariableParams`
 	 */
-	extendedEquals?: IVariableMetaExtendedEquals | ((variableValueParams: T, overrideDynamicVariables?: IDynamicVariables) => IVariableMetaExtendedEquals);
+	extendedEquals?: IVariableMetaExtendedEquals | ((variableValueParams: T) => IVariableMetaExtendedEquals);
 	/** will override variable's calculatesFrom */
 	calculatesFrom?: ICalculatesFromPart[];
 	/** displayed value multiplied by */
@@ -906,7 +906,7 @@ function variableExtendedEquals(
 
 	let metaSuffix = '';
 	let extendedEquals = typeof meta?.extendedEquals === 'function'
-		? meta.extendedEquals(variableValueFunctionParams, options.overrideVariables)
+		? meta.extendedEquals(variableValueFunctionParams)
 		: typeof meta?.extendedEquals !== 'object'
 			? meta?.extendedEquals as string
 			: `${meta.extendedEquals.prefix}${isMeleeRanged === true

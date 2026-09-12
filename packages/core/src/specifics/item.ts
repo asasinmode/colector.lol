@@ -18,6 +18,7 @@ import { GameAbilityId } from '../GameAbilityId.ts';
 import { simpleFormattingGameAbilityImage } from '../misc.ts';
 import { itemVariableValue, variableResolveFn } from '../variables/game.ts';
 import { defineVariables, HOOK_PRIORITIES, MODIFY_VARIABLE_PRIORITIES } from './index.ts';
+import { bloodmailRetributionBonusAD } from './shared.ts';
 
 const actualGWoundsItems = Object.values(ITEMS).filter(item => item.dataValues?.GrievousAmount);
 if (!actualGWoundsItems.every(item => (GRIEVOUS_WOUND_ITEMS as string[]).includes(item.id))) {
@@ -2188,18 +2189,6 @@ export const ITEM_SPECIFICS = {
 				return `Tyranny <scalead>%i:${STAT_ICON.attackDamage}% ${Math.round(self.internalItemData.value.tyranny ?? 0)}</scalead> | Retribution <scalead>%i:${STAT_ICON.attackDamage}% ${Math.round(self.internalItemData.value.retribution ?? 0)}</scalead>`;
 			},
 		} satisfies IEffectControlsProps<any>,
-		BONUS_AD_PERCENTAGE: (damageSource: DamageSource, maxHpOverride?: number) => {
-			const maxValueAt = itemVariableValue('RemainingHealthThreshold', { item: ITEMS_BY_NAME.overlordsBloodmail, damageSource });
-			if (typeof maxValueAt?.value !== 'number') {
-				console.error('[ITEM_SPECIFICS bloodmail] failed to resolve RemainingHealthThreshold variable value');
-				return Number.NaN;
-			}
-
-			const currentHealthP = Math.min(damageSource.currentHealth.value / (maxHpOverride ?? Math.max(damageSource.stats.value.total.hp, 1)), 1);
-			const missingHealthP = 1 - currentHealthP;
-			const maxMissingHealthP = 1 - maxValueAt.value;
-			return ITEMS_BY_NAME.overlordsBloodmail?.dataValues.MissingHealthAD * Math.min(1, missingHealthP / maxMissingHealthP);
-		},
 		imgTextLabel: 'Retribution ad increase',
 		imgText(damageSource) {
 			return damageSource.stats.value.variables.bloodmailRetribution
@@ -2296,7 +2285,7 @@ export const ITEM_SPECIFICS = {
 
 					const retributionBaseTotal = totalStats.attackDamage - (dragonStats.attackDamage ?? 0) - calculatedVariables.bloodmailRetributionExcludedAd;
 
-					calculatedVariables.bloodmailRetributionPercentage = ITEM_SPECIFICS[ITEM_NAME_TO_ID.overlordsBloodmail].BONUS_AD_PERCENTAGE(self, totalStats.hp);
+					calculatedVariables.bloodmailRetributionPercentage = bloodmailRetributionBonusAD(self, totalStats.hp);
 					calculatedVariables.bloodmailRetribution = retributionBaseTotal * calculatedVariables.bloodmailRetributionPercentage;
 
 					itemPassivesStats.attackDamage += calculatedVariables.bloodmailRetribution;

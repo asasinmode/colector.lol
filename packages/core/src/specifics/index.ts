@@ -70,6 +70,7 @@ export const HOOK_PRIORITIES = {
 	},
 } satisfies Partial<Record<keyof ICalculateChampionStatsHookSource, Partial<Record<IChampionId | (string & {}), number>>>>;
 
+/* same as hook priorities - higher = runs later */
 export const MODIFY_VARIABLE_PRIORITIES = {
 	items: {
 		[ITEM_NAME_TO_ID.randuinsOmen]: 1,
