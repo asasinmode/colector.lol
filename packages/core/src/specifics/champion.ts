@@ -257,24 +257,28 @@ export const CHAMPION_SPECIFICS = {
 		q: {
 			variables: defineChampionVariables<'Aphelios', typeof IAphelios, 'q'>()({
 				known: {
+					/* each weapon's stringtable variant index */
 					f1: [1, 2, 3, 4, 5],
-					f3: [1, 2, 3],
-					f5: [0, 1, 2, 3, 5],
+					f3: [1, 2, 3, 4, 5],
+					/* also 0, gravitum has "this weapon does not use offhand" */
+					f5: [0, 1, 2, 3, 4, 5],
 					/* array of 12, 13, ..., 21, 23, ..., 53, 54 - no 2 repeated numbers like 11, 22 */
 					f7: Array.from({ length: 5 }, (_, i) => i + 1).flatMap(i => Array.from({ length: 5 }, (_, j) => i === (j + 1) ? undefined : `${i}${j + 1}`).filter(Boolean)) as string[],
 				},
 				calculate(self) {
 					/* check e variables for more details on what's going on with indexes */
 					const { q, w } = self.abilityVariantsIndexes.value;
-					const { WEAPON_NAME_TO_STRINGTABLE_INDEX, WEAPON_VARIANT_INDEX_TO_NAME } = CHAMPION_SPECIFICS.Aphelios;
+					const { WEAPON_NAME_TO_STRINGTABLE_INDEX, WEAPON_VARIANT_INDEX_TO_NAME, WEAPON_NAME_TO_VARIANT_INDEX } = CHAMPION_SPECIFICS.Aphelios;
 
 					const mainWeaponIndex: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[q]!];
 					const offhandWeaponIndex: number = WEAPON_NAME_TO_STRINGTABLE_INDEX[WEAPON_VARIANT_INDEX_TO_NAME[w]!];
+					/* offhand weapon reminder in rules, gravitum special case as it doesnt use offhand */
+					const f5: number = q === WEAPON_NAME_TO_VARIANT_INDEX.gravitum ? 0 : offhandWeaponIndex;
 
 					return {
 						f1: { value: mainWeaponIndex },
 						f3: { value: mainWeaponIndex },
-						f5: { value: mainWeaponIndex },
+						f5: { value: f5 },
 						f7: {
 							value: `${mainWeaponIndex}${offhandWeaponIndex}`,
 						},
