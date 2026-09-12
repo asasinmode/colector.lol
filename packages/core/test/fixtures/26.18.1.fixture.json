@@ -594,6 +594,15 @@
 	},
 	"misc": {
 		"dragons": {
+			"Infernal": {
+				"stack": {
+					"objectName": "SRX_DragonBuffInfernal",
+					"dataKey": "Shared/Spells/SRX_DragonBuffInfernal",
+					"dataValues": {
+						"ADandAPPercentIncrease": [0.03, 0.03, 0.03, 0.03, 0.03, 0.03, 0.03]
+					}
+				}
+			},
 			"Hextech": {
 				"stack": {
 					"objectName": "SRX_DragonBuffHextech",
