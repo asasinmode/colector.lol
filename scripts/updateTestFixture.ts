@@ -150,10 +150,10 @@ function applyEffect(fixture: IFixtureShape, search: string): void {
 }
 
 function applyDragon(fixture: IFixtureShape, raw: string): void {
-	const [rawDragonName, type] = raw.split('-');
+	const [rawDragonName, type] = raw.split(':');
 
 	if (!rawDragonName || !(type === 'soul' || type === 'stack')) {
-		console.warn(`[applyDragon] dragon arg "${raw}" must be of format 'IDragonName-[soul|stack]'`);
+		console.warn(`[applyDragon] dragon arg "${raw}" must be of format 'IDragonName-[soul:stack]'`);
 		return;
 	}
 
